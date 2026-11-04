@@ -224,6 +224,8 @@
   .level-opt.is-active { color: var(--text); }
   .level-opt:disabled { cursor: default; }
   .level-opt:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; }
+  .alphabet .level-q { margin-left: 0; margin-right: 17px; margin-bottom: 24px; line-height: 1.3; }
+  .alphabet .level-list { gap: 30px; }
   .cat-peek {
     position: absolute;
     left: 44%;
@@ -298,6 +300,15 @@
   </div>
   <img class="cat-peek" src="cat.png" alt="">
 </main>
+<main class="level alphabet" id="alphabet" data-name="00_Intro_do you want to learn the alphabet?" hidden>
+  <h1 class="level-q">Would you like to learn<br>the alphabet?</h1>
+  <div class="level-list">
+    <!-- Only "Yes!" is active for now; skipping is pale grey and can't be tapped -->
+    <button type="button" class="level-opt is-active" data-answer="learnAlphabet" data-value="yes">Yes!</button>
+    <button type="button" class="level-opt" data-answer="learnAlphabet" data-value="skip" disabled>I would like to skip the alphabet for now.</button>
+  </div>
+  <img class="cat" src="cat.png" alt="">
+</main>
 </div>
 <script>
   // One view per page; the URL hash picks which one shows.
@@ -322,7 +333,13 @@
   window.addEventListener("hashchange", show);
   show();
 
-  // Only "Complete Beginner" is active; its next page isn't built yet.
+  // Onboarding flow: where each active answer leads (saving happens in the login script below)
+  const nextPage = { beginner: "alphabet" };
+  document.querySelectorAll(".level-opt").forEach(btn => btn.addEventListener("click", () => {
+    const next = nextPage[btn.dataset.level || btn.dataset.value];
+    if (!btn.disabled && next) location.hash = next;
+  }));
+
 </script>
 <script type="module">
   // Real login with Firebase: Google and Meta. Apple stays decorative.
@@ -371,7 +388,11 @@
   document.querySelectorAll(".level-opt").forEach(btn => {
     btn.addEventListener("click", () => {
       if (btn.disabled) return;
-      saveAnswer("level", btn.dataset.level);
+      if (btn.dataset.level) {
+        saveAnswer("level", btn.dataset.level);
+      } else if (btn.dataset.answer) {
+        saveAnswer(btn.dataset.answer, btn.dataset.value);
+      }
     });
   });
 
