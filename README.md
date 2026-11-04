@@ -9,3 +9,8 @@ A mobile web app for learning Hebrew (demo for user testers).
 - `privacy.html` – privacy policy (needed for Meta login).
 
 Hosted with GitHub Pages: https://elenalipovet.github.io/hebrit2/
+
+## Saved answers
+
+Onboarding answers are saved in Cloud Firestore under `users/{uid}` (for example `level`), one field per answer, so they can be changed later.
+`firestore.rules` holds the security rules to paste into Firebase (each user can only read and write their own record).

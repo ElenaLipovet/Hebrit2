@@ -332,6 +332,9 @@
     getAuth, GoogleAuthProvider, FacebookAuthProvider,
     signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut
   } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+  import {
+    getFirestore, doc, setDoc, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
   // This config is public by design (it identifies the project, it is not a password).
   const firebaseConfig = {
@@ -347,6 +350,30 @@
   const app = initializeApp(firebaseConfig);
   isSupported().then(ok => { if (ok) getAnalytics(app); }).catch(() => {});
   const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Saves onboarding answers to the user's own record: users/{uid}.
+  // Each answer is one field (e.g. level), so it can be changed later in the app.
+  async function saveAnswer(field, value) {
+    const user = auth.currentUser;
+    if (!user) return; // not logged in (e.g. "Skip for now"): nothing to save yet
+    try {
+      await setDoc(doc(db, "users", user.uid), {
+        [field]: value,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    } catch (err) {
+      console.error("Couldn't save answer", field, err);
+    }
+  }
+
+  // 00_Intro_What is your level?: save the chosen level (only "beginner" is active for now)
+  document.querySelectorAll(".level-opt").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (btn.disabled) return;
+      saveAnswer("level", btn.dataset.level);
+    });
+  });
 
   const msg = document.getElementById("login-msg");
   const say = text => { msg.textContent = text; };
