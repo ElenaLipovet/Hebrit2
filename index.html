@@ -365,10 +365,18 @@
     "auth/network-request-failed": "No internet connection. Please try again."
   };
 
+  function welcome(user) {
+    const first = (user.displayName || "").split(" ")[0];
+    document.getElementById("hello-name").textContent = first || "friend";
+    location.hash = "welcome-user";
+  }
+
   async function login(name) {
     say("");
     try {
-      await signInWithPopup(auth, providers[name]());
+      const result = await signInWithPopup(auth, providers[name]());
+      // Go on explicitly: if this person was already signed in, Firebase sends no new sign-in event
+      welcome(result.user);
     } catch (err) {
       if (err.code === "auth/popup-blocked") {
         await signInWithRedirect(auth, providers[name]());
@@ -388,7 +396,7 @@
     });
   });
 
-  getRedirectResult(auth).catch(err => {
+  getRedirectResult(auth).then(result => { if (result && result.user) welcome(result.user); }).catch(err => {
     console.error(err);
     say(friendly[err.code] || "Login didn’t work. Please try again.");
   });
@@ -397,7 +405,6 @@
     if (user) {
       const first = (user.displayName || "").split(" ")[0];
       document.getElementById("hello-name").textContent = first || "friend";
-      if (location.hash === "#login") location.hash = "welcome-user";
     } else if (location.hash === "#welcome-user") {
       location.hash = "login";
     }
