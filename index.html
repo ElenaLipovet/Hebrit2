@@ -17,6 +17,7 @@
     --guide: #3d8bff;
     --coral: #f87563;
     --sky: #52daff;
+    --dim: #8c8c8c;
     --desk: #1d1d22;
     --font-en: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, sans-serif;
     --font-he: "Assistant", system-ui, sans-serif;
@@ -188,6 +189,48 @@
     padding-inline: 16px;
     overflow-wrap: anywhere;
   }
+  /* 00_Intro_What is your level?: question, five choices, cat peeking at the bottom */
+  .level {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    padding-block: 60px 120px;
+    padding-left: max(33px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .level-q {
+    margin: 0 0 32px;
+    text-align: center;
+    margin-left: -17px;
+    font-size: 20.5px;
+    font-weight: 700;
+    color: var(--sky);
+  }
+  .level-list { display: flex; flex-direction: column; gap: 44px; }
+  .level-opt {
+    background: none;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    font-family: var(--font-en);
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.42;
+    color: var(--dim);
+    cursor: pointer;
+  }
+  .level-opt b { font-weight: 700; }
+  .level-opt.he { text-align: right; font-family: var(--font-he); font-weight: 700; font-size: 32px; padding-right: 17px; }
+  .level-opt[aria-checked="true"] { color: var(--text); }
+  .level-opt:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; }
+  .cat-peek {
+    position: absolute;
+    left: 44%;
+    bottom: -100px;
+    width: 64%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
   .cat {
     position: absolute;
     left: 0;
@@ -242,6 +285,17 @@
   <p class="hello">Hello,<br><span id="hello-name">friend</span></p>
   <img class="cat" src="cat.png" alt="A coral cat waving hello">
 </main>
+<main class="level" id="level" data-name="00_Intro_What is your level?" hidden>
+  <h1 class="level-q">What is your level of Hebrew?</h1>
+  <div class="level-list" role="radiogroup" aria-label="What is your level of Hebrew?">
+    <button type="button" class="level-opt" role="radio" aria-checked="true" data-level="beginner">Complete Beginner.</button>
+    <button type="button" class="level-opt" role="radio" aria-checked="false" data-level="a-little">I know <b><i>ktzat</i></b>.</button>
+    <button type="button" class="level-opt" role="radio" aria-checked="false" data-level="speak">I can <b><i>ledaber</i></b>, but I can’t read the alphabet.</button>
+    <button type="button" class="level-opt he" role="radio" aria-checked="false" data-level="read-write" lang="he" dir="rtl">אני יודע/ת לקרוא ולכתוב.</button>
+    <button type="button" class="level-opt he" role="radio" aria-checked="false" data-level="advanced" lang="he" dir="rtl">העברית שלי ברמה גבוהה.</button>
+  </div>
+  <img class="cat-peek" src="cat.png" alt="">
+</main>
 </div>
 <script>
   // One view per page; the URL hash picks which one shows.
@@ -260,9 +314,22 @@
     // 00_Intro Logo moves on to 00_Intro_01 by itself after 3 seconds
     clearTimeout(timer);
     if (logo) timer = setTimeout(() => { location.hash = "intro-01"; }, 3000);
+    // 00_Intro_Welcome Username moves on to 00_Intro_What is your level? after 2 seconds
+    if (current.id === "welcome-user") timer = setTimeout(() => { location.hash = "level"; }, 2000);
   }
   window.addEventListener("hashchange", show);
   show();
+
+  // Level choice: tapping an option makes it white (selected). Remembered on this device.
+  const levelOpts = [...document.querySelectorAll(".level-opt")];
+  function pickLevel(level) {
+    levelOpts.forEach(o => o.setAttribute("aria-checked", String(o.dataset.level === level)));
+  }
+  levelOpts.forEach(o => o.addEventListener("click", () => {
+    pickLevel(o.dataset.level);
+    try { localStorage.setItem("hebrit-level", o.dataset.level); } catch (e) {}
+  }));
+  try { const saved = localStorage.getItem("hebrit-level"); if (saved) pickLevel(saved); } catch (e) {}
 </script>
 <script type="module">
   // Real login with Firebase: Google and Meta. Apple stays decorative.
