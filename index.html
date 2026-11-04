@@ -16,6 +16,7 @@
     --highlight: #ffe600;
     --guide: #3d8bff;
     --coral: #f87563;
+    --sky: #52daff;
     --desk: #1d1d22;
     --font-en: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, sans-serif;
     --font-he: "Assistant", system-ui, sans-serif;
@@ -158,7 +159,43 @@
     color: var(--highlight);
     min-height: 1.4em;
   }
-  #hello-name { white-space: normal; text-align: center; font-size: 40px; }
+  /* 00_Intro_Welcome Username: Hebrew greeting, name, waving cat at the bottom */
+  .welcome-user {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 128px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .shalom {
+    margin: 0;
+    font-family: var(--font-he);
+    font-weight: 700;
+    font-size: 118px;
+    line-height: 1;
+    color: var(--sky);
+  }
+  .shalom .vowel { color: var(--coral); }
+  .hello {
+    margin-top: 10px;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.12;
+    color: var(--sky);
+    padding-inline: 16px;
+    overflow-wrap: anywhere;
+  }
+  .cat {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 
   /* Flat arrowhead from the mockups */
   .arw {
@@ -200,13 +237,10 @@
   <p class="login-msg" id="login-msg" role="status" aria-live="polite"></p>
   <a class="back-btn" href="#intro-01"><span class="arw left" aria-hidden="true"></span>Back</a>
 </main>
-<main class="choices" id="logged-in" data-name="Logged in (placeholder)" hidden>
-  <!-- Placeholder until the page after login is designed -->
-  <div class="choice">
-    <span class="choice-title" id="hello-name">Hi!</span>
-    <span class="choice-sub">You’re logged in.</span>
-  </div>
-  <button class="back-btn link-btn" id="logout-btn" type="button">Log out</button>
+<main class="welcome-user" id="welcome-user" data-name="00_Intro_Welcome Username" hidden>
+  <h1 class="shalom" lang="he" dir="rtl" aria-label="שָׁלוֹם!">שׁ<span class="vowel">ָ</span>ל<span class="vowel">וֹ</span>ם!</h1>
+  <p class="hello">Hello,<br><span id="hello-name">friend</span></p>
+  <img class="cat" src="cat.png" alt="A coral cat waving hello">
 </main>
 </div>
 <script>
@@ -302,17 +336,15 @@
   onAuthStateChanged(auth, user => {
     if (user) {
       const first = (user.displayName || "").split(" ")[0];
-      document.getElementById("hello-name").textContent = first ? `Hi, ${first}!` : "Hi!";
-      if (location.hash === "#login") location.hash = "logged-in";
-    } else if (location.hash === "#logged-in") {
+      document.getElementById("hello-name").textContent = first || "friend";
+      if (location.hash === "#login") location.hash = "welcome-user";
+    } else if (location.hash === "#welcome-user") {
       location.hash = "login";
     }
   });
 
-  document.getElementById("logout-btn").addEventListener("click", async () => {
-    await signOut(auth);
-    location.hash = "intro-01";
-  });
+  // No Log out button in the design yet; for testing, open the site with #logout to sign out.
+  if (location.hash === "#logout") signOut(auth).then(() => { location.hash = "intro-01"; });
 </script>
 </body>
 </html>
