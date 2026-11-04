@@ -147,6 +147,18 @@
   .back-btn .arw { width: .95em; height: .5em; margin-right: 2px; vertical-align: .1em; }
   .back-btn:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; }
   .back-btn:active { opacity: .7; }
+  .link-btn { background: none; border: 0; padding: 0; font: inherit; font-size: 23px; font-weight: 700; cursor: pointer; }
+  .login-msg {
+    position: absolute;
+    left: 24px; right: 24px;
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    margin: 0;
+    text-align: center;
+    font-size: 17px;
+    color: var(--highlight);
+    min-height: 1.4em;
+  }
+  #hello-name { white-space: normal; text-align: center; font-size: 40px; }
 
   /* Flat arrowhead from the mockups */
   .arw {
@@ -181,11 +193,20 @@
   <a class="choice" href="#skip"><span class="choice-title">Skip for now<span class="arw" aria-hidden="true"></span></span><span class="choice-sub">I’ll decide later.</span></a>
 </main>
 <main class="choices login-list" id="login" data-name="00_Login" hidden>
-  <!-- Demo only: sign-in isn't connected yet -->
-  <a class="choice" href="#login-google"><span class="login-with">Login with</span><span class="choice-title">Google<span class="arw" aria-hidden="true"></span></span></a>
-  <a class="choice" href="#login-apple"><span class="login-with">Login with</span><span class="choice-title">Apple<span class="arw" aria-hidden="true"></span></span></a>
-  <a class="choice" href="#login-meta"><span class="login-with">Login with</span><span class="choice-title">Meta<span class="arw" aria-hidden="true"></span></span></a>
+  <a class="choice" href="#login" data-provider="google"><span class="login-with">Login with</span><span class="choice-title">Google<span class="arw" aria-hidden="true"></span></span></a>
+  <!-- Apple is decorative for now -->
+  <a class="choice" href="#login" data-provider="apple"><span class="login-with">Login with</span><span class="choice-title">Apple<span class="arw" aria-hidden="true"></span></span></a>
+  <a class="choice" href="#login" data-provider="meta"><span class="login-with">Login with</span><span class="choice-title">Meta<span class="arw" aria-hidden="true"></span></span></a>
+  <p class="login-msg" id="login-msg" role="status" aria-live="polite"></p>
   <a class="back-btn" href="#intro-01"><span class="arw left" aria-hidden="true"></span>Back</a>
+</main>
+<main class="choices" id="logged-in" data-name="Logged in (placeholder)" hidden>
+  <!-- Placeholder until the page after login is designed -->
+  <div class="choice">
+    <span class="choice-title" id="hello-name">Hi!</span>
+    <span class="choice-sub">You’re logged in.</span>
+  </div>
+  <button class="back-btn link-btn" id="logout-btn" type="button">Log out</button>
 </main>
 </div>
 <script>
@@ -208,6 +229,90 @@
   }
   window.addEventListener("hashchange", show);
   show();
+</script>
+<script type="module">
+  // Real login with Firebase: Google and Meta. Apple stays decorative.
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+  import {
+    getAuth, GoogleAuthProvider, FacebookAuthProvider,
+    signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut
+  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+  // This config is public by design (it identifies the project, it is not a password).
+  const firebaseConfig = {
+    apiKey: "AIzaSyB-8E-klFSnF4vUP0y1xBYyZa2NOfp1TRk",
+    authDomain: "hebrit-7fc9f.firebaseapp.com",
+    projectId: "hebrit-7fc9f",
+    storageBucket: "hebrit-7fc9f.firebasestorage.app",
+    messagingSenderId: "50904913178",
+    appId: "1:50904913178:web:57ba99762bfd08821148a3",
+    measurementId: "G-8L4VRH48J6"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  isSupported().then(ok => { if (ok) getAnalytics(app); }).catch(() => {});
+  const auth = getAuth(app);
+
+  const msg = document.getElementById("login-msg");
+  const say = text => { msg.textContent = text; };
+
+  const providers = {
+    google: () => new GoogleAuthProvider(),
+    meta: () => { const p = new FacebookAuthProvider(); p.addScope("email"); return p; }
+  };
+
+  const friendly = {
+    "auth/popup-closed-by-user": "Login was cancelled.",
+    "auth/cancelled-popup-request": "Login was cancelled.",
+    "auth/operation-not-allowed": "This login option isn’t switched on yet.",
+    "auth/unauthorized-domain": "This website isn’t approved for login yet.",
+    "auth/account-exists-with-different-credential": "You already signed up with another option. Please use that one.",
+    "auth/network-request-failed": "No internet connection. Please try again."
+  };
+
+  async function login(name) {
+    say("");
+    try {
+      await signInWithPopup(auth, providers[name]());
+    } catch (err) {
+      if (err.code === "auth/popup-blocked") {
+        await signInWithRedirect(auth, providers[name]());
+        return;
+      }
+      console.error(err);
+      say(friendly[err.code] || "Login didn’t work. Please try again.");
+    }
+  }
+
+  document.querySelectorAll("[data-provider]").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.preventDefault();
+      const name = btn.dataset.provider;
+      if (name === "apple") return; // decorative for now
+      login(name);
+    });
+  });
+
+  getRedirectResult(auth).catch(err => {
+    console.error(err);
+    say(friendly[err.code] || "Login didn’t work. Please try again.");
+  });
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      const first = (user.displayName || "").split(" ")[0];
+      document.getElementById("hello-name").textContent = first ? `Hi, ${first}!` : "Hi!";
+      if (location.hash === "#login") location.hash = "logged-in";
+    } else if (location.hash === "#logged-in") {
+      location.hash = "login";
+    }
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    await signOut(auth);
+    location.hash = "intro-01";
+  });
 </script>
 </body>
 </html>
