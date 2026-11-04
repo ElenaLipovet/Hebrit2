@@ -221,7 +221,8 @@
   }
   .level-opt b { font-weight: 700; }
   .level-opt.he { text-align: right; font-family: var(--font-he); font-weight: 700; font-size: 32px; padding-right: 17px; }
-  .level-opt[aria-checked="true"] { color: var(--text); }
+  .level-opt.is-active { color: var(--text); }
+  .level-opt:disabled { cursor: default; }
   .level-opt:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; }
   .cat-peek {
     position: absolute;
@@ -287,12 +288,13 @@
 </main>
 <main class="level" id="level" data-name="00_Intro_What is your level?" hidden>
   <h1 class="level-q">What is your level of Hebrew?</h1>
-  <div class="level-list" role="radiogroup" aria-label="What is your level of Hebrew?">
-    <button type="button" class="level-opt" role="radio" aria-checked="true" data-level="beginner">Complete Beginner.</button>
-    <button type="button" class="level-opt" role="radio" aria-checked="false" data-level="a-little">I know <b><i>ktzat</i></b>.</button>
-    <button type="button" class="level-opt" role="radio" aria-checked="false" data-level="speak">I can <b><i>ledaber</i></b>, but I can’t read the alphabet.</button>
-    <button type="button" class="level-opt he" role="radio" aria-checked="false" data-level="read-write" lang="he" dir="rtl">אני יודע/ת לקרוא ולכתוב.</button>
-    <button type="button" class="level-opt he" role="radio" aria-checked="false" data-level="advanced" lang="he" dir="rtl">העברית שלי ברמה גבוהה.</button>
+  <div class="level-list">
+    <!-- Only "Complete Beginner" is active for now; the others are pale grey and can't be tapped -->
+    <button type="button" class="level-opt is-active" data-level="beginner">Complete Beginner.</button>
+    <button type="button" class="level-opt" data-level="a-little" disabled>I know <b><i>ktzat</i></b>.</button>
+    <button type="button" class="level-opt" data-level="speak" disabled>I can <b><i>ledaber</i></b>, but I can’t read the alphabet.</button>
+    <button type="button" class="level-opt he" data-level="read-write" lang="he" dir="rtl" disabled>אני יודע/ת לקרוא ולכתוב.</button>
+    <button type="button" class="level-opt he" data-level="advanced" lang="he" dir="rtl" disabled>העברית שלי ברמה גבוהה.</button>
   </div>
   <img class="cat-peek" src="cat.png" alt="">
 </main>
@@ -320,16 +322,7 @@
   window.addEventListener("hashchange", show);
   show();
 
-  // Level choice: tapping an option makes it white (selected). Remembered on this device.
-  const levelOpts = [...document.querySelectorAll(".level-opt")];
-  function pickLevel(level) {
-    levelOpts.forEach(o => o.setAttribute("aria-checked", String(o.dataset.level === level)));
-  }
-  levelOpts.forEach(o => o.addEventListener("click", () => {
-    pickLevel(o.dataset.level);
-    try { localStorage.setItem("hebrit-level", o.dataset.level); } catch (e) {}
-  }));
-  try { const saved = localStorage.getItem("hebrit-level"); if (saved) pickLevel(saved); } catch (e) {}
+  // Only "Complete Beginner" is active; its next page isn't built yet.
 </script>
 <script type="module">
   // Real login with Firebase: Google and Meta. Apple stays decorative.
