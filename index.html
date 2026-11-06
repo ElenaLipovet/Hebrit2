@@ -365,10 +365,11 @@
   @media (prefers-reduced-motion: reduce) { .lf-mic[aria-pressed="true"] { animation: none; } }
   .lf-mic:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; }
   .lf-mic-msg { min-height: 1.3em; margin-top: 4px; font-size: 16px; color: var(--highlight); }
-  .chev { font-size: 20px; display: inline-flex; align-items: center; }
-  .chev-ic { width: 9px; height: 14px; margin-right: 3px; }
-  .chev-ic.two { width: 18px; margin: 0 0 0 4px; }
-  .lf-next.chev { bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+  .chev { font-size: 23px; display: inline-flex; align-items: center; }
+  .lf-next .next-label { font-size: 1em; } /* same size as Back */
+  .chev-ic { width: 10px; height: 16px; margin-right: 3px; }
+  .chev-ic.two { width: 20px; margin: 0 0 0 4px; }
+  .lf-next.chev { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
   /* Letter-by-letter entrance */
   .lesson-frame.animate .lf-letter,
   .lesson-frame.animate .lf-say { opacity: 0; }
