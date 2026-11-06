@@ -498,12 +498,11 @@
     if (current.id === "welcome-user") timer = setTimeout(() => { location.hash = window.hebritAfterWelcome || "level"; }, 2000);
   }
   window.addEventListener("hashchange", show);
-  show();
 
   // L01_001: ש, ל, ו, ם appear one after another (with their sounds), then the speaker + "shalom"
-  const frame = document.getElementById("l01-001");
   let steps = [];
   function playShalom() {
+    const frame = document.getElementById("l01-001");
     steps.forEach(clearTimeout);
     const parts = [...frame.querySelectorAll(".lf-letter"), frame.querySelector(".lf-say")];
     parts.forEach(el => el.classList.remove("on"));
@@ -530,6 +529,9 @@
     if (!btn.disabled && next) location.hash = next;
   }));
 
+
+  // Show the page in the address (runs last, once everything above is ready)
+  show();
 </script>
 <script type="module">
   // Real login with Firebase: Google and Meta. Apple stays decorative.
