@@ -180,6 +180,12 @@
     color: var(--sky);
   }
   .shalom .vowel { color: var(--coral); }
+  /* Kamatz in coral on every phone: a coral copy of the letter with its kamatz sits underneath,
+     clipped so only the kamatz shows; the plain letter sits on top in the word's color.
+     (Some phones ignore a color set on the vowel mark alone.) */
+  .kamatz-stack { display: inline-grid; line-height: 1; }
+  .kamatz-stack > span { grid-area: 1 / 1; }
+  .ks-coral { color: var(--coral); clip-path: inset(89% -20% -40% -20%); }
   .hello {
     margin-top: 10px;
     font-size: 56px;
@@ -398,7 +404,7 @@
   <a class="back-btn" href="#intro-01"><span class="arw left" aria-hidden="true"></span>Back</a>
 </main>
 <main class="welcome-user" id="welcome-user" data-name="00_Intro_Welcome Username" hidden>
-  <h1 class="shalom" lang="he" dir="rtl" aria-label="שָׁלוֹם!">שׁ<span class="vowel">ָ</span>ל<span class="vowel">וֹ</span>ם!</h1>
+  <h1 class="shalom" lang="he" dir="rtl" aria-label="שָׁלוֹם!"><span class="kamatz-stack"><span class="ks-coral" aria-hidden="true">שָׁ</span><span class="ks-letter">שׁ</span></span>ל<span class="vowel">וֹ</span>ם!</h1>
   <p class="hello">Hello,<br><span id="hello-name">friend</span></p>
   <img class="cat" src="cat.png" alt="A coral cat waving hello">
 </main>
@@ -455,7 +461,7 @@
   <svg class="lf-arrow" viewBox="0 0 262 26" aria-hidden="true"><path d="M260 13H4M16 2 3 13l13 11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   <!-- Letters appear one by one, right to left: ש, ל, ו, ם -->
   <div class="lf-word" lang="he" dir="rtl" aria-label="שָׁלוֹם, shalom">
-    <span class="lf-letter"><i class="lf-sound" dir="ltr">sh<em>a</em></i><span class="lf-he">שׁ<span class="vowel">ָ</span></span></span>
+    <span class="lf-letter"><i class="lf-sound" dir="ltr">sh<em>a</em></i><span class="lf-he"><span class="kamatz-stack"><span class="ks-coral" aria-hidden="true">שָׁ</span><span class="ks-letter">שׁ</span></span></span></span>
     <span class="lf-letter"><i class="lf-sound">l</i><span class="lf-he">ל</span></span>
     <span class="lf-letter"><i class="lf-sound coral">ó</i><span class="lf-he vowel">וֹ</span></span>
     <span class="lf-letter"><i class="lf-sound">m</i><span class="lf-he">ם</span></span>
