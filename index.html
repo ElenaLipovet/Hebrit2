@@ -247,7 +247,7 @@
   }
   .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .avatar:focus-visible { outline: 2px solid var(--highlight); outline-offset: 3px; }
-  .home-lesson { position: absolute; top: 102px; left: 28px; right: 16px; }
+  .home-lesson { position: absolute; top: 102px; left: 28px; right: 16px; color: var(--text); text-decoration: none; }
   .chapter { font-size: 44px; font-weight: 500; color: var(--coral); line-height: 1.2; }
   .lesson { margin: 26px 0 0; font-size: 46px; font-weight: 500; line-height: 1.1; }
   .lesson-sub { margin-top: 2px; font-size: 22px; font-weight: 500; }
@@ -282,6 +282,64 @@
   .exercise-bar img { height: 47px; width: auto; display: block; }
   .exercise-bar a:focus-visible { outline: 2px solid #fff; outline-offset: -2px; border-radius: 6px; }
   .exercise-bar a:active { opacity: .7; }
+  /* L01_001: right-to-left reminder, shalom built letter by letter */
+  .lesson-frame {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 108px;
+    text-align: center;
+  }
+  .lf-title { margin: 0; font-size: 40px; font-weight: 700; }
+  .lf-text { margin-top: 26px; font-size: 39px; font-weight: 500; line-height: 1.04; }
+  .lf-arrow { width: 262px; height: 26px; margin-top: 30px; color: var(--text); }
+  .lf-word { display: flex; align-items: flex-end; margin-top: 24px; color: var(--sky); }
+  .lf-letter { display: flex; flex-direction: column; align-items: center; }
+  .lf-sound {
+    font-family: var(--font-en);
+    font-size: 29px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--sky);
+    margin-bottom: 2px;
+    padding-inline: 6px;
+  }
+  .lf-sound em, .lf-sound.coral { color: var(--coral); font-style: italic; }
+  .lf-he { font-family: var(--font-he); font-weight: 700; font-size: 124px; line-height: 1.05; }
+  .lf-he.vowel, .lf-he .vowel { color: var(--coral); }
+  .lf-say {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 0;
+    padding: 4px;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .lf-speaker { width: 44px; height: 35px; }
+  .lf-latin { font-family: var(--font-en); font-size: 62px; font-weight: 300; color: var(--sky); line-height: 1.1; }
+  .lf-latin b { color: var(--coral); font-weight: 500; }
+  .lf-say:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; border-radius: 6px; }
+  .lf-next {
+    position: absolute;
+    right: max(24px, env(safe-area-inset-right, 0px));
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    margin: 0;
+  }
+  .lf-next .arw { width: 1.1em; height: .5em; margin-left: .05em; }
+  .lesson-frame .back-btn .arw { width: 1.3em; height: .55em; }
+  /* Letter-by-letter entrance */
+  .lesson-frame.animate .lf-letter,
+  .lesson-frame.animate .lf-say { opacity: 0; }
+  .lesson-frame.animate .lf-letter.on,
+  .lesson-frame.animate .lf-say.on { opacity: 1; transition: opacity .18s ease-out; }
+  @media (prefers-reduced-motion: reduce) {
+    .lesson-frame.animate .lf-letter, .lesson-frame.animate .lf-say { opacity: 1; }
+  }
   .cat-peek {
     position: absolute;
     left: 44%;
@@ -376,11 +434,11 @@
       <img id="avatar-img" src="img/avatar-default.png" alt="" referrerpolicy="no-referrer">
     </button>
   </header>
-  <section class="home-lesson">
+  <a class="home-lesson" href="#l01-001">
     <p class="chapter">Chapter 1</p>
     <h1 class="lesson">Lesson 1</h1>
     <p class="lesson-sub">Introductions and letters.</p>
-  </section>
+  </a>
   <img class="home-cat" src="cat.png" alt="">
   <nav class="exercise-bar" aria-label="Exercises">
     <!-- Each exercise gets its own page later -->
@@ -390,6 +448,25 @@
     <a href="#home" data-exercise="writing"><img src="img/icon-writing.png" alt=""><span>Writing</span></a>
     <a href="#home" data-exercise="podcasts"><img src="img/icon-podcasts.png" alt=""><span>Podcasts</span></a>
   </nav>
+</main>
+<main class="lesson-frame" id="l01-001" data-name="L01_001" hidden>
+  <h1 class="lf-title">Don’t Forget!</h1>
+  <p class="lf-text">In Hebrew<br>we read<br>Right to Left.</p>
+  <svg class="lf-arrow" viewBox="0 0 262 26" aria-hidden="true"><path d="M260 13H4M16 2 3 13l13 11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <!-- Letters appear one by one, right to left: ש, ל, ו, ם -->
+  <div class="lf-word" lang="he" dir="rtl" aria-label="שָׁלוֹם, shalom">
+    <span class="lf-letter"><i class="lf-sound" dir="ltr">sh<em>a</em></i><span class="lf-he">שׁ<span class="vowel">ָ</span></span></span>
+    <span class="lf-letter"><i class="lf-sound">l</i><span class="lf-he">ל</span></span>
+    <span class="lf-letter"><i class="lf-sound coral">ó</i><span class="lf-he vowel">וֹ</span></span>
+    <span class="lf-letter"><i class="lf-sound">m</i><span class="lf-he">ם</span></span>
+  </div>
+  <button type="button" class="lf-say" id="say-shalom" aria-label="Listen: shalom">
+    <svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+    <span class="lf-latin">shal<b>ó</b>m</span>
+  </button>
+  <a class="back-btn" href="#home"><span class="arw left" aria-hidden="true"></span>Back</a>
+  <!-- TODO: next lesson frame -->
+  <a class="next-btn lf-next" href="#l01-001">OK, let’s go<span class="arw" aria-hidden="true"></span></a>
 </main>
 </div>
 <script>
@@ -410,11 +487,35 @@
     clearTimeout(timer);
     if (logo) timer = setTimeout(() => { location.hash = "intro-01"; }, 3000);
     // 00_Intro_Welcome Username moves on to 00_Intro_What is your level? after 2 seconds
+    if (current.id === "l01-001") playShalom();
     // (people who already finished onboarding go straight to the mother page)
     if (current.id === "welcome-user") timer = setTimeout(() => { location.hash = window.hebritAfterWelcome || "level"; }, 2000);
   }
   window.addEventListener("hashchange", show);
   show();
+
+  // L01_001: ש, ל, ו, ם appear one after another (with their sounds), then the speaker + "shalom"
+  const frame = document.getElementById("l01-001");
+  let steps = [];
+  function playShalom() {
+    steps.forEach(clearTimeout);
+    const parts = [...frame.querySelectorAll(".lf-letter"), frame.querySelector(".lf-say")];
+    parts.forEach(el => el.classList.remove("on"));
+    frame.classList.add("animate");
+    steps = parts.map((el, i) => setTimeout(() => el.classList.add("on"), 450 + i * 380));
+  }
+
+  // Speaker: plays "shalom" with the phone's Hebrew voice (until we have a real recording)
+  document.getElementById("say-shalom").addEventListener("click", () => {
+    if (!("speechSynthesis" in window)) return;
+    const u = new SpeechSynthesisUtterance("שָׁלוֹם");
+    u.lang = "he-IL";
+    u.rate = 0.8;
+    const voice = speechSynthesis.getVoices().find(v => v.lang && v.lang.toLowerCase().startsWith("he"));
+    if (voice) u.voice = voice;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  });
 
   // Onboarding flow: where each active answer leads (saving happens in the login script below)
   const nextPage = { beginner: "alphabet", yes: "home" };
