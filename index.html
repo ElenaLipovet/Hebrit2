@@ -342,6 +342,33 @@
   }
   .lf-next .arw { width: 1.1em; height: .5em; margin-left: .05em; }
   .lesson-frame .back-btn .arw { width: 1.3em; height: .55em; }
+  /* L01_002: learn + say it */
+  .lf2 { padding-top: 56px; }
+  .lf-small { font-size: 18.5px; font-weight: 700; }
+  .lf2 .lf-english { align-self: center; margin: 6px 0 0; font-size: 102px; }
+  .lf-arrow.thick { width: 250px; height: 42px; margin-top: 10px; }
+  .lf2 .lf-word { margin-top: 0; }
+  .lf2 .lf-say { margin-top: 0; }
+  .lf-hear { margin-top: 12px; }
+  .lf-mic {
+    margin-top: 8px;
+    width: 92px; height: 116px;
+    display: grid; place-items: center;
+    background: none; border: 0; padding: 4px;
+    color: var(--text);
+    cursor: pointer;
+    border-radius: 20px;
+  }
+  .lf-mic svg { width: 72px; height: 108px; }
+  .lf-mic[aria-pressed="true"] { color: var(--coral); animation: mic-pulse 1s ease-in-out infinite; }
+  @keyframes mic-pulse { 50% { transform: scale(1.08); } }
+  @media (prefers-reduced-motion: reduce) { .lf-mic[aria-pressed="true"] { animation: none; } }
+  .lf-mic:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; }
+  .lf-mic-msg { min-height: 1.3em; margin-top: 4px; font-size: 16px; color: var(--highlight); }
+  .chev { font-size: 20px; display: inline-flex; align-items: center; }
+  .chev-ic { width: 9px; height: 14px; margin-right: 3px; }
+  .chev-ic.two { width: 18px; margin: 0 0 0 4px; }
+  .lf-next.chev { bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
   /* Letter-by-letter entrance */
   .lesson-frame.animate .lf-letter,
   .lesson-frame.animate .lf-say { opacity: 0; }
@@ -479,7 +506,34 @@
   </div>
   <a class="back-btn" href="#home"><span class="arw left" aria-hidden="true"></span>Back</a>
   <!-- TODO: next lesson frame -->
-  <a class="next-btn lf-next" href="#l01-001">OK, let’s go<span class="arw" aria-hidden="true"></span></a>
+  <a class="next-btn lf-next" href="#l01-002">OK, let’s go<span class="arw" aria-hidden="true"></span></a>
+</main>
+<main class="lesson-frame lf2" id="l01-002" data-name="L01_002" hidden>
+  <div class="lf-content">
+  <p class="lf-small">Let’s learn how to say:</p>
+  <p class="lf-english" lang="en">Hello</p>
+  <svg class="lf-arrow thick" viewBox="0 0 262 44" aria-hidden="true"><path d="M258 22H8M28 4 7 22l21 18" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <!-- Letters appear one by one, right to left: ש, ל, ו, ם -->
+  <div class="lf-word" lang="he" dir="rtl" aria-label="שָׁלוֹם, shalom">
+    <span class="lf-letter"><span class="lf-he"><span class="kamatz-stack"><span class="ks-coral" aria-hidden="true">שָׁ</span><span class="ks-letter">שׁ</span></span></span></span>
+    <span class="lf-letter"><span class="lf-he">ל</span></span>
+    <span class="lf-letter"><span class="lf-he vowel">וֹ</span></span>
+    <span class="lf-letter"><span class="lf-he">ם</span></span>
+  </div>
+  <button type="button" class="lf-say" aria-label="Listen: shalom">
+    <svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+    <span class="lf-latin">sh<span class="coral">a</span>l<b>ó</b>m</span>
+  </button>
+  <p class="lf-small lf-hear">Let’s hear you say it:</p>
+  <!-- Tap to record, tap again to stop; the recording plays back -->
+  <button type="button" class="lf-mic" aria-label="Record yourself saying shalom" aria-pressed="false">
+    <svg viewBox="0 0 72 108" aria-hidden="true"><rect x="22" y="3" width="28" height="58" rx="14" fill="none" stroke="currentColor" stroke-width="4.5"/><path d="M6 46c0 18 13 31 30 31s30-13 30-31M36 77v26M18 104h36" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/></svg>
+  </button>
+  <p class="lf-mic-msg" role="status" aria-live="polite"></p>
+  </div>
+  <a class="back-btn chev" href="#l01-001"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
+  <!-- TODO: next lesson frame -->
+  <a class="next-btn lf-next chev" href="#l01-002">Skip<svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </main>
 </div>
 <script>
@@ -500,7 +554,7 @@
     clearTimeout(timer);
     if (logo) timer = setTimeout(() => { location.hash = "intro-01"; }, 3000);
     // 00_Intro_Welcome Username moves on to 00_Intro_What is your level? after 2 seconds
-    if (current.id === "l01-001") playShalom();
+    if (current.classList.contains("lesson-frame")) playShalom(current);
     // (people who already finished onboarding go straight to the mother page)
     if (current.id === "welcome-user") timer = setTimeout(() => { location.hash = window.hebritAfterWelcome || "level"; }, 2000);
   }
@@ -521,8 +575,7 @@
     document.querySelectorAll(".lesson-frame:not([hidden])").forEach(fitFrame);
   });
 
-  function playShalom() {
-    const frame = document.getElementById("l01-001");
+  function playShalom(frame) {
     fitFrame(frame);
     steps.forEach(clearTimeout);
     const parts = [...frame.querySelectorAll(".lf-letter"), frame.querySelector(".lf-say")];
@@ -532,7 +585,7 @@
   }
 
   // Speaker: plays "shalom" with the phone's Hebrew voice (until we have a real recording)
-  document.getElementById("say-shalom").addEventListener("click", () => {
+  document.querySelectorAll(".lf-say").forEach(btn => btn.addEventListener("click", () => {
     if (!("speechSynthesis" in window)) return;
     const u = new SpeechSynthesisUtterance("שָׁלוֹם");
     u.lang = "he-IL";
@@ -541,6 +594,36 @@
     if (voice) u.voice = voice;
     speechSynthesis.cancel();
     speechSynthesis.speak(u);
+  }));
+
+  // Microphone: tap to record yourself, tap again to stop and hear it back
+  document.querySelectorAll(".lf-mic").forEach(mic => {
+    const msg = mic.parentElement.querySelector(".lf-mic-msg");
+    let rec = null, stopTimer;
+    mic.addEventListener("click", async () => {
+      if (rec && rec.state === "recording") { rec.stop(); return; }
+      if (!navigator.mediaDevices || !window.MediaRecorder) { msg.textContent = "Recording isn’t supported on this browser."; return; }
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const chunks = [];
+        rec = new MediaRecorder(stream);
+        rec.ondataavailable = e => chunks.push(e.data);
+        rec.onstop = () => {
+          clearTimeout(stopTimer);
+          stream.getTracks().forEach(t => t.stop());
+          mic.setAttribute("aria-pressed", "false");
+          msg.textContent = "Listen to yourself!";
+          const audio = new Audio(URL.createObjectURL(new Blob(chunks, { type: rec.mimeType })));
+          audio.play().catch(() => {});
+        };
+        rec.start();
+        mic.setAttribute("aria-pressed", "true");
+        msg.textContent = "Listening… tap again to stop";
+        stopTimer = setTimeout(() => rec.state === "recording" && rec.stop(), 5000);
+      } catch (err) {
+        msg.textContent = "Please allow the microphone to record yourself.";
+      }
+    });
   });
 
   // Onboarding flow: where each active answer leads (saving happens in the login script below)
