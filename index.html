@@ -295,13 +295,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 108px;
+    padding-top: 74px;
     text-align: center;
   }
+  .lf-content { display: flex; flex-direction: column; align-items: center; width: 100%; transform-origin: top center; }
+  .lf-content > * { flex-shrink: 0; }
   .lf-title { margin: 0; font-size: 40px; font-weight: 700; }
   .lf-text { margin-top: 26px; font-size: 39px; font-weight: 500; line-height: 1.04; }
-  .lf-arrow { width: 262px; height: 26px; margin-top: 30px; color: var(--text); }
-  .lf-word { display: flex; align-items: flex-end; margin-top: 24px; color: var(--sky); }
+  .lf-english { margin: 12px 0 0; align-self: flex-end; margin-right: 62px; font-size: 104px; font-weight: 500; line-height: 1; color: var(--sky); }
+  .lf-arrow { width: 262px; height: 26px; margin-top: 14px; color: var(--text); }
+  .lf-word { display: flex; align-items: flex-end; margin-top: 14px; color: var(--sky); }
   .lf-letter { display: flex; flex-direction: column; align-items: center; }
   .lf-sound {
     font-family: var(--font-en);
@@ -457,8 +460,10 @@
   </nav>
 </main>
 <main class="lesson-frame" id="l01-001" data-name="L01_001" hidden>
+  <div class="lf-content">
   <h1 class="lf-title">Don’t Forget!</h1>
   <p class="lf-text">In Hebrew<br>we read<br>Right to Left.</p>
+  <p class="lf-english" lang="en">Hello</p>
   <svg class="lf-arrow" viewBox="0 0 262 26" aria-hidden="true"><path d="M260 13H4M16 2 3 13l13 11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   <!-- Letters appear one by one, right to left: ש, ל, ו, ם -->
   <div class="lf-word" lang="he" dir="rtl" aria-label="שָׁלוֹם, shalom">
@@ -471,6 +476,7 @@
     <svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
     <span class="lf-latin">sh<span class="coral">a</span>l<b>ó</b>m</span>
   </button>
+  </div>
   <a class="back-btn" href="#home"><span class="arw left" aria-hidden="true"></span>Back</a>
   <!-- TODO: next lesson frame -->
   <a class="next-btn lf-next" href="#l01-001">OK, let’s go<span class="arw" aria-hidden="true"></span></a>
@@ -502,13 +508,27 @@
 
   // L01_001: ש, ל, ו, ם appear one after another (with their sounds), then the speaker + "shalom"
   let steps = [];
+  // Shrinks a lesson frame's content to fit short phones (designed for a 390 × 844 screen)
+  function fitFrame(frame) {
+    const content = frame.querySelector(".lf-content");
+    content.style.transform = "";
+    const room = frame.clientHeight - 70; // keep clear of Back / OK, let's go
+    const need = content.offsetTop + content.offsetHeight;
+    const scale = Math.min(1, room / need, frame.clientWidth / 390);
+    content.style.transform = scale < 1 ? `scale(${scale})` : "";
+  }
+  window.addEventListener("resize", () => {
+    document.querySelectorAll(".lesson-frame:not([hidden])").forEach(fitFrame);
+  });
+
   function playShalom() {
     const frame = document.getElementById("l01-001");
+    fitFrame(frame);
     steps.forEach(clearTimeout);
     const parts = [...frame.querySelectorAll(".lf-letter"), frame.querySelector(".lf-say")];
     parts.forEach(el => el.classList.remove("on"));
     frame.classList.add("animate");
-    steps = parts.map((el, i) => setTimeout(() => el.classList.add("on"), 450 + i * 380));
+    steps = parts.map((el, i) => setTimeout(() => el.classList.add("on"), 300 + i * 240));
   }
 
   // Speaker: plays "shalom" with the phone's Hebrew voice (until we have a real recording)
