@@ -525,7 +525,7 @@
     <span class="lf-latin">sh<span class="coral">a</span>l<b>ó</b>m</span>
   </button>
   <p class="lf-small lf-hear">Let’s hear you say it:</p>
-  <!-- Tap to record, tap again to stop; the recording plays back -->
+  <!-- Tap and say "shalom": if the phone hears it, Skip becomes Next -->
   <button type="button" class="lf-mic" aria-label="Record yourself saying shalom" aria-pressed="false">
     <svg viewBox="0 0 72 108" aria-hidden="true"><rect x="22" y="3" width="28" height="58" rx="14" fill="none" stroke="currentColor" stroke-width="4.5"/><path d="M6 46c0 18 13 31 30 31s30-13 30-31M36 77v26M18 104h36" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/></svg>
   </button>
@@ -533,7 +533,7 @@
   </div>
   <a class="back-btn chev" href="#l01-001"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
   <!-- TODO: next lesson frame -->
-  <a class="next-btn lf-next chev" href="#l01-002">Skip<svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="next-btn lf-next chev" href="#l01-002"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </main>
 </div>
 <script>
@@ -577,6 +577,10 @@
 
   function playShalom(frame) {
     fitFrame(frame);
+    const label = frame.querySelector(".next-label");
+    if (label) label.textContent = "Skip";
+    const msg = frame.querySelector(".lf-mic-msg");
+    if (msg) msg.textContent = "";
     steps.forEach(clearTimeout);
     const parts = [...frame.querySelectorAll(".lf-letter"), frame.querySelector(".lf-say")];
     parts.forEach(el => el.classList.remove("on"));
@@ -596,33 +600,74 @@
     speechSynthesis.speak(u);
   }));
 
-  // Microphone: tap to record yourself, tap again to stop and hear it back
+  // Microphone: listens for the word. If the user says "shalom", Skip turns into Next.
+  // Uses the phone's speech recognition; where that isn't available, records and plays back instead.
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const saidShalom = text => {
+    const t = text.replace(/[\u0591-\u05C7]/g, "").toLowerCase();
+    return /שלום/.test(t) || /\bsh?[ao]l[oau]m\b|shalom|sholom|sholem/.test(t);
+  };
+
   document.querySelectorAll(".lf-mic").forEach(mic => {
-    const msg = mic.parentElement.querySelector(".lf-mic-msg");
-    let rec = null, stopTimer;
-    mic.addEventListener("click", async () => {
-      if (rec && rec.state === "recording") { rec.stop(); return; }
-      if (!navigator.mediaDevices || !window.MediaRecorder) { msg.textContent = "Recording isn’t supported on this browser."; return; }
+    const frame = mic.closest(".lesson-frame");
+    const msg = frame.querySelector(".lf-mic-msg");
+    const label = frame.querySelector(".next-label");
+    let busy = null;
+    const done = text => { mic.setAttribute("aria-pressed", "false"); msg.textContent = text; busy = null; };
+
+    function listen() {
+      const r = new Recognition();
+      r.lang = "he-IL";
+      r.interimResults = true;
+      r.maxAlternatives = 5;
+      let heard = false;
+      r.onresult = e => {
+        for (const res of e.results) for (const alt of res) if (saidShalom(alt.transcript)) heard = true;
+        if (heard) r.stop();
+      };
+      r.onerror = e => {
+        if (e.error === "not-allowed" || e.error === "service-not-allowed") done("Please allow the microphone to practise speaking.");
+      };
+      r.onend = () => {
+        if (!busy) return;
+        if (heard) {
+          done("Great job! 👏");
+          if (label) label.textContent = "Next";
+        } else {
+          done("Not quite. Tap the mic and try again!");
+        }
+      };
+      busy = r;
+      mic.setAttribute("aria-pressed", "true");
+      msg.textContent = "Listening… say “shalom”";
+      r.start();
+    }
+
+    async function recordAndPlay() {
+      if (!navigator.mediaDevices || !window.MediaRecorder) { msg.textContent = "Speaking practice isn’t supported on this browser."; return; }
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const chunks = [];
-        rec = new MediaRecorder(stream);
+        const rec = new MediaRecorder(stream);
         rec.ondataavailable = e => chunks.push(e.data);
         rec.onstop = () => {
-          clearTimeout(stopTimer);
           stream.getTracks().forEach(t => t.stop());
-          mic.setAttribute("aria-pressed", "false");
-          msg.textContent = "Listen to yourself!";
-          const audio = new Audio(URL.createObjectURL(new Blob(chunks, { type: rec.mimeType })));
-          audio.play().catch(() => {});
+          done("Listen to yourself!");
+          new Audio(URL.createObjectURL(new Blob(chunks, { type: rec.mimeType }))).play().catch(() => {});
         };
+        busy = rec;
         rec.start();
         mic.setAttribute("aria-pressed", "true");
         msg.textContent = "Listening… tap again to stop";
-        stopTimer = setTimeout(() => rec.state === "recording" && rec.stop(), 5000);
+        setTimeout(() => rec.state === "recording" && rec.stop(), 5000);
       } catch (err) {
-        msg.textContent = "Please allow the microphone to record yourself.";
+        msg.textContent = "Please allow the microphone to practise speaking.";
       }
+    }
+
+    mic.addEventListener("click", () => {
+      if (busy) { busy.stop(); return; }
+      Recognition ? listen() : recordAndPlay();
     });
   });
 
