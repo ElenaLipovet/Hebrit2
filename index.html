@@ -300,13 +300,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 74px;
+    padding-top: 104px;
     text-align: center;
   }
   .lf-content { display: flex; flex-direction: column; align-items: center; width: 100%; transform-origin: top center; }
   .lf-content > * { flex-shrink: 0; }
   .lf-title { margin: 0; font-size: 40px; font-weight: 700; }
-  .lf-text { margin-top: 26px; font-size: 39px; font-weight: 500; line-height: 1.04; }
+  .lf-text { margin-top: 0; font-size: 39px; font-weight: 500; line-height: 1.04; }
   .lf-english { margin: 12px 0 0; align-self: flex-end; margin-right: 62px; font-size: 104px; font-weight: 500; line-height: 1; color: var(--sky); }
   .lf-arrow { width: 262px; height: 26px; margin-top: 14px; color: var(--text); }
   .lf-word { display: flex; align-items: flex-end; margin-top: 14px; color: var(--sky); }
@@ -334,7 +334,11 @@
     color: var(--text);
     cursor: pointer;
   }
-  .lf-speaker { width: 44px; height: 35px; }
+  .lf-speaker { width: 44px; height: 35px; transform-origin: 30% 50%; }
+  /* Speaker pulses while the word is playing */
+  .lf-say.playing .lf-speaker { animation: speaker-pulse .55s ease-in-out infinite; }
+  @keyframes speaker-pulse { 50% { transform: scale(1.18); } }
+  @media (prefers-reduced-motion: reduce) { .lf-say.playing .lf-speaker { animation: none; opacity: .7; } }
   .lf-latin { font-family: var(--font-en); font-size: 62px; font-weight: 300; color: var(--sky); line-height: 1.1; }
   .lf-latin b { color: var(--coral); font-weight: 500; }
   .lf-latin .coral { color: var(--coral); }
@@ -501,7 +505,6 @@
 </main>
 <main class="lesson-frame" id="l01-001" data-name="L01_001" hidden>
   <div class="lf-content">
-  <h1 class="lf-title">Don’t Forget!</h1>
   <p class="lf-text">In Hebrew<br>we read<br>Right to Left.</p>
   <p class="lf-english" lang="en">Hello</p>
   <svg class="lf-arrow" viewBox="0 0 262 26" aria-hidden="true"><path d="M260 13H4M16 2 3 13l13 11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -609,7 +612,14 @@
     u.rate = 0.8;
     const voice = speechSynthesis.getVoices().find(v => v.lang && v.lang.toLowerCase().startsWith("he"));
     if (voice) u.voice = voice;
+    const stop = () => btn.classList.remove("playing");
+    u.onstart = () => btn.classList.add("playing");
+    u.onend = stop;
+    u.onerror = stop;
     speechSynthesis.cancel();
+    document.querySelectorAll(".lf-say.playing").forEach(b => b.classList.remove("playing"));
+    btn.classList.add("playing");
+    setTimeout(stop, 4000); // safety: never pulse forever
     speechSynthesis.speak(u);
   }));
 
