@@ -134,7 +134,7 @@
   .lang .choice-title { font-size: 40px; font-family: var(--font-en), "Noto Sans", "Noto Sans Arabic", "Noto Sans Ethiopic", sans-serif; }
   .lang[lang="ar"] .choice-title { font-family: "Noto Sans Arabic", var(--font-en), sans-serif; }
   .lang[lang="am"] .choice-title { font-family: "Noto Sans Ethiopic", var(--font-en), sans-serif; }
-  .lang.off { color: var(--dim); cursor: default; }
+  .choice.off { color: var(--dim); cursor: default; } /* not working yet */
   .choice:focus-visible { outline: 2px solid var(--highlight); outline-offset: 6px; border-radius: 4px; }
   .choice:active { opacity: .7; }
 
@@ -438,8 +438,8 @@
 <main class="choices" id="intro-01" data-name="00_Intro_01" hidden>
   <!-- TODO: link each choice to its page once it exists -->
   <a class="choice" href="#login"><span class="choice-title">Log In<span class="arw" aria-hidden="true"></span></span><span class="choice-sub">I’m an existing user.</span></a>
-  <a class="choice" href="#signup"><span class="choice-title">Sign-up<span class="arw" aria-hidden="true"></span></span><span class="choice-sub">I want to join.</span></a>
-  <a class="choice" href="#skip"><span class="choice-title">Skip for now<span class="arw" aria-hidden="true"></span></span><span class="choice-sub">I’ll decide later.</span></a>
+  <span class="choice off" aria-disabled="true"><span class="choice-title">Sign-up<span class="arw" aria-hidden="true"></span></span><span class="choice-sub">I want to join.</span></span>
+  <a class="choice" href="#home"><span class="choice-title">Skip for now<span class="arw" aria-hidden="true"></span></span><span class="choice-sub">I’ll decide later.</span></a>
 </main>
 <main class="choices login-list" id="login" data-name="00_Login" hidden>
   <a class="choice" href="#login" data-provider="google"><span class="login-with">Login with</span><span class="choice-title">Google<span class="arw" aria-hidden="true"></span></span></a>
