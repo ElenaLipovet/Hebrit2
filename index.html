@@ -294,10 +294,10 @@
   .exercise-bar a:focus-visible { outline: 2px solid #fff; outline-offset: -2px; border-radius: 6px; }
   .exercise-bar a:active { opacity: .7; }
   /* "Good job!" moment: shown when an exercise is done well (ding + kitty pops up) */
-  .good-job { position: absolute; left: 50%; bottom: -22px; width: 150px; margin-left: -75px; text-align: center; pointer-events: none; opacity: 0; transform: translateY(60px); transition: opacity .45s cubic-bezier(.42,0,.58,1), transform .45s cubic-bezier(.42,0,.58,1); }
+  .good-job { position: absolute; left: 50%; bottom: -22px; width: 200px; margin-left: -100px; text-align: center; pointer-events: none; opacity: 0; transform: translateY(60px); transition: opacity .45s cubic-bezier(.42,0,.58,1), transform .45s cubic-bezier(.42,0,.58,1); }
   .good-job.show { opacity: 1; transform: none; }
-  .good-job p { margin: 0 0 2px; color: var(--coral); font-size: 17px; font-weight: 700; }
-  .good-job img { width: 150px; display: block; transform-origin: 50% 100%; }
+  .good-job p { margin: 0 0 2px; color: var(--coral); font-size: 34px; white-space: nowrap; font-weight: 700; }
+  .good-job img { width: 150px; margin: 0 auto; display: block; transform-origin: 50% 100%; }
   .good-job.show img { animation: ri-sway 1.2s ease-in-out .45s 2; }
   @media (prefers-reduced-motion: reduce) { .good-job { transition: opacity .2s; transform: none; } .good-job.show img { animation: none; } }
   /* L01_000: "we read right to left" intro, animated */
@@ -414,6 +414,7 @@
   .lesson-frame.animate .lf-letter.on .lf-he { opacity: 1; transform: none; transition: opacity .35s cubic-bezier(.42,0,.58,1), transform .35s cubic-bezier(.42,0,.58,1); }
   .lesson-frame.animate .lf-letter.on .lf-sound { opacity: 1; transform: none; transition: opacity .3s cubic-bezier(.42,0,.58,1) .22s, transform .3s cubic-bezier(.42,0,.58,1) .22s; }
   .lesson-frame.animate .lf-say.on { opacity: 1; transform: none; transition: opacity .4s cubic-bezier(.42,0,.58,1), transform .4s cubic-bezier(.42,0,.58,1); }
+  .lesson-frame[data-fast].animate .lf-letter.on .lf-he, .lesson-frame[data-fast].animate .lf-say.on { transition-duration: .22s; }
   @media (prefers-reduced-motion: reduce) {
     .lesson-frame.animate .lf-he, .lesson-frame.animate .lf-sound, .lesson-frame.animate .lf-say { opacity: 1; transform: none; }
   }
@@ -560,7 +561,7 @@
   <!-- TODO: next lesson frame -->
   <a class="next-btn lf-next" href="#l01-002">OK, let’s go<span class="arw" aria-hidden="true"></span></a>
 </main>
-<main class="lesson-frame lf2" id="l01-002" data-name="L01_002" hidden>
+<main class="lesson-frame lf2" id="l01-002" data-name="L01_002" data-fast hidden>
   <div class="lf-content">
   <p class="lf-small">Let’s learn how to say:</p>
   <p class="lf-english" lang="en">Hello</p>
@@ -675,7 +676,8 @@
     parts.forEach(el => el.classList.remove("on"));
     frame.classList.add("animate");
     // letters one after another (right to left); the speaker + word only once every letter and its sound are in
-    const gap = 680, sayAt = 300 + (parts.length - 2) * gap + 800; // gap leaves a micro-pause after each letter + sound
+    const fast = frame.dataset.fast !== undefined; // L01_002: users just saw it, so it runs quicker
+    const gap = fast ? 230 : 680, sayAt = 300 + (parts.length - 2) * gap + (fast ? 380 : 800); // gap leaves a micro-pause after each letter + sound
     steps = parts.map((el, i) => setTimeout(() => el.classList.add("on"), i < parts.length - 1 ? 300 + i * gap : sayAt));
     // L01_001: a voice says "shalom" as soon as the speaker and the word appear
     // (phones only allow sound after a tap, e.g. on Lesson 1; after a page refresh it stays silent until the speaker is tapped)
