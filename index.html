@@ -379,8 +379,11 @@
   .lf-next .arw { width: 1.1em; height: .5em; margin-left: .05em; }
   .lesson-frame .back-btn .arw { width: 1.3em; height: .55em; }
   /* L01_003: tap the letter that makes "sha" */
-  .lf3 .lf-target { font-size: 96px; font-weight: 400; }
-  .lf3 .lf-target .coral { color: var(--coral); }
+  .lf-ask { margin: 10px 0 4px; display: inline-flex; align-items: baseline; gap: 8px; background: none; border: 0; padding: 4px; color: var(--text); cursor: pointer; font: inherit; }
+  .lf-ask .lf-latin { font-size: 72px; font-weight: 400; }
+  .lf-ask .lf-speaker { width: 50px; height: 40px; transform-origin: 30% 50%; }
+  .lf-ask.playing .lf-speaker { animation: speaker-pulse .55s ease-in-out infinite; }
+  .lf-ask:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; border-radius: 6px; }
   .lf3 .lf-word { margin-top: 6px; }
   .lf3 .lf-hear { margin-top: 18px; }
   .lf-pick { font: inherit; color: inherit; background: none; border: 0; padding: 0 2px; margin: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 10px; }
@@ -600,7 +603,7 @@
 <main class="lesson-frame lf2 lf3" id="l01-003" data-name="L01_003" data-fast hidden>
   <div class="lf-content">
   <p class="lf-small">Which part of the word makes:</p>
-  <p class="lf-english lf-target" lang="en">sh<span class="coral">a</span></p>
+  <button type="button" class="lf-ask" data-say="שָׁה" aria-label="Listen: sha"><svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span class="lf-latin" lang="en">sh<span class="coral">a</span></span></button>
   <svg class="lf-arrow thick" viewBox="0 0 262 44" aria-hidden="true"><path d="M258 22H8M28 4 7 22l21 18" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   <!-- Tap a letter: ש is right (ding + kitty); the others just say their own sound -->
   <div class="lf-word" lang="he" dir="rtl">
@@ -738,6 +741,7 @@
   }
   document.querySelectorAll(".lf-say").forEach(btn => btn.addEventListener("click", () => sayShalom(btn)));
 
+  document.querySelectorAll(".lf-ask").forEach(btn => btn.addEventListener("click", () => sayShalom(btn, btn.dataset.say)));
   // L01_003: the right letter gets the ding + kitty; any other letter just says its sound
   document.querySelectorAll(".lf-pick").forEach(btn => btn.addEventListener("click", () => {
     const frame = btn.closest(".lesson-frame");
