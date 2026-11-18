@@ -293,6 +293,13 @@
   .exercise-bar img { height: 47px; width: auto; display: block; }
   .exercise-bar a:focus-visible { outline: 2px solid #fff; outline-offset: -2px; border-radius: 6px; }
   .exercise-bar a:active { opacity: .7; }
+  /* "Good job!" moment: shown when an exercise is done well (ding + kitty pops up) */
+  .good-job { position: absolute; left: 50%; bottom: -22px; width: 150px; margin-left: -75px; text-align: center; pointer-events: none; opacity: 0; transform: translateY(60px); transition: opacity .45s cubic-bezier(.42,0,.58,1), transform .45s cubic-bezier(.42,0,.58,1); }
+  .good-job.show { opacity: 1; transform: none; }
+  .good-job p { margin: 0 0 2px; color: var(--coral); font-size: 17px; font-weight: 700; }
+  .good-job img { width: 150px; display: block; transform-origin: 50% 100%; }
+  .good-job.show img { animation: ri-sway 1.2s ease-in-out .45s 2; }
+  @media (prefers-reduced-motion: reduce) { .good-job { transition: opacity .2s; transform: none; } .good-job.show img { animation: none; } }
   /* L01_000: "we read right to left" intro, animated */
   .rtl-intro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-bottom: 8px; overflow: hidden; text-align: center; }
   .ri-text { margin: 0; color: var(--coral); font-size: 57px; font-weight: 500; line-height: 1.08; }
@@ -622,12 +629,47 @@
     document.querySelectorAll(".lesson-frame:not([hidden])").forEach(fitFrame);
   });
 
+  // "Good job!": a little ding (made by the browser, no sound file needed) + the kitty pops up.
+  // Call goodJob(frame) from any exercise when the user gets it right.
+  let dingCtx;
+  const audioCtx = () => { try { dingCtx = dingCtx || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} return dingCtx; };
+  document.addEventListener("pointerdown", () => { const c = audioCtx(); if (c && c.state === "suspended") c.resume(); }, { capture: true });
+  function ding() {
+    const c = audioCtx();
+    if (!c) return;
+    if (c.state === "suspended") c.resume();
+    [[1046.5, 0], [1568, 0.11]].forEach(([freq, at]) => { // two bright notes: "di-ding"
+      const o = c.createOscillator(), g = c.createGain(), t = c.currentTime + at;
+      o.type = "sine"; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.35, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+      o.connect(g).connect(c.destination);
+      o.start(t); o.stop(t + 0.95);
+    });
+  }
+  function goodJob(frame) {
+    let box = frame.querySelector(".good-job");
+    if (!box) {
+      box = document.createElement("div");
+      box.className = "good-job";
+      box.setAttribute("role", "status");
+      box.innerHTML = '<p>Good job!</p><img src="cat.png" alt="">';
+      frame.appendChild(box);
+    }
+    box.classList.remove("show");
+    void box.offsetWidth;
+    box.classList.add("show");
+    ding();
+  }
+
   function playShalom(frame) {
     fitFrame(frame);
     const label = frame.querySelector(".next-label");
     if (label) label.textContent = "Skip";
     const msg = frame.querySelector(".lf-mic-msg");
     if (msg) msg.textContent = "";
+    frame.querySelectorAll(".good-job").forEach(b => b.classList.remove("show"));
     steps.forEach(clearTimeout);
     const parts = [...frame.querySelectorAll(".lf-letter"), frame.querySelector(".lf-say")];
     parts.forEach(el => el.classList.remove("on"));
@@ -698,7 +740,8 @@
       r.onend = () => {
         if (!busy) return;
         if (heard) {
-          done("Great job! 👏");
+          done("");
+          goodJob(frame);
           if (label) label.textContent = "Next";
         } else {
           done("Not quite. Tap the mic and try again!");
