@@ -378,6 +378,15 @@
   }
   .lf-next .arw { width: 1.1em; height: .5em; margin-left: .05em; }
   .lesson-frame .back-btn .arw { width: 1.3em; height: .55em; }
+  /* L01_003: tap the letter that makes "sha" */
+  .lf3 .lf-target { font-size: 96px; font-weight: 400; }
+  .lf3 .lf-target .coral { color: var(--coral); }
+  .lf3 .lf-word { margin-top: 6px; }
+  .lf3 .lf-hear { margin-top: 18px; }
+  .lf-pick { font: inherit; color: inherit; background: none; border: 0; padding: 0 2px; margin: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 10px; }
+  .lf-pick:focus-visible { outline: 2px solid var(--highlight); outline-offset: 2px; }
+  .lf-pick.tapped .lf-he { animation: pick-pop .35s cubic-bezier(.42,0,.58,1); }
+  @keyframes pick-pop { 50% { transform: scale(1.12); } }
   /* L01_002: learn + say it */
   .lf2 { padding-top: 56px; }
   .lf-small { font-size: 18.5px; font-weight: 700; }
@@ -586,7 +595,25 @@
   </div>
   <a class="back-btn chev" href="#l01-001"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
   <!-- TODO: next lesson frame -->
-  <a class="next-btn lf-next chev" href="#l01-002"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="next-btn lf-next chev" href="#l01-003"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</main>
+<main class="lesson-frame lf2 lf3" id="l01-003" data-name="L01_003" data-fast hidden>
+  <div class="lf-content">
+  <p class="lf-small">Which part of the word makes:</p>
+  <p class="lf-english lf-target" lang="en">sh<span class="coral">a</span></p>
+  <svg class="lf-arrow thick" viewBox="0 0 262 44" aria-hidden="true"><path d="M258 22H8M28 4 7 22l21 18" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <!-- Tap a letter: ש is right (ding + kitty); the others just say their own sound -->
+  <div class="lf-word" lang="he" dir="rtl">
+    <button type="button" class="lf-letter lf-pick" data-correct data-say="שָׁ" aria-label="ש, sha"><span class="lf-he"><span class="kamatz-stack"><span class="ks-coral" aria-hidden="true">שָׁ</span><span class="ks-letter">שׁ</span></span></span></button>
+    <button type="button" class="lf-letter lf-pick" data-say="אֶל" aria-label="ל, l"><span class="lf-he">ל</span></button>
+    <button type="button" class="lf-letter lf-pick" data-say="אוֹ" aria-label="וֹ, o"><span class="lf-he vowel">וֹ</span></button>
+    <button type="button" class="lf-letter lf-pick" data-say="אֶם" aria-label="ם, m"><span class="lf-he">ם</span></button>
+  </div>
+  <p class="lf-small lf-hear">Please press on the correct letter.</p>
+  </div>
+  <a class="back-btn chev" href="#l01-002"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
+  <!-- TODO: next lesson frame -->
+  <a class="next-btn lf-next chev" href="#l01-003"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </main>
 </div>
 <script>
@@ -672,7 +699,7 @@
     if (msg) msg.textContent = "";
     frame.querySelectorAll(".good-job").forEach(b => b.classList.remove("show"));
     steps.forEach(clearTimeout);
-    const parts = [...frame.querySelectorAll(".lf-letter"), frame.querySelector(".lf-say")];
+    const parts = [...frame.querySelectorAll(".lf-letter"), frame.querySelector(".lf-say") || document.createElement("i")];
     parts.forEach(el => el.classList.remove("on"));
     frame.classList.add("animate");
     // letters one after another (right to left); the speaker + word only once every letter and its sound are in
@@ -689,9 +716,9 @@
   // Speaker: says "shalom" with a male synthetic Hebrew voice (until we have a real recording).
   // Uses a male Hebrew voice when the device has one (e.g. Asaf / Avri); otherwise the Hebrew voice, pitched down.
   let sayGuard;
-  function sayShalom(btn) {
+  function sayShalom(btn, text = "שָׁלוֹם") {
     if (!("speechSynthesis" in window)) return;
-    const u = new SpeechSynthesisUtterance("שָׁלוֹם");
+    const u = new SpeechSynthesisUtterance(text);
     u.lang = "he-IL";
     u.rate = 0.8;
     const he = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().replace("_", "-").match(/^(he|iw)/));
@@ -703,7 +730,7 @@
     u.onend = stop;
     u.onerror = stop;
     speechSynthesis.cancel();
-    document.querySelectorAll(".lf-say.playing").forEach(b => b.classList.remove("playing"));
+    document.querySelectorAll(".playing").forEach(b => b.classList.remove("playing"));
     btn.classList.add("playing");
     clearTimeout(sayGuard);
     sayGuard = setTimeout(stop, 8000); // safety: never pulse forever if the phone never says it has finished
@@ -711,6 +738,19 @@
   }
   document.querySelectorAll(".lf-say").forEach(btn => btn.addEventListener("click", () => sayShalom(btn)));
 
+  // L01_003: the right letter gets the ding + kitty; any other letter just says its sound
+  document.querySelectorAll(".lf-pick").forEach(btn => btn.addEventListener("click", () => {
+    const frame = btn.closest(".lesson-frame");
+    btn.classList.remove("tapped"); void btn.offsetWidth; btn.classList.add("tapped");
+    if (btn.dataset.correct !== undefined) {
+      if ("speechSynthesis" in window) speechSynthesis.cancel();
+      goodJob(frame);
+      const label = frame.querySelector(".next-label");
+      if (label) label.textContent = "Next";
+    } else {
+      sayShalom(btn, btn.dataset.say);
+    }
+  }));
   // Microphone: listens for the word. If the user says "shalom", Skip turns into Next.
   // Uses the phone's speech recognition; where that isn't available, records and plays back instead.
   const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
