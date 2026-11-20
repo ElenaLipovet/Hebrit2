@@ -388,8 +388,8 @@
   }
   .lf-next .arw { width: 1.1em; height: .5em; margin-left: .05em; }
   /* Skip -> Next: once an exercise is done, Next is 50% bigger and pulses once */
-  .lf-next.is-next { font-size: 39px; transform-origin: 100% 100%; animation: next-pulse .6s cubic-bezier(.42,0,.58,1) 1; }
-  @keyframes next-pulse { 0% { transform: scale(.67); } 55% { transform: scale(1.12); } 100% { transform: scale(1); } }
+  .lf-next.is-next { font-size: 31px; transform-origin: 100% 100%; animation: next-pulse .6s cubic-bezier(.42,0,.58,1) 1; }
+  @keyframes next-pulse { 0% { transform: scale(.84); } 55% { transform: scale(1.12); } 100% { transform: scale(1); } }
   @media (prefers-reduced-motion: reduce) { .lf-next.is-next { animation: none; } }
   .lesson-frame .back-btn .arw { width: 1.3em; height: .55em; }
   /* L01_003: tap the letter that makes "sha" */
@@ -485,7 +485,7 @@
   .lf-next .next-label { font-size: 1em; } /* same size as Back */
   .chev-ic { width: 10px; height: 16px; margin-right: 3px; }
   .chev-ic.two { width: 20px; margin: 0 0 0 4px; }
-  .lf-next.is-next .chev-ic.two { width: 30px; height: 24px; margin-left: 6px; }
+  .lf-next.is-next .chev-ic.two { width: 24px; height: 19px; margin-left: 5px; }
   .lf-next.is-next { z-index: 3; }
   .lf-next.chev { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
   /* Letter-by-letter entrance */
