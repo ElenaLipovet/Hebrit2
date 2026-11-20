@@ -377,7 +377,7 @@
   @keyframes speaker-pulse { 50% { transform: scale(1.18); } }
   @media (prefers-reduced-motion: reduce) { .lf-say.playing .lf-speaker { animation: none; opacity: .7; } }
   .lf-latin { font-family: var(--font-en); font-size: 62px; font-weight: 300; color: var(--sky); line-height: 1.1; }
-  .lf-latin b { color: var(--coral); font-weight: 500; }
+  .lf-latin b { color: var(--coral); font-weight: 700; }
   .lf-latin .coral { color: var(--coral); }
   .lf-say:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; border-radius: 6px; }
   .lf-next {
@@ -436,6 +436,13 @@
   .lf2 .lf-word { margin-top: 0; }
   .lf2 .lf-say { margin-top: 0; }
   .lf-hear { margin-top: 12px; }
+  /* L01_002 layout (Helena's mockup 2026-11-20): white bold Hello, more air */
+  #l01-002 { padding-top: 108px; }
+  #l01-002 .lf-english { color: var(--text); font-weight: 700; font-size: 104px; margin-top: 14px; }
+  #l01-002 .lf-arrow.thick { margin-top: 16px; margin-bottom: 8px; }
+  #l01-002 .lf-say { margin-top: 6px; }
+  #l01-002 .lf-hear { margin-top: 30px; }
+  #l01-002 .lf-mic { margin-top: 22px; }
   .lf-mic {
     margin-top: 8px;
     width: 92px; height: 116px;
@@ -647,7 +654,7 @@
     <svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
     <span class="lf-latin">sh<span class="coral">a</span>l<b>ó</b>m</span>
   </button>
-  <p class="lf-small lf-hear">Let’s hear you say it:</p>
+  <p class="lf-small lf-hear">Press and speak:</p>
   <!-- Tap and say "shalom": if the phone hears it, Skip becomes Next -->
   <button type="button" class="lf-mic" aria-label="Record yourself saying shalom" aria-pressed="false">
     <svg viewBox="0 0 72 108" aria-hidden="true"><rect x="22" y="3" width="28" height="58" rx="14" fill="none" stroke="currentColor" stroke-width="4.5"/><path d="M6 46c0 18 13 31 30 31s30-13 30-31M36 77v26M18 104h36" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/></svg>
