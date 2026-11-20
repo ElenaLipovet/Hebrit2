@@ -481,15 +481,15 @@
   .tr-q { margin: 0; font-size: 26px; font-weight: 700; line-height: 1.2; }
   .tr-say { position: absolute; top: 196px; left: 0; right: 0; margin: 0 auto; width: max-content; opacity: 0; pointer-events: none; transition: opacity .5s cubic-bezier(.42,0,.58,1) .2s; }
   .tr-box { margin-top: 64px; width: 302px; height: 470px; max-height: calc(100% - 270px); border: 3px solid var(--sky); border-radius: 24px; display: grid; place-items: center; transition: border-color .5s cubic-bezier(.42,0,.58,1); }
-  .tr-svg { width: 236px; height: auto; max-height: 100%; overflow: visible; touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair; }
+  .tr-svg { width: 250px; height: auto; max-height: 100%; overflow: visible; touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair; }
   .tr-svg path, .tr-svg circle { fill: none; }
-  .tr-dim { stroke: var(--sky); stroke-opacity: .32; stroke-width: 28; stroke-linejoin: round; }
-  .tr-ink { stroke: var(--sky); stroke-width: 28; stroke-linejoin: round; }
-  .tr-guide { stroke: #fff; stroke-width: 2.4; stroke-dasharray: 5 5; stroke-linecap: round; opacity: 0; transition: opacity .3s; }
+  .tr-svg .tr-dim { fill: var(--sky); fill-opacity: .32; }
+  .tr-ink { stroke: var(--sky); stroke-width: 200; stroke-linejoin: round; }
+  .tr-guide { stroke: #fff; stroke-width: 7; stroke-dasharray: 16 16; stroke-linecap: round; opacity: 0; transition: opacity .3s; }
   .tr-stroke.is-now .tr-guide { opacity: 1; }
   .tr-dot-c { fill: var(--sky) !important; fill-opacity: .32; transition: fill-opacity .3s; }
   .tr-dot.is-done .tr-dot-c, .trace-page.is-done .tr-dot-c { fill-opacity: 1; }
-  .tr-dot-ring, .tr-dot-arrow { stroke: #fff; stroke-width: 2; stroke-dasharray: 3 3; opacity: 0; transition: opacity .3s; }
+  .tr-dot-ring, .tr-dot-arrow { stroke: #fff; stroke-width: 6; stroke-dasharray: 10 10; opacity: 0; transition: opacity .3s; }
   .tr-dot-arrow { stroke-dasharray: none; stroke-linecap: round; stroke-linejoin: round; }
   .tr-dot.is-now .tr-dot-ring, .tr-dot.is-now .tr-dot-arrow { opacity: 1; }
   .tr-dot.is-now { cursor: pointer; }
@@ -810,18 +810,27 @@
   <p class="tr-q">Let’s trace<br>the letter Shin:</p>
   <button type="button" class="lf-ask tr-say" data-say="sh" aria-label="Listen: sh"><svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span class="lf-latin" lang="en">sh</span></button>
   <div class="tr-box">
-    <svg class="tr-svg" viewBox="-10 -40 180 230" aria-label="Trace the letter ש with your finger">
-      <defs><marker id="tr-head" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M1 1L7 5L1 9" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+    <svg class="tr-svg" viewBox="-20 -150 720 770" aria-label="Trace the letter ש with your finger">
+      <!-- the real ש from the Assistant font (bold); blue ink follows the finger, clipped to the letter -->
+      <defs>
+        <marker id="tr-head" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M1 1L7 5L1 9" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        <clipPath id="tr-clip-u"><path transform="matrix(1 0 0 -1 0 571)" d="M115 -10 40 571H177L232 109Q307 114 358.0 136.5Q409 159 439.5 196.0Q470 233 483.0 284.0Q496 335 496 396L494 571H639L640 404Q641 266 586.0 172.0Q531 78 415.0 32.0Q299 -14 115 -10Z"/></clipPath>
+        <clipPath id="tr-clip-m"><path transform="matrix(1 0 0 -1 0 571)" d="M198 218 164 308Q210 320 233.5 342.5Q257 365 265.5 404.0Q274 443 273 504V570H410V507Q409 436 390.5 379.5Q372 323 326.5 283.0Q281 243 198 218Z"/></clipPath>
+      </defs>
       <g class="tr-stroke" data-step="0">
-        <path class="tr-dim" d="M30 30L42 170L84 170C122 170 140 144 140 104L140 30"/><path class="tr-ink" d="M30 30L42 170L84 170C122 170 140 144 140 104L140 30"/><path class="tr-guide" d="M30 30L42 170L84 170C122 170 140 144 140 104L140 30" marker-end="url(#tr-head)"/>
+        <path class="tr-dim" transform="matrix(1 0 0 -1 0 571)" d="M115 -10 40 571H177L232 109Q307 114 358.0 136.5Q409 159 439.5 196.0Q470 233 483.0 284.0Q496 335 496 396L494 571H639L640 404Q641 266 586.0 172.0Q531 78 415.0 32.0Q299 -14 115 -10Z"/>
+        <g clip-path="url(#tr-clip-u)"><path class="tr-ink" d="M108 0L160 481C175 541 260 546 330 536C480 511 565 391 565 191L565 0"/></g>
+        <path class="tr-guide" d="M108 0L160 481C175 541 260 546 330 536C480 511 565 391 565 191L565 0" marker-end="url(#tr-head)"/>
       </g>
       <g class="tr-stroke" data-step="1">
-        <path class="tr-dim" d="M96 30L96 94C96 124 84 140 60 146"/><path class="tr-ink" d="M96 30L96 94C96 124 84 140 60 146"/><path class="tr-guide" d="M96 30L96 94C96 124 84 140 60 146" marker-end="url(#tr-head)"/>
+        <path class="tr-dim" transform="matrix(1 0 0 -1 0 571)" d="M198 218 164 308Q210 320 233.5 342.5Q257 365 265.5 404.0Q274 443 273 504V570H410V507Q409 436 390.5 379.5Q372 323 326.5 283.0Q281 243 198 218Z"/>
+        <g clip-path="url(#tr-clip-m)"><path class="tr-ink" d="M335 0L335 151C335 291 290 361 190 406"/></g>
+        <path class="tr-guide" d="M335 0L335 151C335 291 290 361 190 406" marker-end="url(#tr-head)"/>
       </g>
       <g class="tr-dot" data-step="2">
-        <circle class="tr-dot-c" cx="146" cy="-14" r="11"/>
-        <circle class="tr-dot-ring" cx="146" cy="-14" r="19"/>
-        <path class="tr-dot-arrow" d="M152 -36l7 2-3 6" />
+        <path class="tr-dot-c" transform="matrix(1 0 0 -1 0 571)" d="M566 691Q582 691 590.5 680.0Q599 669 599 656Q599 642 590.5 631.0Q582 620 566 620Q551 620 541.5 631.0Q532 642 532 656Q532 669 541.5 680.0Q551 691 566 691Z"/>
+        <circle class="tr-dot-ring" cx="565" cy="-84" r="62"/>
+        <path class="tr-dot-arrow" d="M586 -146l26 6-8 22"/>
       </g>
     </svg>
   </div>
@@ -1009,7 +1018,7 @@
     const p = tPoint(e);
     // move forward along the stroke when the finger is near the next part of it (a little lenient)
     for (let j = Math.min(tIdx + 14, 100); j >= tIdx; j--) {
-      if (Math.hypot(tPts[j].x - p.x, tPts[j].y - p.y) < 24) { tIdx = j; break; }
+      if (Math.hypot(tPts[j].x - p.x, tPts[j].y - p.y) < 85) { tIdx = j; break; }
     }
     tInk(tStrokes[tStep], tIdx / 100);
     if (tIdx >= 94) { tInk(tStrokes[tStep], 1); tStep++; tDown = false; tSetup(); }
@@ -1023,7 +1032,7 @@
   tsvg.addEventListener("pointerdown", e => {
     if (tStep === tStrokes.length) {
       const p = tPoint(e);
-      if (Math.hypot(p.x - 146, p.y + 14) < 34) tFinish();
+      if (Math.hypot(p.x - 565, p.y + 84) < 120) tFinish();
       return;
     }
     tDown = true; tsvg.setPointerCapture(e.pointerId); tTrack(e);
