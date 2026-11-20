@@ -304,7 +304,7 @@
   /* Grey "Under construction" sign over the exercise bar (exercises aren't built yet) */
   .construction { position: absolute; z-index: 2; left: 50%; bottom: calc(48px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 50%) rotate(-4deg); margin: 0; padding: 8px 18px; background: #b3b3b3; color: #2a2a2a; border-radius: 6px; font-size: 18px; font-weight: 700; white-space: nowrap; box-shadow: 0 3px 10px rgba(0,0,0,.35); pointer-events: none; }
   /* "Good job!" moment: shown when an exercise is done well (ding + kitty pops up) */
-  .good-job { position: absolute; left: 50%; bottom: -22px; width: 200px; margin-left: -100px; text-align: center; pointer-events: none; opacity: 0; transform: translateY(60px); transition: opacity .45s cubic-bezier(.42,0,.58,1), transform .45s cubic-bezier(.42,0,.58,1); }
+  .good-job { position: absolute; left: 50%; bottom: -22px; width: 200px; margin-left: -124px; /* a bit left of centre so the big Next fits */ text-align: center; pointer-events: none; opacity: 0; transform: translateY(60px); transition: opacity .45s cubic-bezier(.42,0,.58,1), transform .45s cubic-bezier(.42,0,.58,1); }
   .good-job.show { opacity: 1; transform: none; }
   .good-job p { margin: 0 0 2px; color: var(--coral); font-size: 34px; white-space: nowrap; font-weight: 700; }
   .good-job img { width: 150px; margin: 0 auto; display: block; transform-origin: 50% 100%; }
@@ -387,6 +387,10 @@
     margin: 0;
   }
   .lf-next .arw { width: 1.1em; height: .5em; margin-left: .05em; }
+  /* Skip -> Next: once an exercise is done, Next is 50% bigger and pulses once */
+  .lf-next.is-next { font-size: 39px; transform-origin: 100% 100%; animation: next-pulse .6s cubic-bezier(.42,0,.58,1) 1; }
+  @keyframes next-pulse { 0% { transform: scale(.67); } 55% { transform: scale(1.12); } 100% { transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) { .lf-next.is-next { animation: none; } }
   .lesson-frame .back-btn .arw { width: 1.3em; height: .55em; }
   /* L01_003: tap the letter that makes "sha" */
   .lf-ask { margin: 10px 0 4px; display: inline-flex; align-items: baseline; gap: 8px; background: none; border: 0; padding: 4px; color: var(--text); cursor: pointer; font: inherit; }
@@ -481,6 +485,8 @@
   .lf-next .next-label { font-size: 1em; } /* same size as Back */
   .chev-ic { width: 10px; height: 16px; margin-right: 3px; }
   .chev-ic.two { width: 20px; margin: 0 0 0 4px; }
+  .lf-next.is-next .chev-ic.two { width: 30px; height: 24px; margin-left: 6px; }
+  .lf-next.is-next { z-index: 3; }
   .lf-next.chev { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
   /* Letter-by-letter entrance */
   /* Each Hebrew letter slides in from the right, then its Latin sound rises above it */
@@ -815,10 +821,18 @@
     ding();
   }
 
+  // Skip <-> Next on the bottom right button (Next = bigger + one pulse)
+  function setNext(frame, done) {
+    const label = frame.querySelector(".next-label");
+    if (!label) return;
+    label.textContent = done ? "Next" : "Skip";
+    const btn = label.closest(".lf-next");
+    btn.classList.remove("is-next");
+    if (done) { void btn.offsetWidth; btn.classList.add("is-next"); }
+  }
   function playShalom(frame) {
     fitFrame(frame);
-    const label = frame.querySelector(".next-label");
-    if (label) label.textContent = "Skip";
+    setNext(frame, false);
     const msg = frame.querySelector(".lf-mic-msg");
     if (msg) msg.textContent = "";
     frame.querySelectorAll(".good-job").forEach(b => b.classList.remove("show"));
@@ -863,9 +877,9 @@
     vpSound.setAttribute("aria-label", m ? "Sound on" : "Sound off");
   }
   vpSound.addEventListener("click", () => setVpMuted(!vpMuted));
-  vpVideo.addEventListener("ended", () => { vp.querySelector(".next-label").textContent = "Next"; });
+  vpVideo.addEventListener("ended", () => setNext(vp, true));
   function playVideoPage() {
-    vp.querySelector(".next-label").textContent = "Skip";
+    setNext(vp, false);
     vpVideo.currentTime = 0;
     vpVideo.muted = vpMuted;
     // if the phone blocks sound without a tap, play silently and show the sound as off
@@ -951,10 +965,8 @@
     btn.classList.remove("tapped"); void btn.offsetWidth; btn.classList.add("tapped");
     if (btn.dataset.correct !== undefined) {
       // right answer: its sound first, then straight away the ding + kitty
-      const cheer = () => goodJob(frame);
+      const cheer = () => { goodJob(frame); setNext(frame, true); };
       if (btn.dataset.say) sayShalom(btn, btn.dataset.say, cheer); else cheer();
-      const label = frame.querySelector(".next-label");
-      if (label) label.textContent = "Next";
     } else {
       sayShalom(btn, btn.dataset.say);
     }
@@ -992,7 +1004,7 @@
         if (heard) {
           done("");
           goodJob(frame);
-          if (label) label.textContent = "Next";
+          setNext(frame, true);
         } else {
           done("Not quite. Tap the mic and try again!");
         }
