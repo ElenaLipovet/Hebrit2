@@ -400,6 +400,24 @@
   .lf-pick:focus-visible { outline: 2px solid var(--highlight); outline-offset: 2px; }
   .lf-pick.tapped .lf-he { animation: pick-pop .35s cubic-bezier(.42,0,.58,1); }
   @keyframes pick-pop { 50% { transform: scale(1.12); } }
+  /* L01_001b: after "OK, let's go" everything but the Hebrew word slides out, a note slides in,
+     then thin arrows show consonants (blue, from above) and vowels (coral, from below) */
+  #l01-001 .lf-word { position: relative; }
+  #l01-001 .lf-english, #l01-001 .lf-arrow, #l01-001 .back-btn { transition: opacity .6s cubic-bezier(.42,0,.58,1), transform .6s cubic-bezier(.42,0,.58,1); }
+  #l01-001[data-step] .lf-english, #l01-001[data-step] .lf-arrow { opacity: 0; transform: translateX(-120px); }
+  #l01-001[data-step] .lf-letter.on .lf-sound { opacity: 0; transform: translateX(-120px); transition: opacity .6s cubic-bezier(.42,0,.58,1), transform .6s cubic-bezier(.42,0,.58,1); }
+  #l01-001[data-step] .lf-say.on { opacity: 0; transform: translateX(-120px); transition: opacity .6s cubic-bezier(.42,0,.58,1), transform .6s cubic-bezier(.42,0,.58,1); pointer-events: none; }
+  .lf-note { position: absolute; top: calc(100% + 26px); left: 50%; width: 300px; margin: 0 0 0 -150px; font-family: var(--font-en); font-size: 20px; font-weight: 500; line-height: 1.3; color: var(--text); text-align: center; opacity: 0; transform: translateX(80px); pointer-events: none; transition: opacity .6s cubic-bezier(.42,0,.58,1), transform .6s cubic-bezier(.42,0,.58,1); }
+  #l01-001[data-step="1"] .lf-note { opacity: 1; transform: none; transition-delay: .35s; }
+  .lf-marks { position: absolute; inset: 0; pointer-events: none; }
+  .lf-mark { position: absolute; width: 16px; margin-left: -8px; opacity: 0; transition: opacity .55s cubic-bezier(.42,0,.58,1), transform .55s cubic-bezier(.42,0,.58,1); }
+  .lf-mark.down { color: var(--sky); transform: translateY(-34px); }
+  .lf-mark.up { color: var(--coral); transform: translateY(34px); }
+  .lf-mark-label { position: absolute; left: 50%; width: 240px; margin: 0 0 0 -120px; font-family: var(--font-en); font-size: 22px; font-weight: 500; text-align: center; opacity: 0; transition: opacity .55s cubic-bezier(.42,0,.58,1) .5s; }
+  .lf-mark-label.c { color: var(--sky); }
+  .lf-mark-label.v { color: var(--coral); }
+  #l01-001[data-step="2"] .lf-mark, #l01-001[data-step="2"] .lf-mark-label { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { #l01-001 [class] { transition-duration: .01s !important; } }
   /* L01_002: learn + say it */
   .lf2 { padding-top: 56px; }
   .lf-small { font-size: 18.5px; font-weight: 700; }
@@ -589,6 +607,9 @@
     <span class="lf-letter"><i class="lf-sound">l</i><span class="lf-he">ל</span></span>
     <span class="lf-letter"><i class="lf-sound coral">ó</i><span class="lf-he vowel">וֹ</span></span>
     <span class="lf-letter"><i class="lf-sound">m</i><span class="lf-he">ם</span></span>
+    <!-- L01_001b steps (same page, after "OK, let's go"): note, then consonant / vowel arrows -->
+    <p class="lf-note" dir="ltr" lang="en">Vowels work differently in Hebrew than in English. We use color coding to help you learn to read.</p>
+    <div class="lf-marks" dir="ltr" aria-hidden="true"></div>
   </div>
   <button type="button" class="lf-say" id="say-shalom" aria-label="Listen: shalom">
     <svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
@@ -597,7 +618,7 @@
   </div>
   <a class="back-btn" href="#l01-intro"><span class="arw left" aria-hidden="true"></span>Back</a>
   <!-- TODO: next lesson frame -->
-  <a class="next-btn lf-next" href="#l01-002">OK, let’s go<span class="arw" aria-hidden="true"></span></a>
+  <a class="next-btn lf-next" id="l01-001-next" href="#l01-002"><span class="next-label">OK, let’s go</span><span class="arw" aria-hidden="true"></span></a>
 </main>
 <main class="lesson-frame lf2" id="l01-002" data-name="L01_002" data-fast hidden>
   <div class="lf-content">
@@ -727,6 +748,7 @@
     const msg = frame.querySelector(".lf-mic-msg");
     if (msg) msg.textContent = "";
     frame.querySelectorAll(".good-job").forEach(b => b.classList.remove("show"));
+    if (frame.id === "l01-001") { delete frame.dataset.step; frame.querySelector(".lf-marks").innerHTML = ""; frame.querySelector("#l01-001-next .next-label").textContent = "OK, let’s go"; }
     steps.forEach(clearTimeout);
     const parts = [...frame.querySelectorAll(".lf-letter"), frame.querySelector(".lf-say") || document.createElement("i")];
     parts.forEach(el => el.classList.remove("on"));
@@ -745,6 +767,39 @@
   // Fallback voice: the phone's male synthetic Hebrew voice, for words we have no recording of yet.
   // Uses a male Hebrew voice when the device has one (e.g. Asaf / Avri); otherwise the Hebrew voice, pitched down.
   let sayGuard;
+  // L01_001b: the next button steps through the vowel/consonant explanation before L01_002
+  const l1 = document.getElementById("l01-001");
+  const l1Next = document.getElementById("l01-001-next");
+  function placeMarks() {
+    const word = l1.querySelector(".lf-word"), marks = l1.querySelector(".lf-marks");
+    const he = [...word.querySelectorAll(".lf-he")];
+    const mid = el => el.offsetLeft + el.offsetWidth / 2;
+    const top = Math.min(...he.map(el => el.offsetTop));
+    const bottom = Math.max(...he.map(el => el.offsetTop + el.offsetHeight));
+    const arrow = dir => `<svg viewBox="0 0 16 52"><path d="${dir === "down" ? "M8 2v46M2 41l6 7 6-7" : "M8 50V4M2 11l6-7 6 7"}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    let html = "";
+    // consonants ש ל ם: blue arrows glide down from above
+    [0, 1, 3].forEach((i, n) => { html += `<span class="lf-mark down" style="left:${mid(he[i])}px;top:${top - 38}px;transition-delay:${n * .12}s">${arrow("down")}</span>`; });
+    // vowels: kamatz (under ש) and ו: coral arrows glide up from below
+    [[0, bottom + 4], [2, bottom - 14]].forEach(([i, tip], n) => { html += `<span class="lf-mark up" style="left:${mid(he[i])}px;top:${tip}px;transition-delay:${.2 + n * .12}s">${arrow("up")}</span>`; });
+    html += `<p class="lf-mark-label c" style="top:${top - 74}px">Consonants</p>`;
+    html += `<p class="lf-mark-label v" style="top:${bottom + 58}px">Vowels</p>`;
+    marks.innerHTML = html;
+  }
+  l1Next.addEventListener("click", e => {
+    const step = l1.dataset.step;
+    if (step === "2") return; // last step: go on to L01_002
+    e.preventDefault();
+    if (!step) {
+      l1.dataset.step = "1";
+      l1Next.querySelector(".next-label").textContent = "OK";
+      if ("speechSynthesis" in window) speechSynthesis.cancel();
+    } else {
+      placeMarks();
+      void l1.offsetWidth;
+      l1.dataset.step = "2";
+    }
+  });
   // Real recordings (Helena's voice). Words without a recording fall back to the phone's voice below.
   // (audio/sh.mp3 and audio/a.mp3 are ready for later pages)
   const recordings = {
