@@ -407,13 +407,16 @@
   #l01-001[data-step] .lf-english, #l01-001[data-step] .lf-arrow { opacity: 0; transform: translateX(-120px); }
   #l01-001[data-step] .lf-letter.on .lf-sound { opacity: 0; transform: translateX(-120px); transition: opacity .6s cubic-bezier(.42,0,.58,1), transform .6s cubic-bezier(.42,0,.58,1); }
   #l01-001[data-step] .lf-say.on { opacity: 0; transform: translateX(-120px); transition: opacity .6s cubic-bezier(.42,0,.58,1), transform .6s cubic-bezier(.42,0,.58,1); pointer-events: none; }
+  .lf-note .coral { color: var(--coral); }
+  .lf-note .sky { color: var(--sky); }
   .lf-note { position: absolute; top: calc(100% + 26px); left: 50%; width: 300px; margin: 0 0 0 -150px; font-family: var(--font-en); font-size: 20px; font-weight: 500; line-height: 1.3; color: var(--text); text-align: center; opacity: 0; transform: translateX(80px); pointer-events: none; transition: opacity .6s cubic-bezier(.42,0,.58,1), transform .6s cubic-bezier(.42,0,.58,1); }
+  #l01-001[data-step="2"] .lf-note { transform: none; transition-duration: .3s; }
   #l01-001[data-step="1"] .lf-note { opacity: 1; transform: none; transition-delay: .35s; }
   .lf-marks { position: absolute; inset: 0; pointer-events: none; }
-  .lf-mark { position: absolute; width: 16px; margin-left: -8px; opacity: 0; transition: opacity .55s cubic-bezier(.42,0,.58,1), transform .55s cubic-bezier(.42,0,.58,1); }
-  .lf-mark.down { color: var(--sky); transform: translateY(-34px); }
-  .lf-mark.up { color: var(--coral); transform: translateY(34px); }
-  .lf-mark-label { position: absolute; left: 50%; width: 240px; margin: 0 0 0 -120px; font-family: var(--font-en); font-size: 22px; font-weight: 500; text-align: center; opacity: 0; transition: opacity .55s cubic-bezier(.42,0,.58,1) .5s; }
+  .lf-mark { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; opacity: 0; transition: opacity .55s cubic-bezier(.42,0,.58,1), transform .55s cubic-bezier(.42,0,.58,1); }
+  .lf-mark.down { color: var(--sky); transform: translateY(-30px); }
+  .lf-mark.up { color: var(--coral); transform: translateY(30px); }
+  .lf-mark-label { position: absolute; left: -120px; right: -120px; margin: 0; text-align: center; font-family: var(--font-en); font-size: 42px; font-weight: 500; line-height: 1; white-space: nowrap; opacity: 0; transition: opacity .5s cubic-bezier(.42,0,.58,1) .3s; }
   .lf-mark-label.c { color: var(--sky); }
   .lf-mark-label.v { color: var(--coral); }
   #l01-001[data-step="2"] .lf-mark, #l01-001[data-step="2"] .lf-mark-label { opacity: 1; transform: none; }
@@ -608,7 +611,7 @@
     <span class="lf-letter"><i class="lf-sound coral">ó</i><span class="lf-he vowel">וֹ</span></span>
     <span class="lf-letter"><i class="lf-sound">m</i><span class="lf-he">ם</span></span>
     <!-- L01_001b steps (same page, after "OK, let's go"): note, then consonant / vowel arrows -->
-    <p class="lf-note" dir="ltr" lang="en">Vowels work differently in Hebrew than in English. We use color coding to help you learn to read.</p>
+    <p class="lf-note" dir="ltr" lang="en">Hebrew uses both letters and symbols for vowels.<br>We use <span class="coral">pink</span> for vowels, and <span class="sky">blue</span> for consonants.</p>
     <div class="lf-marks" dir="ltr" aria-hidden="true"></div>
   </div>
   <button type="button" class="lf-say" id="say-shalom" aria-label="Listen: shalom">
@@ -776,14 +779,20 @@
     const mid = el => el.offsetLeft + el.offsetWidth / 2;
     const top = Math.min(...he.map(el => el.offsetTop));
     const bottom = Math.max(...he.map(el => el.offsetTop + el.offsetHeight));
-    const arrow = dir => `<svg viewBox="0 0 16 52"><path d="${dir === "down" ? "M8 2v46M2 41l6 7 6-7" : "M8 50V4M2 11l6-7 6 7"}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-    let html = "";
-    // consonants ש ל ם: blue arrows glide down from above
-    [0, 1, 3].forEach((i, n) => { html += `<span class="lf-mark down" style="left:${mid(he[i])}px;top:${top - 38}px;transition-delay:${n * .12}s">${arrow("down")}</span>`; });
-    // vowels: kamatz (under ש) and ו: coral arrows glide up from below
-    [[0, bottom + 4], [2, bottom - 14]].forEach(([i, tip], n) => { html += `<span class="lf-mark up" style="left:${mid(he[i])}px;top:${tip}px;transition-delay:${.2 + n * .12}s">${arrow("up")}</span>`; });
-    html += `<p class="lf-mark-label c" style="top:${top - 74}px">Consonants</p>`;
-    html += `<p class="lf-mark-label v" style="top:${bottom + 58}px">Vowels</p>`;
+    const center = word.offsetWidth / 2;
+    // one thin arrow from (x1,y1) on the label to its tip (x2,y2) on the letter
+    const arrow = (x1, y1, x2, y2, cls, delay) => {
+      const a = Math.atan2(y2 - y1, x2 - x1), h = 9, w = 0.5;
+      const p1 = [x2 - h * Math.cos(a - w), y2 - h * Math.sin(a - w)], p2 = [x2 - h * Math.cos(a + w), y2 - h * Math.sin(a + w)];
+      return `<svg class="lf-mark ${cls}" style="transition-delay:${delay}s"><path d="M${x1} ${y1}L${x2} ${y2}M${p1}L${x2} ${y2}L${p2}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    };
+    const cTop = top - 92, cRoot = cTop + 42, cTip = top + 12;   // "Consonants" label + arrow roots/tips
+    const vTop = bottom + 60, vRoot = vTop + 2;                 // "Vowels" label + arrow roots
+    let html = `<p class="lf-mark-label c" style="top:${cTop}px">Consonants</p><p class="lf-mark-label v" style="top:${vTop}px">Vowels</p>`;
+    // consonants ש ל ם: blue arrows glide down from the word "Consonants"
+    [0, 1, 3].forEach((i, n) => { const x = mid(he[i]); html += arrow(center + (x - center) * .75, cRoot, x, cTip, "down", .4 + n * .12); });
+    // vowels: kamatz (under ש) and ו: coral arrows glide up from the word "Vowels" (slightly diagonal)
+    [[0, bottom + 4], [2, bottom - 14]].forEach(([i, tip], n) => { const x = mid(he[i]); html += arrow(center + (x - center) * .35, vRoot, x, tip, "up", .6 + n * .12); });
     marks.innerHTML = html;
   }
   l1Next.addEventListener("click", e => {
@@ -792,12 +801,13 @@
     e.preventDefault();
     if (!step) {
       l1.dataset.step = "1";
-      l1Next.querySelector(".next-label").textContent = "OK";
+      l1Next.querySelector(".next-label").textContent = "Show me";
       if ("speechSynthesis" in window) speechSynthesis.cancel();
     } else {
       placeMarks();
       void l1.offsetWidth;
       l1.dataset.step = "2";
+      l1Next.querySelector(".next-label").textContent = "OK";
     }
   });
   // Real recordings (Helena's voice). Words without a recording fall back to the phone's voice below.
