@@ -716,10 +716,39 @@
     }
   }
 
-  // Speaker: says "shalom" with a male synthetic Hebrew voice (until we have a real recording).
+  // Fallback voice: the phone's male synthetic Hebrew voice, for words we have no recording of yet.
   // Uses a male Hebrew voice when the device has one (e.g. Asaf / Avri); otherwise the Hebrew voice, pitched down.
   let sayGuard;
+  // Real recordings (Helena's voice). Words without a recording fall back to the phone's voice below.
+  const recordings = { "שָׁלוֹם": "audio/shalom.mp3" };
+  const clipCache = {};
+  const loadClip = url => clipCache[url] = clipCache[url] || fetch(url).then(r => { if (!r.ok) throw r.status; return r.arrayBuffer(); })
+    .then(buf => new Promise((ok, fail) => audioCtx().decodeAudioData(buf, ok, fail)));
+  let clipSource;
   function sayShalom(btn, text = "שָׁלוֹם") {
+    const url = recordings[text];
+    const c = url && audioCtx();
+    if (c) {
+      if (clipSource) { try { clipSource.stop(); } catch (e) {} }
+      if ("speechSynthesis" in window) speechSynthesis.cancel();
+      document.querySelectorAll(".playing").forEach(b => b.classList.remove("playing"));
+      if (c.state === "suspended") c.resume();
+      loadClip(url).then(buffer => {
+        const src = c.createBufferSource();
+        src.buffer = buffer;
+        src.connect(c.destination);
+        clipSource = src;
+        btn.classList.add("playing"); // speaker pulses exactly as long as the recording plays
+        src.onended = () => { if (clipSource === src) btn.classList.remove("playing"); };
+        src.start();
+      }).catch(() => speakText(btn, text));
+      return;
+    }
+    speakText(btn, text);
+  }
+  // preload the recordings so they play instantly
+  window.addEventListener("load", () => Object.values(recordings).forEach(u => { if (audioCtx()) loadClip(u).catch(() => {}); }));
+  function speakText(btn, text) {
     if (!("speechSynthesis" in window)) return;
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "he-IL";
