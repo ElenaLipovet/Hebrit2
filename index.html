@@ -496,6 +496,25 @@
   .tr-dot.is-now { cursor: pointer; }
   .trace-page.is-done .tr-box { border-color: transparent; }
   .trace-page.is-done .tr-say { opacity: 1; pointer-events: auto; }
+  /* L01_008: spell Hello by dragging the letters */
+  .spell-page { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; padding-top: 84px; text-align: center; overflow: hidden; }
+  .sp-word { margin-top: 34px; height: 116px; display: flex; align-items: flex-end; justify-content: center; font-family: var(--font-he); font-weight: 700; font-size: 104px; line-height: 1.1; color: var(--sky); }
+  .sp-slot:empty { width: 44px; height: 6px; margin: 0 5px 18px; background: #fff; border-radius: 1px; }
+  .sp-slot > span { display: inline-grid; animation: sp-in .25s cubic-bezier(.42,0,.58,1); }
+  .sp-coral, .spell-page .nq-c { color: var(--coral); }
+  .spell-page .nq > span { grid-area: 1 / 1; }
+  @keyframes sp-in { from { transform: scale(1.12); } }
+  .sp-say { margin-top: 0; gap: 6px; align-items: center; opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity .4s cubic-bezier(.42,0,.58,1), transform .4s cubic-bezier(.42,0,.58,1); }
+  .sp-say .lf-latin { font-size: 46px; }
+  .sp-say .lf-speaker { width: 34px; height: 27px; }
+  .spell-page.is-done .sp-say { opacity: 1; transform: none; pointer-events: auto; }
+  .sp-tile { position: absolute; z-index: 1; transform: translate(-50%, -50%) translate(var(--dx, 0px), var(--dy, 0px)); font-family: var(--font-he); font-weight: 700; font-size: 104px; line-height: 1.1; color: var(--sky); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; padding: 0 10px; }
+  .sp-tile > span { display: inline-grid; }
+  .sp-tile.is-drag { z-index: 3; cursor: grabbing; transition: none; }
+  .sp-tile.is-back { transition: transform .35s cubic-bezier(.42,0,.58,1); }
+  .sp-tile.is-snap { transition: transform .22s cubic-bezier(.42,0,.58,1); }
+  .sp-tile.is-used { visibility: hidden; }
+  .sp-tile:focus-visible { outline: 2px solid var(--highlight); outline-offset: 2px; border-radius: 10px; }
   /* L01_002: learn + say it */
   .lf2 { padding-top: 56px; }
   .lf-small { font-size: 18.5px; font-weight: 700; }
@@ -835,8 +854,20 @@
     </svg>
   </div>
   <a class="back-btn chev" href="#l01-006"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
+  <a class="next-btn lf-next chev" href="#l01-008"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</main>
+<!-- L01_008: spell Hello. Drag ש ל ו ם (in that order) onto the lines; a wrong letter just says its sound -->
+<main class="spell-page" id="l01-008" data-name="L01_008" hidden>
+  <p class="tr-q">Can you spell “Hello”?</p>
+  <div class="sp-word" lang="he" dir="rtl" aria-label="שָׁלוֹם"><span class="sp-slot" data-i="0" aria-hidden="true"></span><span class="sp-slot" data-i="1" aria-hidden="true"></span><span class="sp-slot" data-i="2" aria-hidden="true"></span><span class="sp-slot" data-i="3" aria-hidden="true"></span></div>
+  <button type="button" class="lf-ask sp-say" data-say="שָׁלוֹם" aria-label="Listen: shalóm"><svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span class="lf-latin" lang="en">sh<span class="coral">a</span>l<b>ó</b>m</span></button>
+  <div class="sp-tile" lang="he" data-i="2" data-say="אוֹ" role="button" tabindex="0" aria-label="o" style="left:29%;top:43%"><span class="sp-coral">וֹ</span></div>
+  <div class="sp-tile" lang="he" data-i="0" data-say="שָׁה" role="button" tabindex="0" aria-label="sha" style="left:84%;top:45.5%"><span class="nq"><span class="nq-c">שָׁ</span><span class="nq-l">שׁ</span></span></div>
+  <div class="sp-tile" lang="he" data-i="1" data-say="אֶל" role="button" tabindex="0" aria-label="l" style="left:56%;top:55%"><span>ל</span></div>
+  <div class="sp-tile" lang="he" data-i="3" data-say="אֶם" role="button" tabindex="0" aria-label="m" style="left:48%;top:72%"><span>ם</span></div>
+  <a class="back-btn chev" href="#l01-007"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
   <!-- TODO: next lesson frame -->
-  <a class="next-btn lf-next chev" href="#l01-007"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="next-btn lf-next chev" href="#l01-008"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </main>
 <!-- L01_006: Helena's "ah" animation (kamatz with eyes). SHELVED: not linked from anywhere for now -->
 <main class="video-page" id="ah-video" data-name="Ah animation (shelved)" hidden>
@@ -869,6 +900,7 @@
     // 00_Intro_Welcome Username moves on to 00_Intro_What is your level? after 2 seconds
     if (current.classList.contains("lesson-frame")) playShalom(current);
     if (current.id === "l01-007") resetTrace();
+    if (current.id === "l01-008") resetSpell();
     if (current.id === "ah-video") playVideoPage(); else if (typeof vpVideo !== "undefined") vpVideo.pause();
     // L01_000: restart the right-to-left animation every time the page opens
     if (current.id === "l01-intro") { current.classList.remove("play"); void current.offsetWidth; current.classList.add("play"); }
@@ -1056,6 +1088,59 @@
   tsvg.addEventListener("pointermove", tTrack);
   tsvg.addEventListener("pointerup", () => { tDown = false; });
   tsvg.addEventListener("pointercancel", () => { tDown = false; });
+  // L01_008: drag ש ל ו ם onto the lines in order; a wrong letter says its sound and goes back
+  const sp = document.getElementById("l01-008"), spWord = sp.querySelector(".sp-word");
+  const spSlots = [...sp.querySelectorAll(".sp-slot")], spTiles = [...sp.querySelectorAll(".sp-tile")];
+  let spNext = 0;
+  function resetSpell() {
+    spNext = 0; sp.classList.remove("is-done"); setNext(sp, false);
+    spSlots.forEach(sl => { sl.innerHTML = ""; });
+    spTiles.forEach(t => { t.className = "sp-tile"; t.style.setProperty("--dx", "0px"); t.style.setProperty("--dy", "0px"); });
+    sp.querySelectorAll(".good-job").forEach(b => b.classList.remove("show"));
+  }
+  function spBack(t) {
+    t.classList.add("is-back"); t.style.setProperty("--dx", "0px"); t.style.setProperty("--dy", "0px");
+    setTimeout(() => t.classList.remove("is-back"), 380);
+  }
+  function spDrop(t, moved) {
+    const r = t.getBoundingClientRect(), w = spWord.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const onWord = cy < w.bottom + 50 && cy > w.top - 60 && cx > w.left - 70 && cx < w.right + 70;
+    if (!moved || !onWord) { spBack(t); if (!moved) sayShalom(t, t.dataset.say); return; }
+    if (+t.dataset.i !== spNext) { sayShalom(t, t.dataset.say); spBack(t); return; }
+    // right letter: glide onto its line, then it becomes part of the word
+    const slot = spSlots[spNext++];
+    slot.style.visibility = "hidden"; slot.innerHTML = t.innerHTML;
+    const s2 = slot.firstElementChild.getBoundingClientRect(), g = t.firstElementChild.getBoundingClientRect();
+    t.classList.add("is-snap");
+    t.style.setProperty("--dx", parseFloat(t.style.getPropertyValue("--dx")) + s2.left - g.left + "px");
+    t.style.setProperty("--dy", parseFloat(t.style.getPropertyValue("--dy")) + s2.top - g.top + "px");
+    setTimeout(() => {
+      slot.style.visibility = ""; t.classList.add("is-used"); t.classList.remove("is-snap");
+      if (spNext === 4) {
+        sp.classList.add("is-done");
+        sayShalom(sp.querySelector(".sp-say"), "שָׁלוֹם", () => { goodJob(sp); setNext(sp, true); });
+      }
+    }, 240);
+  }
+  spTiles.forEach(t => {
+    let start = null, moved = false;
+    t.addEventListener("pointerdown", e => {
+      if (t.classList.contains("is-used") || t.classList.contains("is-snap")) return;
+      e.preventDefault(); t.setPointerCapture(e.pointerId);
+      t.classList.remove("is-back"); t.classList.add("is-drag");
+      start = { x: e.clientX, y: e.clientY }; moved = false;
+    });
+    t.addEventListener("pointermove", e => {
+      if (!start) return;
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      if (Math.hypot(dx, dy) > 6) moved = true;
+      t.style.setProperty("--dx", dx + "px"); t.style.setProperty("--dy", dy + "px");
+    });
+    const end = () => { if (!start) return; start = null; t.classList.remove("is-drag"); spDrop(t, moved); };
+    t.addEventListener("pointerup", end); t.addEventListener("pointercancel", end);
+    t.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sayShalom(t, t.dataset.say); } });
+  });
   // L01_001: the next button steps through vowels (step 1) and consonants (step 2) before L01_002
   const l1 = document.getElementById("l01-001");
   const l1Next = document.getElementById("l01-001-next");
