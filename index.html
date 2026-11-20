@@ -436,6 +436,17 @@
   .lf4 .lf-kamatz { margin-top: 34px; padding: 10px 20px; }
   .lf4 .lf-kamatz .lf-he { display: block; line-height: 0; color: var(--coral); }
   .lf4 .lf-kamatz svg { width: 40px; height: 34px; display: block; }
+  /* L01_006: full-screen animation with a sound on/off button (top right) */
+  .video-page { position: absolute; inset: 0; background: var(--bg); }
+  .vp-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--bg); }
+  .vp-sound { position: absolute; top: calc(18px + env(safe-area-inset-top, 0px)); right: 18px; width: 52px; height: 52px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,.08); color: var(--text); cursor: pointer; z-index: 2; }
+  .vp-sound svg { width: 30px; height: 24px; }
+  .vp-sound .vp-x { display: none; }
+  .vp-sound[aria-pressed="true"] .vp-x { display: inline; }
+  .vp-sound[aria-pressed="true"] .vp-waves { display: none; }
+  .vp-sound:focus-visible { outline: 2px solid var(--highlight); outline-offset: 3px; }
+  .video-page .back-btn, .video-page .lf-next { z-index: 2; }
+  .video-page .back-btn { position: absolute; left: 20px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); margin: 0; }
   /* L01_002: learn + say it */
   .lf2 { padding-top: 56px; }
   .lf-small { font-size: 18.5px; font-weight: 700; }
@@ -714,8 +725,17 @@
   </div>
   </div>
   <a class="back-btn chev" href="#l01-004"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
+  <a class="next-btn lf-next chev" href="#l01-006"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</main>
+<!-- L01_006: Helena's "ah" animation (kamatz with eyes), plays after the last exercise -->
+<main class="video-page" id="l01-006" data-name="L01_006" hidden>
+  <video class="vp-video" src="video/ah02.mp4" playsinline preload="auto"></video>
+  <button type="button" class="vp-sound" aria-label="Sound off" aria-pressed="false">
+    <svg viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><g class="vp-waves"><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></g><g class="vp-x"><path d="M25 11l10 10M35 11 25 21" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></g></svg>
+  </button>
+  <a class="back-btn chev" href="#l01-005"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
   <!-- TODO: next lesson frame -->
-  <a class="next-btn lf-next chev" href="#l01-005"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="next-btn lf-next chev" href="#l01-006"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </main>
 </div>
 <script>
@@ -737,6 +757,7 @@
     if (logo) timer = setTimeout(() => { location.hash = "language"; }, 3000);
     // 00_Intro_Welcome Username moves on to 00_Intro_What is your level? after 2 seconds
     if (current.classList.contains("lesson-frame")) playShalom(current);
+    if (current.id === "l01-006") playVideoPage(); else if (typeof vpVideo !== "undefined") vpVideo.pause();
     // L01_000: restart the right-to-left animation every time the page opens
     if (current.id === "l01-intro") { current.classList.remove("play"); void current.offsetWidth; current.classList.add("play"); }
     // (people who already finished onboarding go straight to the mother page)
@@ -832,6 +853,23 @@
   // Fallback voice: the phone's male synthetic Hebrew voice, for words we have no recording of yet.
   // Uses a male Hebrew voice when the device has one (e.g. Asaf / Avri); otherwise the Hebrew voice, pitched down.
   let sayGuard;
+  // L01_006 video: plays from the start each time; the button top right turns the sound off/on
+  const vp = document.getElementById("l01-006"), vpVideo = vp.querySelector(".vp-video"), vpSound = vp.querySelector(".vp-sound");
+  let vpMuted = false;
+  function setVpMuted(m) {
+    vpMuted = m; vpVideo.muted = m;
+    vpSound.setAttribute("aria-pressed", String(m));
+    vpSound.setAttribute("aria-label", m ? "Sound on" : "Sound off");
+  }
+  vpSound.addEventListener("click", () => setVpMuted(!vpMuted));
+  vpVideo.addEventListener("ended", () => { vp.querySelector(".next-label").textContent = "Next"; });
+  function playVideoPage() {
+    vp.querySelector(".next-label").textContent = "Skip";
+    vpVideo.currentTime = 0;
+    vpVideo.muted = vpMuted;
+    // if the phone blocks sound without a tap, play silently and show the sound as off
+    vpVideo.play().catch(() => { setVpMuted(true); vpVideo.play().catch(() => {}); });
+  }
   // L01_001: the next button steps through vowels (step 1) and consonants (step 2) before L01_002
   const l1 = document.getElementById("l01-001");
   const l1Next = document.getElementById("l01-001-next");
