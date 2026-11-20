@@ -314,7 +314,9 @@
   .rtl-intro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-bottom: 8px; overflow: hidden; text-align: center; }
   .ri-text { margin: 0; color: var(--coral); font-size: 57px; font-weight: 500; line-height: 1.08; }
   .ri-arrow { width: 288px; height: 56px; margin-top: 18px; color: var(--coral); overflow: visible; }
-  .ri-cat { position: absolute; left: 50px; bottom: -14px; width: 214px; transform-origin: 50% 100%; pointer-events: none; }
+  .ri-cat { position: absolute; left: 92px; bottom: -14px; width: 200px; transform-origin: 50% 100%; pointer-events: none; }
+  .rtl-intro .back-btn { z-index: 2; }
+  .rtl-intro.play .back-btn { animation: ri-fade .8s cubic-bezier(.42,0,.58,1) 1.6s both; }
   .rtl-intro .lf-next .arw { width: 1.1em; height: .5em; margin-left: .05em; }
   .rtl-intro.play .ri-text { animation: ri-rise .9s cubic-bezier(.42,0,.58,1) .15s both; }
   .rtl-intro.play .ri-line { stroke-dasharray: 1; animation: ri-grow .9s cubic-bezier(.42,0,.58,1) .6s both; }
@@ -637,6 +639,7 @@
   <!-- The line grows from right to left, then the arrowhead appears -->
   <svg class="ri-arrow" viewBox="0 0 288 56" aria-hidden="true"><path class="ri-line" pathLength="1" d="M282 28H8" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path class="ri-head" d="M33 4 7 28l26 24" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
   <img class="ri-cat" src="cat.png" alt="">
+  <a class="back-btn chev" href="#home"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
   <a class="next-btn lf-next" href="#l01-001">OK<span class="arw" aria-hidden="true"></span></a>
 </main>
 <main class="lesson-frame" id="l01-001" data-name="L01_001" data-autoplay hidden>
@@ -659,7 +662,7 @@
     <span class="lf-latin">sh<span class="coral">a</span>l<b>ó</b>m</span>
   </button>
   </div>
-  <a class="back-btn" href="#l01-intro"><span class="arw left" aria-hidden="true"></span>Back</a>
+  <a class="back-btn chev" href="#l01-intro"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
   <!-- TODO: next lesson frame -->
   <a class="next-btn lf-next" id="l01-001-next" href="#l01-002"><span class="next-label">OK, let’s go</span><span class="arw" aria-hidden="true"></span></a>
 </main>
