@@ -515,6 +515,21 @@
   .sp-tile.is-snap { transition: transform .22s cubic-bezier(.42,0,.58,1); }
   .sp-tile.is-used { visibility: hidden; }
   .sp-tile:focus-visible { outline: 2px solid var(--highlight); outline-offset: 2px; border-radius: 10px; }
+  /* L1_outro: lesson finished */
+  .outro-page { position: absolute; inset: 0; padding: 86px 36px 0; overflow: hidden; }
+  .ou-title { margin: 0; max-width: 260px; font-size: 41px; line-height: 45px; font-weight: 700; color: var(--coral); }
+  .ou-list { list-style: none; margin: 12px 0 0; padding: 0; font-size: 20.5px; line-height: 29px; font-weight: 500; }
+  .ou-he { font-family: var(--font-he); font-weight: 700; font-size: 22px; }
+  .ou-kz { position: relative; display: inline-block; }
+  .ou-kz::before, .ou-kz::after { content: ""; position: absolute; left: 50%; background: currentColor; }
+  .ou-kz::before { top: calc(100% - 2px); width: 9px; height: 2px; margin-left: -4.5px; }
+  .ou-kz::after { top: calc(100% - 2px); width: 2px; height: 6px; margin-left: -1px; }
+  .ou-cat { position: absolute; right: 0; top: 42.3%; width: 159px; pointer-events: none; }
+  .ou-btns { position: absolute; right: 42px; bottom: calc(30px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .ou-btns a { color: var(--text); text-decoration: none; font-size: 27px; font-weight: 600; line-height: 34px; display: inline-flex; align-items: center; gap: 4px; }
+  .ou-btns .chev-ic { width: 17px; height: 13px; margin-top: 4px; }
+  .ou-btns .chev-ic path { stroke-width: 4.2; }
+  .ou-btns a:focus-visible { outline: 2px solid var(--highlight); outline-offset: 3px; border-radius: 6px; }
   /* L01_002: learn + say it */
   .lf2 { padding-top: 56px; }
   .lf-small { font-size: 18.5px; font-weight: 700; }
@@ -866,8 +881,23 @@
   <div class="sp-tile" lang="he" data-i="1" data-say="אֶל" role="button" tabindex="0" aria-label="l" style="left:56%;top:55%"><span>ל</span></div>
   <div class="sp-tile" lang="he" data-i="3" data-say="אֶם" role="button" tabindex="0" aria-label="m" style="left:48%;top:72%"><span>ם</span></div>
   <a class="back-btn chev" href="#l01-007"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
-  <!-- TODO: next lesson frame -->
-  <a class="next-btn lf-next chev" href="#l01-008"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="next-btn lf-next chev" href="#l01-outro"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</main>
+<!-- L1_outro: lesson 1 finished -->
+<main class="outro-page" id="l01-outro" data-name="L1_outro" hidden>
+  <h1 class="ou-title">Yay!<br>You’ve completed your first lesson!</h1>
+  <ul class="ou-list">
+    <li>Hello <span lang="he" class="ou-he">שָׁלוֹם</span></li>
+    <li>Letter <span lang="he" class="ou-he">שׁ</span></li>
+    <li>/<span class="ou-kz">a</span>/ vowel symbol</li>
+  </ul>
+  <img class="ou-cat" src="cat_peek.png" alt="">
+  <nav class="ou-btns">
+    <!-- lesson 2 isn't built yet, so "ready for more" goes to the lessons list for now -->
+    <a href="#home">I’m ready for more<svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#l01-intro">Review lesson<svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#home">I’m done for today<svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </nav>
 </main>
 <!-- L01_006: Helena's "ah" animation (kamatz with eyes). SHELVED: not linked from anywhere for now -->
 <main class="video-page" id="ah-video" data-name="Ah animation (shelved)" hidden>
