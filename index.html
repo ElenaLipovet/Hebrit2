@@ -454,6 +454,28 @@
   .vp-sound:focus-visible { outline: 2px solid var(--highlight); outline-offset: 3px; }
   .video-page .back-btn, .video-page .lf-next { z-index: 2; }
   .video-page .back-btn { position: absolute; left: 20px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); margin: 0; }
+  /* L01_006: How do we say Hello? (2x2 choices) */
+  #l01-006 { padding-top: 84px; }
+  .lf6-q { margin: 0; font-size: 26px; font-weight: 700; }
+  .lf6-en { margin: 6px 0 0; font-size: 98px; font-weight: 400; line-height: 1.05; }
+  .lf6-grid { margin-top: 92px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; row-gap: 40px; width: 316px; }
+  .lf6-opt { flex-direction: column; align-items: center; }
+  .lf6-word { font: inherit; background: none; border: 0; padding: 0 6px; margin: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; border-radius: 10px; }
+  .lf6-word:focus-visible { outline: 2px solid var(--highlight); outline-offset: 2px; }
+  .lf6 .lf6-word .lf-he { font-size: 54px; line-height: 1.15; }
+  /* coral vowel marks: a coral copy of the whole word sits under the blue letters */
+  .nq { display: inline-grid; }
+  .nq > span { grid-area: 1 / 1; }
+  .nq-c { color: var(--coral); }
+  .nq-l { color: var(--sky); -webkit-text-stroke: 1px var(--sky); }
+  .nq-l .nq-v { color: var(--coral); -webkit-text-stroke: 1px var(--coral); }
+  .lf6 .lf6-say { margin: 2px 0 0; gap: 4px; align-items: center; }
+  .lf6 .lf6-say .lf-speaker { width: 30px; height: 24px; }
+  .lf6-tr { font-family: var(--font-en); font-size: 31px; font-weight: 400; color: var(--sky); line-height: 1.1; }
+  .lf6-tr i { font-style: normal; color: var(--coral); }
+  .lf6-tr b { font-weight: 700; color: var(--coral); }
+  .lesson-frame.animate .lf6-say { opacity: 0; transform: translateY(10px); }
+  .lesson-frame.animate .lf-letter.on .lf6-say { opacity: 1; transform: none; transition: opacity .3s cubic-bezier(.42,0,.58,1) .15s, transform .3s cubic-bezier(.42,0,.58,1) .15s; }
   /* L01_002: learn + say it */
   .lf2 { padding-top: 56px; }
   .lf-small { font-size: 18.5px; font-weight: 700; }
@@ -735,18 +757,45 @@
   </div>
   </div>
   <a class="back-btn chev" href="#l01-004"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
-  <!-- TODO: next lesson frame (the "ah" video page L01_006 is shelved for now, Helena 2026-11-20) -->
-  <a class="next-btn lf-next chev" href="#l01-005"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="next-btn lf-next chev" href="#l01-006"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</main>
+<!-- L01_006: How do we say Hello? 4 choices (Helena's Figma). Right answer שָׁלוֹם: its sound, then ding + kitty -->
+<main class="lesson-frame lf6" id="l01-006" data-name="L01_006" data-fast hidden>
+  <div class="lf-content">
+  <p class="lf6-q">How do we say:</p>
+  <p class="lf6-en" lang="en">Hello</p>
+  <div class="lf6-grid" lang="he" dir="rtl">
+    <div class="lf-letter lf6-opt">
+      <button type="button" class="lf-pick lf6-word" data-say="שִׁילֵם" aria-label="שִׁילֵם, shilém"><span class="lf-he nq"><span class="nq-c" aria-hidden="true">שִׁילֵם</span><span class="nq-l" aria-hidden="true">שׁילם</span></span></button>
+      <button type="button" class="lf-ask lf6-say" data-say="שִׁילֵם" aria-label="Listen: shilém" dir="ltr"><svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span class="lf6-tr" lang="en">sh<i>i</i>l<b>é</b>m</span></button>
+    </div>
+    <div class="lf-letter lf6-opt">
+      <button type="button" class="lf-pick lf6-word" data-say="שׁוּלַם" aria-label="שֻׁולַם, shulám"><span class="lf-he nq"><span class="nq-c" aria-hidden="true">שֻׁולַם</span><span class="nq-l" aria-hidden="true">שׁולם</span></span></button>
+      <button type="button" class="lf-ask lf6-say" data-say="שׁוּלַם" aria-label="Listen: shulám" dir="ltr"><svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span class="lf6-tr" lang="en">sh<i>u</i>l<b>á</b>m</span></button>
+    </div>
+    <div class="lf-letter lf6-opt">
+      <button type="button" class="lf-pick lf6-word" data-say="שָׁלֵם" aria-label="שָׁלֵם, shalém"><span class="lf-he nq"><span class="nq-c" aria-hidden="true">שָׁלֵם</span><span class="nq-l" aria-hidden="true">שׁלם</span></span></button>
+      <button type="button" class="lf-ask lf6-say" data-say="שָׁלֵם" aria-label="Listen: shalém" dir="ltr"><svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span class="lf6-tr" lang="en">sh<i>a</i>l<b>é</b>m</span></button>
+    </div>
+    <div class="lf-letter lf6-opt">
+      <button type="button" class="lf-pick lf6-word" data-correct data-say="שָׁלוֹם" aria-label="שָׁלוֹם, shalóm"><span class="lf-he nq"><span class="nq-c" aria-hidden="true">שָׁלוֹם</span><span class="nq-l" aria-hidden="true">שׁל<span class="nq-v">וֹ</span>ם</span></span></button>
+      <button type="button" class="lf-ask lf6-say" data-say="שָׁלוֹם" aria-label="Listen: shalóm" dir="ltr"><svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span class="lf6-tr" lang="en">sh<i>a</i>l<b>ó</b>m</span></button>
+    </div>
+  </div>
+  </div>
+  <a class="back-btn chev" href="#l01-005"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
+  <!-- TODO: next lesson frame -->
+  <a class="next-btn lf-next chev" href="#l01-006"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </main>
 <!-- L01_006: Helena's "ah" animation (kamatz with eyes). SHELVED: not linked from anywhere for now -->
-<main class="video-page" id="l01-006" data-name="L01_006" hidden>
+<main class="video-page" id="ah-video" data-name="Ah animation (shelved)" hidden>
   <video class="vp-video" src="video/ah02.mp4" playsinline preload="auto"></video>
   <button type="button" class="vp-sound" aria-label="Sound off" aria-pressed="false">
     <svg viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><g class="vp-waves"><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></g><g class="vp-x"><path d="M25 11l10 10M35 11 25 21" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></g></svg>
   </button>
   <a class="back-btn chev" href="#l01-005"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
   <!-- TODO: next lesson frame -->
-  <a class="next-btn lf-next chev" href="#l01-006"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="next-btn lf-next chev" href="#ah-video"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </main>
 </div>
 <script>
@@ -768,7 +817,7 @@
     if (logo) timer = setTimeout(() => { location.hash = "language"; }, 3000);
     // 00_Intro_Welcome Username moves on to 00_Intro_What is your level? after 2 seconds
     if (current.classList.contains("lesson-frame")) playShalom(current);
-    if (current.id === "l01-006") playVideoPage(); else if (typeof vpVideo !== "undefined") vpVideo.pause();
+    if (current.id === "ah-video") playVideoPage(); else if (typeof vpVideo !== "undefined") vpVideo.pause();
     // L01_000: restart the right-to-left animation every time the page opens
     if (current.id === "l01-intro") { current.classList.remove("play"); void current.offsetWidth; current.classList.add("play"); }
     // (people who already finished onboarding go straight to the mother page)
@@ -873,7 +922,7 @@
   // Uses a male Hebrew voice when the device has one (e.g. Asaf / Avri); otherwise the Hebrew voice, pitched down.
   let sayGuard;
   // L01_006 video: plays from the start each time; the button top right turns the sound off/on
-  const vp = document.getElementById("l01-006"), vpVideo = vp.querySelector(".vp-video"), vpSound = vp.querySelector(".vp-sound");
+  const vp = document.getElementById("ah-video"), vpVideo = vp.querySelector(".vp-video"), vpSound = vp.querySelector(".vp-sound");
   let vpMuted = false;
   function setVpMuted(m) {
     vpMuted = m; vpVideo.muted = m;
@@ -909,6 +958,9 @@
     "אֶם": "audio/m.mp3",
     "sh": "audio/sh.mp3",
     "a": "audio/a.mp3",
+    "שׁוּלַם": "audio/shulam.mp3",
+    "שִׁילֵם": "audio/shilem.mp3",
+    "שָׁלֵם": "audio/shalem.mp3",
   };
   const clipCache = {};
   const loadClip = url => clipCache[url] = clipCache[url] || fetch(url).then(r => { if (!r.ok) throw r.status; return r.arrayBuffer(); })
