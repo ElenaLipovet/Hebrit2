@@ -489,9 +489,10 @@
   .tr-stroke.is-now .tr-guide { opacity: 1; }
   .tr-dot-c { fill: var(--sky) !important; fill-opacity: .32; transition: fill-opacity .3s; }
   .tr-dot.is-done .tr-dot-c, .trace-page.is-done .tr-dot-c { fill-opacity: 1; }
-  .tr-dot-ring, .tr-dot-arrow { stroke: #fff; stroke-width: 6; stroke-dasharray: 10 10; opacity: 0; transition: opacity .3s; }
-  .tr-dot-arrow { stroke-dasharray: none; stroke-linecap: round; stroke-linejoin: round; }
-  .tr-dot.is-now .tr-dot-ring, .tr-dot.is-now .tr-dot-arrow { opacity: 1; }
+  .tr-head { stroke: #fff; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+  .tr-dot .tr-guide { stroke-width: 6; stroke-dasharray: 10 10; }
+  .tr-dot .tr-head { stroke-width: 6; }
+  .is-now > .tr-guide, .is-now > .tr-head { opacity: 1; }
   .tr-dot.is-now { cursor: pointer; }
   .trace-page.is-done .tr-box { border-color: transparent; }
   .trace-page.is-done .tr-say { opacity: 1; pointer-events: auto; }
@@ -813,24 +814,23 @@
     <svg class="tr-svg" viewBox="-20 -150 720 770" aria-label="Trace the letter ש with your finger">
       <!-- the real ש from the Assistant font (bold); blue ink follows the finger, clipped to the letter -->
       <defs>
-        <marker id="tr-head" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M1 1L7 5L1 9" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
         <clipPath id="tr-clip-u"><path transform="matrix(1 0 0 -1 0 571)" d="M115 -10 40 571H177L232 109Q307 114 358.0 136.5Q409 159 439.5 196.0Q470 233 483.0 284.0Q496 335 496 396L494 571H639L640 404Q641 266 586.0 172.0Q531 78 415.0 32.0Q299 -14 115 -10Z"/></clipPath>
         <clipPath id="tr-clip-m"><path transform="matrix(1 0 0 -1 0 571)" d="M198 218 164 308Q210 320 233.5 342.5Q257 365 265.5 404.0Q274 443 273 504V570H410V507Q409 436 390.5 379.5Q372 323 326.5 283.0Q281 243 198 218Z"/></clipPath>
+        <mask id="tr-mk-0" maskUnits="userSpaceOnUse" x="-40" y="-200" width="760" height="840"><path class="tr-mk" d="M108 0L160 481C175 541 260 546 330 536C480 511 565 391 565 191L565 0" stroke="#fff" stroke-width="40"/></mask><mask id="tr-mk-1" maskUnits="userSpaceOnUse" x="-40" y="-200" width="760" height="840"><path class="tr-mk" d="M341 0L341 70C341 180 300 270 185 305" stroke="#fff" stroke-width="40"/></mask><mask id="tr-mk-2" maskUnits="userSpaceOnUse" x="-40" y="-200" width="760" height="840"><path class="tr-mk" d="M596.0 -137.7A62 62 0 1 1 517.5 -44.1A62 62 0 0 1 554.2 -145.1" stroke="#fff" stroke-width="30"/></mask>
       </defs>
       <g class="tr-stroke" data-step="0">
         <path class="tr-dim" transform="matrix(1 0 0 -1 0 571)" d="M115 -10 40 571H177L232 109Q307 114 358.0 136.5Q409 159 439.5 196.0Q470 233 483.0 284.0Q496 335 496 396L494 571H639L640 404Q641 266 586.0 172.0Q531 78 415.0 32.0Q299 -14 115 -10Z"/>
         <g clip-path="url(#tr-clip-u)"><path class="tr-ink" d="M108 0L160 481C175 541 260 546 330 536C480 511 565 391 565 191L565 0"/></g>
-        <path class="tr-guide" d="M108 0L160 481C175 541 260 546 330 536C480 511 565 391 565 191L565 0" marker-end="url(#tr-head)"/>
+        <path class="tr-guide" d="M108 0L160 481C175 541 260 546 330 536C480 511 565 391 565 191L565 0" mask="url(#tr-mk-0)"/><path class="tr-head" d="M-13 -14L3 0L-13 14"/>
       </g>
       <g class="tr-stroke" data-step="1">
         <path class="tr-dim" transform="matrix(1 0 0 -1 0 571)" d="M198 218 164 308Q210 320 233.5 342.5Q257 365 265.5 404.0Q274 443 273 504V570H410V507Q409 436 390.5 379.5Q372 323 326.5 283.0Q281 243 198 218Z"/>
         <g clip-path="url(#tr-clip-m)"><path class="tr-ink" d="M341 0L341 70C341 180 300 270 185 305"/></g>
-        <path class="tr-guide" d="M341 0L341 70C341 180 300 270 185 305" marker-end="url(#tr-head)"/>
+        <path class="tr-guide" d="M341 0L341 70C341 180 300 270 185 305" mask="url(#tr-mk-1)"/><path class="tr-head" d="M-13 -14L3 0L-13 14"/>
       </g>
       <g class="tr-dot" data-step="2">
         <path class="tr-dot-c" transform="matrix(1 0 0 -1 0 571)" d="M566 691Q582 691 590.5 680.0Q599 669 599 656Q599 642 590.5 631.0Q582 620 566 620Q551 620 541.5 631.0Q532 642 532 656Q532 669 541.5 680.0Q551 691 566 691Z"/>
-        <circle class="tr-dot-ring" cx="565" cy="-84" r="62"/>
-        <path class="tr-dot-arrow" d="M586 -146l26 6-8 22"/>
+        <path class="tr-guide tr-dot-ring" d="M596.0 -137.7A62 62 0 1 1 517.5 -44.1A62 62 0 0 1 554.2 -145.1" mask="url(#tr-mk-2)"/><path class="tr-head" d="M-13 -14L3 0L-13 14"/>
       </g>
     </svg>
   </div>
@@ -1004,6 +1004,22 @@
       tIdx = 0;
     }
     (g || tDot).classList.add("is-now");
+    tGrow(g || tDot);
+  }
+  // the dashed guide draws itself, arrowhead leading
+  let tGrowId = 0;
+  function tGrow(g) {
+    const guide = g.querySelector(".tr-guide"), mk = tp.querySelector(guide.getAttribute("mask").slice(4, -1) + " .tr-mk"), head = g.querySelector(".tr-head");
+    const L = guide.getTotalLength(), dur = 450 + L * 0.8, t0 = performance.now(), id = ++tGrowId;
+    const frame = now => {
+      if (id !== tGrowId) return;
+      const t = Math.min(1, (now - t0) / dur), e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2, l = Math.max(.5, e * L);
+      mk.style.strokeDasharray = l + " " + (L + 50);
+      const p = guide.getPointAtLength(l), q = guide.getPointAtLength(Math.max(0, l - 2));
+      head.setAttribute("transform", "translate(" + p.x + " " + p.y + ") rotate(" + Math.atan2(p.y - q.y, p.x - q.x) * 180 / Math.PI + ")");
+      if (t < 1) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
   }
   function tInk(g, f) { const p = g.querySelector(".tr-ink"), L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L * (1 - f); }
   function resetTrace() {
