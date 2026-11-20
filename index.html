@@ -259,10 +259,18 @@
   }
   .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .avatar:focus-visible { outline: 2px solid var(--highlight); outline-offset: 3px; }
-  .home-lesson { position: absolute; top: 112px; left: 40px; right: 16px; color: var(--text); text-decoration: none; }
-  .chapter { font-size: 47px; font-weight: 500; color: var(--coral); line-height: 1.2; }
-  .lesson { margin: 24px 0 0; font-size: 49px; font-weight: 500; line-height: 1.1; }
-  .lesson-sub { margin-top: 2px; font-size: 22px; font-weight: 500; }
+  /* Lesson list: scrolls between the top bar and the exercise bar */
+  .home-lessons { position: absolute; top: 104px; left: 0; right: 0; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); overflow-y: auto; padding: 8px 16px 120px 40px; -webkit-overflow-scrolling: touch; } 
+  .home-lessons { -webkit-mask-image: linear-gradient(transparent, #000 16px); mask-image: linear-gradient(transparent, #000 16px); }
+  .chapter { margin: 0; font-size: 31px; font-weight: 500; color: var(--coral); line-height: 1.2; }
+  .lesson-list { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
+  .home-lesson { display: block; color: var(--text); text-decoration: none; }
+  .home-lesson:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; border-radius: 6px; }
+  .lesson { margin: 0; font-size: 49px; font-weight: 500; line-height: 1.1; }
+  .lesson .arw { width: .5em; height: .36em; margin-left: .18em; vertical-align: .14em; }
+  .lesson-sub { margin: 2px 0 0; font-size: 22px; font-weight: 500; }
+  .lesson-sub [lang="he"] { font-family: var(--font-he); font-weight: 600; }
+  .lesson-item.is-soon { color: var(--dim); }
   .home-cat {
     position: absolute;
     right: 0;
@@ -293,6 +301,8 @@
   .exercise-bar img { height: 47px; width: auto; display: block; }
   .exercise-bar a:focus-visible { outline: 2px solid #fff; outline-offset: -2px; border-radius: 6px; }
   .exercise-bar a:active { opacity: .7; }
+  /* Grey "Under construction" sign over the exercise bar (exercises aren't built yet) */
+  .construction { position: absolute; z-index: 2; left: 50%; bottom: calc(48px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 50%) rotate(-4deg); margin: 0; padding: 8px 18px; background: #b3b3b3; color: #2a2a2a; border-radius: 6px; font-size: 18px; font-weight: 700; white-space: nowrap; box-shadow: 0 3px 10px rgba(0,0,0,.35); pointer-events: none; }
   /* "Good job!" moment: shown when an exercise is done well (ding + kitty pops up) */
   .good-job { position: absolute; left: 50%; bottom: -22px; width: 200px; margin-left: -100px; text-align: center; pointer-events: none; opacity: 0; transform: translateY(60px); transition: opacity .45s cubic-bezier(.42,0,.58,1), transform .45s cubic-bezier(.42,0,.58,1); }
   .good-job.show { opacity: 1; transform: none; }
@@ -532,12 +542,28 @@
       <img id="avatar-img" src="img/avatar-default.png" alt="" referrerpolicy="no-referrer">
     </button>
   </header>
-  <a class="home-lesson" href="#l01-intro">
+  <div class="home-lessons">
     <p class="chapter">Chapter 1</p>
-    <h1 class="lesson">Lesson 1</h1>
-    <p class="lesson-sub">Introductions and letters.</p>
-  </a>
+    <ol class="lesson-list">
+      <li class="lesson-item"><a class="home-lesson" href="#l01-intro">
+        <h1 class="lesson">Lesson 1<span class="arw" aria-hidden="true"></span></h1>
+        <p class="lesson-sub">Hello = Shalom <span lang="he" dir="rtl">שָׁלוֹם</span></p>
+      </a></li>
+      <!-- Lesson 2 isn't built yet: shown, not clickable -->
+      <li class="lesson-item"><p class="lesson">Lesson 2</p><p class="lesson-sub">Hello, I’m ___ <span lang="he" dir="rtl">שָׁלוֹם, אֲנִי</span></p></li>
+      <!-- Placeholders -->
+      <li class="lesson-item is-soon"><p class="lesson">Lesson 3</p><p class="lesson-sub">Coming soon</p></li>
+      <li class="lesson-item is-soon"><p class="lesson">Lesson 4</p><p class="lesson-sub">Coming soon</p></li>
+      <li class="lesson-item is-soon"><p class="lesson">Lesson 5</p><p class="lesson-sub">Coming soon</p></li>
+      <li class="lesson-item is-soon"><p class="lesson">Lesson 6</p><p class="lesson-sub">Coming soon</p></li>
+      <li class="lesson-item is-soon"><p class="lesson">Lesson 7</p><p class="lesson-sub">Coming soon</p></li>
+      <li class="lesson-item is-soon"><p class="lesson">Lesson 8</p><p class="lesson-sub">Coming soon</p></li>
+      <li class="lesson-item is-soon"><p class="lesson">Lesson 9</p><p class="lesson-sub">Coming soon</p></li>
+      <li class="lesson-item is-soon"><p class="lesson">Lesson 10</p><p class="lesson-sub">Coming soon</p></li>
+    </ol>
+  </div>
   <img class="home-cat" src="img/cat-peek-side.png" alt="">
+  <p class="construction" aria-hidden="true">Under construction</p>
   <nav class="exercise-bar" aria-label="Exercises">
     <!-- Each exercise gets its own page later -->
     <a href="#home" data-exercise="vocabulary"><img src="img/icon-vocabulary.png" alt=""><span>Vocabulary</span></a>
