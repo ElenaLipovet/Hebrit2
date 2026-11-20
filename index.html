@@ -429,7 +429,8 @@
   #l01-001[data-step="2"] .lf-step-note, #l01-001[data-step="2"] .cap-v { transform: translateX(-80px); }
   @media (prefers-reduced-motion: reduce) { #l01-001 [class] { transition-duration: .01s !important; } }
   /* L01_004: which letter/symbol makes "sh" (big ש, kamatz on its own below) */
-  #l01-004 { padding-top: 74px; }
+  #l01-004, #l01-005 { padding-top: 74px; }
+  .lf-ask .lf-latin .coral { color: var(--coral); }
   .lf4-pair { display: flex; flex-direction: column; align-items: center; margin-top: 36px; }
   .lf4 .lf4-pair .lf-he { font-size: 250px; line-height: 1; color: var(--sky); }
   .lf4 .lf-kamatz { margin-top: 34px; padding: 10px 20px; }
@@ -700,8 +701,21 @@
   </div>
   </div>
   <a class="back-btn chev" href="#l01-003"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
+  <a class="next-btn lf-next chev" href="#l01-005"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</main>
+<main class="lesson-frame lf2 lf4" id="l01-005" data-name="L01_005" data-fast hidden>
+  <div class="lf-content">
+  <p class="lf-small">Which letter/symbol makes:</p>
+  <button type="button" class="lf-ask" data-say="a" aria-label="Listen: a"><svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span class="lf-latin" lang="en"><span class="coral">a</span></span></button>
+  <!-- Tap the kamatz (right: ding + kitty) or ש (says "sh") -->
+  <div class="lf4-pair" lang="he">
+    <button type="button" class="lf-letter lf-pick" data-say="sh" aria-label="ש, sh"><span class="lf-he">שׁ</span></button>
+    <button type="button" class="lf-letter lf-pick lf-kamatz" data-correct aria-label="kamatz, a"><span class="lf-he"><svg viewBox="0 0 40 34" aria-hidden="true"><path d="M0 0h40v10H25v24H15V10H0z" fill="currentColor"/></svg></span></button>
+  </div>
+  </div>
+  <a class="back-btn chev" href="#l01-004"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
   <!-- TODO: next lesson frame -->
-  <a class="next-btn lf-next chev" href="#l01-004"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="next-btn lf-next chev" href="#l01-005"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </main>
 </div>
 <script>
