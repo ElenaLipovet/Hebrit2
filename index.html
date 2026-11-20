@@ -476,6 +476,25 @@
   .lf6-tr b { font-weight: 700; color: var(--coral); }
   .lesson-frame.animate .lf6-say { opacity: 0; transform: translateY(10px); }
   .lesson-frame.animate .lf-letter.on .lf6-say { opacity: 1; transform: none; transition: opacity .3s cubic-bezier(.42,0,.58,1) .15s, transform .3s cubic-bezier(.42,0,.58,1) .15s; }
+  /* L01_007: trace the letter Shin */
+  .trace-page { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; padding-top: 84px; text-align: center; overflow: hidden; }
+  .tr-q { margin: 0; font-size: 26px; font-weight: 700; line-height: 1.2; }
+  .tr-say { position: absolute; top: 196px; left: 0; right: 0; margin: 0 auto; width: max-content; opacity: 0; pointer-events: none; transition: opacity .5s cubic-bezier(.42,0,.58,1) .2s; }
+  .tr-box { margin-top: 64px; width: 302px; height: 470px; max-height: calc(100% - 270px); border: 3px solid var(--sky); border-radius: 24px; display: grid; place-items: center; transition: border-color .5s cubic-bezier(.42,0,.58,1); }
+  .tr-svg { width: 236px; height: auto; max-height: 100%; overflow: visible; touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair; }
+  .tr-svg path, .tr-svg circle { fill: none; }
+  .tr-dim { stroke: var(--sky); stroke-opacity: .32; stroke-width: 28; stroke-linejoin: round; }
+  .tr-ink { stroke: var(--sky); stroke-width: 28; stroke-linejoin: round; }
+  .tr-guide { stroke: #fff; stroke-width: 2.4; stroke-dasharray: 5 5; stroke-linecap: round; opacity: 0; transition: opacity .3s; }
+  .tr-stroke.is-now .tr-guide { opacity: 1; }
+  .tr-dot-c { fill: var(--sky) !important; fill-opacity: .32; transition: fill-opacity .3s; }
+  .tr-dot.is-done .tr-dot-c, .trace-page.is-done .tr-dot-c { fill-opacity: 1; }
+  .tr-dot-ring, .tr-dot-arrow { stroke: #fff; stroke-width: 2; stroke-dasharray: 3 3; opacity: 0; transition: opacity .3s; }
+  .tr-dot-arrow { stroke-dasharray: none; stroke-linecap: round; stroke-linejoin: round; }
+  .tr-dot.is-now .tr-dot-ring, .tr-dot.is-now .tr-dot-arrow { opacity: 1; }
+  .tr-dot.is-now { cursor: pointer; }
+  .trace-page.is-done .tr-box { border-color: transparent; }
+  .trace-page.is-done .tr-say { opacity: 1; pointer-events: auto; }
   /* L01_002: learn + say it */
   .lf2 { padding-top: 56px; }
   .lf-small { font-size: 18.5px; font-weight: 700; }
@@ -784,8 +803,31 @@
   </div>
   </div>
   <a class="back-btn chev" href="#l01-005"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
+  <a class="next-btn lf-next chev" href="#l01-007"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+</main>
+<!-- L01_007: trace the letter Shin (finger, mouse or stylus). Steps: big curve, middle arm, dot, then success -->
+<main class="trace-page" id="l01-007" data-name="L01_007" hidden>
+  <p class="tr-q">Let’s trace<br>the letter Shin:</p>
+  <button type="button" class="lf-ask tr-say" data-say="sh" aria-label="Listen: sh"><svg class="lf-speaker" viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20M34 2.5c6.5 7.6 6.5 19.4 0 27" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg><span class="lf-latin" lang="en">sh</span></button>
+  <div class="tr-box">
+    <svg class="tr-svg" viewBox="-10 -40 180 230" aria-label="Trace the letter ש with your finger">
+      <defs><marker id="tr-head" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M1 1L7 5L1 9" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+      <g class="tr-stroke" data-step="0">
+        <path class="tr-dim" d="M30 30L42 170L84 170C122 170 140 144 140 104L140 30"/><path class="tr-ink" d="M30 30L42 170L84 170C122 170 140 144 140 104L140 30"/><path class="tr-guide" d="M30 30L42 170L84 170C122 170 140 144 140 104L140 30" marker-end="url(#tr-head)"/>
+      </g>
+      <g class="tr-stroke" data-step="1">
+        <path class="tr-dim" d="M96 30L96 94C96 124 84 140 60 146"/><path class="tr-ink" d="M96 30L96 94C96 124 84 140 60 146"/><path class="tr-guide" d="M96 30L96 94C96 124 84 140 60 146" marker-end="url(#tr-head)"/>
+      </g>
+      <g class="tr-dot" data-step="2">
+        <circle class="tr-dot-c" cx="146" cy="-14" r="11"/>
+        <circle class="tr-dot-ring" cx="146" cy="-14" r="19"/>
+        <path class="tr-dot-arrow" d="M152 -36l7 2-3 6" />
+      </g>
+    </svg>
+  </div>
+  <a class="back-btn chev" href="#l01-006"><svg class="chev-ic" viewBox="0 0 10 16" aria-hidden="true"><path d="M8 2 2 8l6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Back</a>
   <!-- TODO: next lesson frame -->
-  <a class="next-btn lf-next chev" href="#l01-006"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="next-btn lf-next chev" href="#l01-007"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </main>
 <!-- L01_006: Helena's "ah" animation (kamatz with eyes). SHELVED: not linked from anywhere for now -->
 <main class="video-page" id="ah-video" data-name="Ah animation (shelved)" hidden>
@@ -817,6 +859,7 @@
     if (logo) timer = setTimeout(() => { location.hash = "language"; }, 3000);
     // 00_Intro_Welcome Username moves on to 00_Intro_What is your level? after 2 seconds
     if (current.classList.contains("lesson-frame")) playShalom(current);
+    if (current.id === "l01-007") resetTrace();
     if (current.id === "ah-video") playVideoPage(); else if (typeof vpVideo !== "undefined") vpVideo.pause();
     // L01_000: restart the right-to-left animation every time the page opens
     if (current.id === "l01-intro") { current.classList.remove("play"); void current.offsetWidth; current.classList.add("play"); }
@@ -938,6 +981,56 @@
     // if the phone blocks sound without a tap, play silently and show the sound as off
     vpVideo.play().catch(() => { setVpMuted(true); vpVideo.play().catch(() => {}); });
   }
+  // L01_007: trace the letter Shin. Follow the dashed guide from its start; the blue ink follows your finger.
+  const tp = document.getElementById("l01-007"), tsvg = tp.querySelector(".tr-svg");
+  const tStrokes = [...tp.querySelectorAll(".tr-stroke")], tDot = tp.querySelector(".tr-dot");
+  let tStep = 0, tIdx = 0, tDown = false, tPts = [], tLen = 0;
+  function tSetup() {
+    const g = tStrokes[tStep];
+    tp.querySelectorAll(".is-now").forEach(el => el.classList.remove("is-now"));
+    if (g) {
+      const path = g.querySelector(".tr-ink");
+      tLen = path.getTotalLength();
+      tPts = Array.from({ length: 101 }, (_, i) => path.getPointAtLength(tLen * i / 100));
+      tIdx = 0;
+    }
+    (g || tDot).classList.add("is-now");
+  }
+  function tInk(g, f) { const p = g.querySelector(".tr-ink"), L = p.getTotalLength(); p.style.strokeDasharray = L; p.style.strokeDashoffset = L * (1 - f); }
+  function resetTrace() {
+    tp.classList.remove("is-done"); tDot.classList.remove("is-done");
+    tStrokes.forEach(g => tInk(g, 0));
+    tStep = 0; tSetup(); setNext(tp, false);
+    tp.querySelectorAll(".good-job").forEach(b => b.classList.remove("show"));
+  }
+  function tPoint(e) { const m = tsvg.getScreenCTM().inverse(); const pt = new DOMPoint(e.clientX, e.clientY).matrixTransform(m); return pt; }
+  function tTrack(e) {
+    if (!tDown || tStep >= tStrokes.length) return;
+    const p = tPoint(e);
+    // move forward along the stroke when the finger is near the next part of it (a little lenient)
+    for (let j = Math.min(tIdx + 14, 100); j >= tIdx; j--) {
+      if (Math.hypot(tPts[j].x - p.x, tPts[j].y - p.y) < 24) { tIdx = j; break; }
+    }
+    tInk(tStrokes[tStep], tIdx / 100);
+    if (tIdx >= 94) { tInk(tStrokes[tStep], 1); tStep++; tDown = false; tSetup(); }
+  }
+  function tFinish() {
+    tDot.classList.add("is-done"); tDot.classList.remove("is-now");
+    tp.classList.add("is-done");
+    // the letter's sound, then straight away the ding + kitty
+    sayShalom(tp.querySelector(".tr-say"), "sh", () => { goodJob(tp); setNext(tp, true); });
+  }
+  tsvg.addEventListener("pointerdown", e => {
+    if (tStep === tStrokes.length) {
+      const p = tPoint(e);
+      if (Math.hypot(p.x - 146, p.y + 14) < 34) tFinish();
+      return;
+    }
+    tDown = true; tsvg.setPointerCapture(e.pointerId); tTrack(e);
+  });
+  tsvg.addEventListener("pointermove", tTrack);
+  tsvg.addEventListener("pointerup", () => { tDown = false; });
+  tsvg.addEventListener("pointercancel", () => { tDown = false; });
   // L01_001: the next button steps through vowels (step 1) and consonants (step 2) before L01_002
   const l1 = document.getElementById("l01-001");
   const l1Next = document.getElementById("l01-001-next");
