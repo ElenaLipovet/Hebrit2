@@ -720,7 +720,14 @@
   // Uses a male Hebrew voice when the device has one (e.g. Asaf / Avri); otherwise the Hebrew voice, pitched down.
   let sayGuard;
   // Real recordings (Helena's voice). Words without a recording fall back to the phone's voice below.
-  const recordings = { "שָׁלוֹם": "audio/shalom.mp3" };
+  // (audio/sh.mp3 and audio/a.mp3 are ready for later pages)
+  const recordings = {
+    "שָׁלוֹם": "audio/shalom.mp3",
+    "שָׁה": "audio/sha.mp3",
+    "אֶל": "audio/l.mp3",
+    "אוֹ": "audio/o.mp3",
+    "אֶם": "audio/m.mp3",
+  };
   const clipCache = {};
   const loadClip = url => clipCache[url] = clipCache[url] || fetch(url).then(r => { if (!r.ok) throw r.status; return r.arrayBuffer(); })
     .then(buf => new Promise((ok, fail) => audioCtx().decodeAudioData(buf, ok, fail)));
