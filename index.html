@@ -1313,7 +1313,7 @@
         rec.ondataavailable = e => chunks.push(e.data);
         rec.onstop = () => {
           stream.getTracks().forEach(t => t.stop());
-          done("Listen to yourself!");
+          done("Listen to yourself! (To check your pronunciation, open the app in Chrome or Safari.)");
           new Audio(URL.createObjectURL(new Blob(chunks, { type: rec.mimeType }))).play().catch(() => {});
         };
         busy = rec;
