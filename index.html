@@ -1115,6 +1115,8 @@
       if (step === "ex") wxStart();
       if (step === "done") wxDone();
       // tips 2 and 3: show what the eye does (once) before the X appears
+      // tour tips move on by themselves 2 seconds after their X is there (tip 1 right away, tips 2-3 after the eye demo)
+      if (step === "t1") wpAutoNext();
       if (step === "t2") wpPlayDemo("letter");
       if (step === "t3") wpPlayDemo("path");
     };
@@ -1128,6 +1130,8 @@
     eye.classList.toggle("off", off);
     eye.setAttribute("aria-pressed", off);
   }
+  const WP_NEXT = { t1: "t2", t2: "t3", t3: "t4" };
+  function wpAutoNext() { const step = wp.dataset.step; if (WP_NEXT[step]) wpLater(() => { if (wp.dataset.step === step) wpStep(WP_NEXT[step]); }, 2000); }
   function wpPlayDemo(what) {
     const x = wp.querySelector(`.wp-bubble[data-on="${wp.dataset.step}"] .wp-x`);
     const eye = wp.querySelector(`[data-hide="${what}"]`);
@@ -1140,7 +1144,7 @@
       wpLater(() => wpHide(what, false), t + 1500);     // and it comes back
       t += 2700;
     }
-    wpLater(() => { wpDemo = null; x.classList.remove("wait"); }, t - 600);
+    wpLater(() => { wpDemo = null; x.classList.remove("wait"); wpAutoNext(); }, t - 600);
   }
   wp.addEventListener("click", e => {
     const go = e.target.closest("[data-go]");
@@ -1151,6 +1155,7 @@
       // they pressed the eye during the demo: stop it, show what it does, and let them close the tip
       wpTimers.forEach(clearTimeout); wpTimers = []; wpDemo = null;
       wp.querySelectorAll(".wp-x.wait").forEach(x => x.classList.remove("wait"));
+      wpAutoNext();
       wpHide(eye.dataset.hide, true);
       return;
     }
