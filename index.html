@@ -639,7 +639,7 @@
   .wp-eye.dotted .e-dot { fill: #fff; }
   .wp-eye.off .e-lid { stroke: #5a5a5a; }
   .wp-eye.off .e-dot { fill: #5a5a5a; }
-  .wp-bubble { position: absolute; background: var(--coral); color: #000; border-radius: 14px; font-weight: 700; animation: wp-in .35s cubic-bezier(.42,0,.58,1) both; }
+  .wp-bubble { position: absolute; background: var(--coral); color: #000; border-radius: 14px; font-weight: 700;  }
   @keyframes wp-in { from { opacity: 0; transform: translateY(6px); } }
   .wp-bubble p { margin: 0; }
   .wp-x { position: absolute; top: 6px; right: 8px; width: 44px; height: 44px; display: grid; place-items: center; }
@@ -650,13 +650,28 @@
   .wp-b2::after { content: ""; position: absolute; top: calc(100% - 1px); width: 22px; height: 40px; background: var(--coral); clip-path: polygon(0 0, 100% 0, 52% 100%, 46% 100%); }
   .wp-b2.left::after { left: calc(26.3% - 2px); }
   .wp-b2.right::after { left: calc(62% - 2px); }
-  .wp-b4 { left: 13.3%; right: 11.5%; top: 79.5%; height: 10.6%; display: grid; place-items: center; animation-delay: .3s; }
+  .wp-b4 { left: 13.3%; right: 11.5%; top: 79.5%; height: 10.6%; display: grid; place-items: center; }
   .wp-b4::before { content: ""; position: absolute; bottom: calc(100% - 1px); left: 66%; width: 70px; height: 66px; background: var(--coral); clip-path: path("M0 66 C40 50 64 28 69 0 C62 24 60 50 66 66 Z"); }
   .wp-page .wp-go { display: inline-flex; align-items: center; font-weight: 700; font-size: 30px; padding: 8px 12px; color: #000 !important; }
   .wp-go .chev-ic.two { width: 19px; height: 15px; margin-left: 6px; }
-  .wp-cat.t4 { top: 45%; width: 37%; animation: wp-in .45s cubic-bezier(.42,0,.58,1) both; }
+  .wp-cat.t4 { top: 45%; width: 37%; }
   .wp-note { position: absolute; left: 10%; right: 10%; top: 48%; margin: 0; text-align: center; color: var(--dim); font-size: 18px; line-height: 1.4; }
   .wp-note a { color: var(--coral); }
+  /* smooth, ease-in-out changes between tour steps */
+  .wp-page [data-on] { animation: wp-fade .4s cubic-bezier(.42,0,.58,1) both; }
+  .wp-page [data-on].wp-leave { animation: wp-fade-out .4s cubic-bezier(.42,0,.58,1) both; pointer-events: none; }
+  @keyframes wp-fade { from { opacity: 0; } }
+  @keyframes wp-fade-out { to { opacity: 0; } }
+  .wp-page .wp-cat { animation: wp-pop .8s cubic-bezier(.42,0,.58,1) .25s both; }
+  .wp-page .wp-cat.wp-leave { animation: wp-fade-out .4s cubic-bezier(.42,0,.58,1) both; }
+  @keyframes wp-pop { from { transform: translateX(105%); } }
+  .wp-page .wp-bubble { animation: wp-in .45s cubic-bezier(.42,0,.58,1) both; }
+  .wp-page .wp-b4 { animation-delay: .5s; }
+  .wp-x { transition: opacity .4s cubic-bezier(.42,0,.58,1); }
+  .wp-x.wait { opacity: 0; pointer-events: none; }
+  .wp-eye.tap svg { animation: wp-tap .45s cubic-bezier(.42,0,.58,1); }
+  @keyframes wp-tap { 40% { transform: scale(.8); } }
+  @media (prefers-reduced-motion: reduce) { .wp-page [data-on], .wp-page .wp-cat, .wp-page .wp-bubble { animation-duration: .01s !important; } }
 </style>
 </head>
 <body>
@@ -1024,7 +1039,7 @@
     if (current.classList.contains("lesson-frame")) playShalom(current);
     if (current.id === "l01-007") resetTrace();
     if (current.id === "l01-008") resetSpell();
-    if (current.id === "draft-writing-k7q2") wpStep("intro");
+    if (current.id === "draft-writing-k7q2") wpStep("intro", true);
     if (current.id === "ah-video") playVideoPage(); else if (typeof vpVideo !== "undefined") vpVideo.pause();
     // L01_000: restart the right-to-left animation every time the page opens
     if (current.id === "l01-intro") { current.classList.remove("play"); void current.offsetWidth; current.classList.add("play"); }
@@ -1033,13 +1048,30 @@
   }
   window.addEventListener("hashchange", show);
   // DRAFT writing practice (hidden view): intro → tour tips → exercise (not built yet)
+  // Every change is a smooth ease-in-out fade: what leaves fades out, then what's new fades in.
   const wp = document.getElementById("draft-writing-k7q2");
-  function wpStep(step) {
-    wp.dataset.step = step;
-    wp.querySelectorAll("[data-on]").forEach(el => { el.toggleAttribute("hidden", !el.dataset.on.split(" ").includes(step)); });
-    // each tip starts with the letter and its outline showing; "Good luck!" hides both
-    wpHide("letter", step === "t4" || step === "ex");
-    wpHide("path", step === "t4" || step === "ex");
+  const WP_FADE = 400;
+  let wpTimers = [], wpDemo = null;
+  const wpLater = (fn, ms) => wpTimers.push(setTimeout(fn, ms));
+  function wpStep(step, instant) {
+    wpTimers.forEach(clearTimeout); wpTimers = []; wpDemo = null;
+    const want = el => el.dataset.on.split(" ").includes(step);
+    const all = [...wp.querySelectorAll("[data-on]")];
+    const leaving = all.filter(el => !el.hasAttribute("hidden") && !want(el));
+    const enter = () => {
+      wp.dataset.step = step;
+      leaving.forEach(el => { el.setAttribute("hidden", ""); el.classList.remove("wp-leave"); });
+      all.forEach(el => { if (want(el)) el.removeAttribute("hidden"); });
+      // each tip starts with the letter and its outline showing; "Good luck!" hides both
+      wpHide("letter", step === "t4" || step === "ex");
+      wpHide("path", step === "t4" || step === "ex");
+      // tips 2 and 3: show what the eye does (twice) before the X appears
+      if (step === "t2") wpPlayDemo("letter");
+      if (step === "t3") wpPlayDemo("path");
+    };
+    if (instant || !leaving.length) return enter();
+    leaving.forEach(el => el.classList.add("wp-leave"));
+    wpLater(enter, WP_FADE);
   }
   function wpHide(what, off) {
     wp.classList.toggle("no-" + what, off);
@@ -1047,11 +1079,33 @@
     eye.classList.toggle("off", off);
     eye.setAttribute("aria-pressed", off);
   }
+  function wpPlayDemo(what) {
+    const x = wp.querySelector(`.wp-bubble[data-on="${wp.dataset.step}"] .wp-x`);
+    const eye = wp.querySelector(`[data-hide="${what}"]`);
+    x.classList.add("wait");
+    wpDemo = what;
+    const tap = () => { eye.classList.remove("tap"); void eye.offsetWidth; eye.classList.add("tap"); };
+    let t = 1100;
+    for (let i = 0; i < 2; i++) {
+      wpLater(() => { tap(); wpHide(what, true); }, t);  // "press" the eye: it hides
+      wpLater(() => wpHide(what, false), t + 1500);     // and it comes back
+      t += 2700;
+    }
+    wpLater(() => { wpDemo = null; x.classList.remove("wait"); }, t - 600);
+  }
   wp.addEventListener("click", e => {
     const go = e.target.closest("[data-go]");
-    if (go) { e.preventDefault(); wpStep(go.dataset.go); return; }
+    if (go) { e.preventDefault(); if (!go.closest(".wait")) wpStep(go.dataset.go); return; }
     const eye = e.target.closest("[data-hide]");
-    if (eye) wpHide(eye.dataset.hide, !wp.classList.contains("no-" + eye.dataset.hide));
+    if (!eye) return;
+    if (wpDemo) {
+      // they pressed the eye during the demo: stop it, show what it does, and let them close the tip
+      wpTimers.forEach(clearTimeout); wpTimers = []; wpDemo = null;
+      wp.querySelectorAll(".wp-x.wait").forEach(x => x.classList.remove("wait"));
+      wpHide(eye.dataset.hide, true);
+      return;
+    }
+    wpHide(eye.dataset.hide, !wp.classList.contains("no-" + eye.dataset.hide));
   });
   wp.querySelector(".wp-say").addEventListener("click", e => sayShalom(e.currentTarget));
 
