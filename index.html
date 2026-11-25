@@ -693,15 +693,16 @@
   .wp-page [data-on].wp-leave { animation: wp-fade-out .4s cubic-bezier(.42,0,.58,1) both; pointer-events: none; }
   @keyframes wp-fade { from { opacity: 0; } }
   @keyframes wp-fade-out { to { opacity: 0; } }
-  .wp-page .wp-cat { transform-origin: 85% 60%; animation: wp-pop .75s cubic-bezier(.42,0,.58,1) .05s both; }
+  .wp-page .wp-cat { transform-origin: 85% 60%; animation: wp-pop 1s cubic-bezier(.42,0,.58,1) .05s both; }
   .wp-page .wp-cat.wp-leave { animation: wp-fade-out .4s cubic-bezier(.42,0,.58,1) both; }
   /* kitty swings in from the side, pivoting on the screen edge, overshoots a little and settles (whiplash) */
   @keyframes wp-pop {
-    0%   { transform: translateX(70%) rotate(55deg); }
-    55%  { transform: translateX(-3%) rotate(-9deg); }
-    75%  { transform: translateX(1%) rotate(4deg); }
-    90%  { transform: rotate(-1.5deg); }
-    100% { transform: none; }
+    0%   { transform: translateX(70%) rotate(45deg); filter: blur(5px); }
+    35%  { filter: blur(2.5px); }
+    60%  { transform: translateX(-1.5%) rotate(-5deg); filter: blur(0); }
+    80%  { transform: translateX(.5%) rotate(1.8deg); }
+    92%  { transform: rotate(-.5deg); }
+    100% { transform: none; filter: none; }
   }
   .wp-page .wp-bubble { animation: wp-in .45s cubic-bezier(.42,0,.58,1) both; }
   .wp-page .wp-b4 { animation-delay: .5s; }
@@ -811,7 +812,7 @@
     <a href="#home" data-exercise="vocabulary"><img src="img/icon-vocabulary.png" alt=""><span>Vocabulary</span></a>
     <a href="#home" data-exercise="listening"><img src="img/icon-listening.png" alt=""><span>Listening</span></a>
     <a href="#home" data-exercise="shadowing"><img src="img/icon-shadowing.png" alt=""><span>Shadowing</span></a>
-    <a href="#home" data-exercise="writing"><img src="img/icon-writing.png" alt=""><span>Writing</span></a>
+    <a href="#draft-writing-k7q2" data-exercise="writing"><img src="img/icon-writing.png" alt=""><span>Writing</span></a>
   </nav>
 </main>
 <main class="rtl-intro" id="l01-intro" data-name="L01_000" hidden>
@@ -1028,7 +1029,7 @@
     <g class="wp-letter">
       <!-- ש (Assistant Medium), same shapes as the exercise, sitting on the two guide lines -->
       <g fill="var(--wp-teal)" transform="translate(106.5 518) scale(.5448)">
-        <path transform="matrix(1 0 0 -1 0 559)" d="M118 -10 47 559H135L194 69Q271 74 328.5 97.0Q386 120 424.0 161.5Q462 203 480.5 264.0Q499 325 498 406L497 559H589L590 410Q591 269 539.5 176.0Q488 83 383.0 36.5Q278 -10 118 -10ZM178 214 170 283Q195 297 220.5 319.5Q250 346 263.0 388.0Q276 430 276 496L277 557H365L364 498Q363 423 343.5 369.0Q324 315 280.0 276.5Q240 241 178 214Z"/>
+        <path transform="matrix(1 0 0 -1 0 559)" d="M118 -10 47 559H135L194 69Q271 74 328.5 97.0Q386 120 424.0 161.5Q462 203 480.5 264.0Q499 325 498 406L497 559H589L590 410Q591 269 539.5 176.0Q488 83 383.0 36.5Q278 -10 118 -10ZM166 212 158 280Q192 296 220.5 319.5Q250 346 263.0 388.0Q276 430 276 496L277 557H365L364 498Q363 423 343.5 369.0Q324 315 280.0 276.5Q240 241 166 212Z"/>
         <circle cx="545" cy="-85" r="32"/>
       </g>
       <!-- kamatz -->
@@ -1166,8 +1167,8 @@
     { x: 106.5, minX: 47, maxX: 590, say: "שָׁה", items: [
       { flip: true, shape: "M118 -10 47 559H135L194 69Q271 74 328.5 97.0Q386 120 424.0 161.5Q462 203 480.5 264.0Q499 325 498 406L497 559H589L590 410Q591 269 539.5 176.0Q488 83 383.0 36.5Q278 -10 118 -10Z",
         strokes: [["M91 0L150 469C165 525 250 530 320 520C462 497 543 381 543 191L543 0"]] },
-      // middle branch, trimmed so it stops at the left branch instead of overlapping it
-      { flip: true, shape: "M178 214 170 283Q195 297 220.5 319.5Q250 346 263.0 388.0Q276 430 276 496L277 557H365L364 498Q363 423 343.5 369.0Q324 315 280.0 276.5Q240 241 178 214Z",
+      // middle branch: its end tucks just under the left branch (drawn beneath it), so there's no gap and no overlap
+      { under: true, flip: true, shape: "M166 212 158 280Q192 296 220.5 319.5Q250 346 263.0 388.0Q276 430 276 496L277 557H365L364 498Q363 423 343.5 369.0Q324 315 280.0 276.5Q240 241 166 212Z",
         strokes: [["M320 0L320 70C320 180 295 270 182 309"]] },
       { shape: WX_DOT(545, -85), dot: [545, -85], slot: true },
       // kamatz: the bar left to right, then the little stem down
@@ -1215,6 +1216,7 @@
     L.items.forEach((it, i) => {
       const kind = it.vowel ? " vowel" : "";
       const ig = wxEl("g", { class: "wx-item" }, g);
+      if (it.under) g.insertBefore(ig, g.firstChild);
       wxShape(it, { class: "wx-tpl" + kind }, ig);
       const cp = wxEl("clipPath", { id: `wx-c${i}` }, defs); wxShape(it, {}, cp);
       const inks = wxEl("g", { "clip-path": `url(#wx-c${i})` }, ig);
