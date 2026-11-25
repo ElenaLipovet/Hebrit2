@@ -1065,7 +1065,7 @@
       // each tip starts with the letter and its outline showing; "Good luck!" hides both
       wpHide("letter", step === "t4" || step === "ex");
       wpHide("path", step === "t4" || step === "ex");
-      // tips 2 and 3: show what the eye does (twice) before the X appears
+      // tips 2 and 3: show what the eye does (once) before the X appears
       if (step === "t2") wpPlayDemo("letter");
       if (step === "t3") wpPlayDemo("path");
     };
@@ -1086,7 +1086,7 @@
     wpDemo = what;
     const tap = () => { eye.classList.remove("tap"); void eye.offsetWidth; eye.classList.add("tap"); };
     let t = 1100;
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       wpLater(() => { tap(); wpHide(what, true); }, t);  // "press" the eye: it hides
       wpLater(() => wpHide(what, false), t + 1500);     // and it comes back
       t += 2700;
