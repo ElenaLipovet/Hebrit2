@@ -1116,7 +1116,7 @@
       if (step === "done") wxDone();
       // tips 2 and 3: show what the eye does (once) before the X appears
       // tour tips move on by themselves 2 seconds after their X is there (tip 1 right away, tips 2-3 after the eye demo)
-      if (step === "t1") wpAutoNext();
+      if (step === "t1" || step === "t4") wpAutoNext(); // "Good luck!" pops in half a second late, then shows 2 seconds
       if (step === "t2") wpPlayDemo("letter");
       if (step === "t3") wpPlayDemo("path");
     };
@@ -1130,9 +1130,9 @@
     eye.classList.toggle("off", off);
     eye.setAttribute("aria-pressed", off);
   }
-  const WP_NEXT = { t1: "t2", t2: "t3", t3: "t4" };
+  const WP_NEXT = { t1: "t2", t2: "t3", t3: "t4", t4: "ex" };
   // tip 1 has the most text, so it stays 4 seconds; the others 2
-  function wpAutoNext() { const step = wp.dataset.step; if (WP_NEXT[step]) wpLater(() => { if (wp.dataset.step === step) wpStep(WP_NEXT[step]); }, step === "t1" ? 4000 : 2000); }
+  function wpAutoNext() { const step = wp.dataset.step; if (WP_NEXT[step]) wpLater(() => { if (wp.dataset.step === step) wpStep(WP_NEXT[step]); }, step === "t1" ? 4000 : step === "t4" ? 2500 : 2000); }
   function wpPlayDemo(what) {
     const x = wp.querySelector(`.wp-bubble[data-on="${wp.dataset.step}"] .wp-x`);
     const eye = wp.querySelector(`[data-hide="${what}"]`);
