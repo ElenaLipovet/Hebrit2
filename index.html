@@ -607,6 +607,71 @@
   }
   .arw.left { transform: scaleX(-1); }
   .choice-title .arw { font-size: 1em; width: .5em; height: .3em; margin-left: .12em; vertical-align: .08em; }
+  /* DRAFT (hidden, nothing links here yet): WP = writing practice. Intro + tour. Laid out on Helena's 550 × 1207 mockup grid, in % */
+  .wp-page { position: absolute; inset: 0; overflow: hidden; --wp-teal: #1f4e5a; --wp-kamatz: #5e2820; --wp-guide: #3c3c3c; }
+  .wp-page button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .wp-page button:focus-visible { outline: 2px solid var(--highlight); outline-offset: 4px; border-radius: 6px; }
+  .wp-title { position: absolute; left: 11.3%; right: 6%; top: 15.4%; margin: 0; color: var(--coral); font-size: 38px; font-weight: 600; line-height: 1.5; }
+  .wp-choice { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+  .wp-choice button { display: inline-flex; align-items: center; font-weight: 700; font-size: 24px; padding: 6px 8px; }
+  .wp-choice button:active, .wp-go:active { opacity: .7; }
+  .wp-choice .chev-ic.two { width: 17px; height: 13px; margin-left: 5px; }
+  .wp-choice .chev-ic path, .wp-go .chev-ic path { stroke-width: 4.2; }
+  .wp-tour-btn { top: 76.5%; padding-left: 14%; }
+  .wp-skip-btn { top: 87.3%; padding-left: 8%; }
+  .wp-cat { position: absolute; right: 0; width: 40%; top: 43%; pointer-events: none; }
+  .wp-word { position: absolute; left: 27.8%; top: 22.6%; width: 44%; display: flex; gap: 2.2%; }
+  .wp-word i { flex: 1; height: 9px; background: #fff; }
+  .wp-say { position: absolute; left: 75%; top: 15.8%; width: 13%; aspect-ratio: 56 / 46; display: grid; place-items: center; }
+  .wp-say svg { width: 100%; height: auto; transform: scaleX(-1); }
+  .wp-say.playing svg { animation: wp-pulse .55s ease-in-out infinite; }
+  @keyframes wp-pulse { 50% { transform: scaleX(-1) scale(1.18); } }
+  .wp-stage { position: absolute; left: 0; width: 100%; top: 34.8%; height: auto; overflow: visible; pointer-events: none; }
+  .wp-letter, .wp-path { transition: opacity .35s cubic-bezier(.42,0,.58,1); }
+  .wp-page.no-letter .wp-letter, .wp-page.no-path .wp-path { opacity: 0; }
+  .wp-eyes { position: absolute; left: 0; right: 0; bottom: 2.2%; display: flex; justify-content: center; gap: 9%; padding-right: 1%; }
+  .wp-eye { width: 66px; height: 40px; display: grid; place-items: center; }
+  .wp-eye svg { width: 60px; height: 24px; overflow: visible; }
+  .wp-eye svg * { transition: stroke .3s, fill .3s; }
+  .wp-eye .e-lid { fill: none; stroke: #fff; stroke-width: 3; }
+  .wp-eye .e-dot { fill: #c9c9c9; }
+  .wp-eye.dotted .e-lid { stroke-width: 2; stroke-dasharray: 1.6 2.6; stroke-linecap: round; }
+  .wp-eye.dotted .e-dot { fill: #fff; }
+  .wp-eye.off .e-lid { stroke: #5a5a5a; }
+  .wp-eye.off .e-dot { fill: #5a5a5a; }
+  .wp-bubble { position: absolute; background: var(--coral); color: #000; border-radius: 14px; font-weight: 700;  }
+  @keyframes wp-in { from { opacity: 0; transform: translateY(6px); } }
+  .wp-bubble p { margin: 0; }
+  .wp-x { position: absolute; top: 6px; right: 8px; width: 44px; height: 44px; display: grid; place-items: center; }
+  .wp-x svg { width: 24px; height: 24px; }
+  .wp-b1 { left: 9.1%; right: 7.3%; top: 3.1%; padding: 30px 58px 30px 31px; font-size: 30px; line-height: 1.2; }
+  .wp-b1 .wp-x { top: 12px; right: 10px; }
+  .wp-b2 { left: 13%; right: 12%; top: 79.4%; height: 10.6%; padding: 12px 46px 0 24px; font-size: 27px; line-height: 1.08; }
+  .wp-b2::after { content: ""; position: absolute; top: calc(100% - 1px); width: 22px; height: 40px; background: var(--coral); clip-path: polygon(0 0, 100% 0, 52% 100%, 46% 100%); }
+  .wp-b2.left::after { left: calc(26.3% - 2px); }
+  .wp-b2.right::after { left: calc(62% - 2px); }
+  .wp-b4 { left: 13.3%; right: 11.5%; top: 79.5%; height: 10.6%; display: grid; place-items: center; }
+  .wp-b4::before { content: ""; position: absolute; bottom: calc(100% - 1px); left: 66%; width: 70px; height: 66px; background: var(--coral); clip-path: path("M0 66 C40 50 64 28 69 0 C62 24 60 50 66 66 Z"); }
+  .wp-page .wp-go { display: inline-flex; align-items: center; font-weight: 700; font-size: 30px; padding: 8px 12px; color: #000 !important; }
+  .wp-go .chev-ic.two { width: 19px; height: 15px; margin-left: 6px; }
+  .wp-cat.t4 { top: 45%; width: 37%; }
+  .wp-note { position: absolute; left: 10%; right: 10%; top: 48%; margin: 0; text-align: center; color: var(--dim); font-size: 18px; line-height: 1.4; }
+  .wp-note a { color: var(--coral); }
+  /* smooth, ease-in-out changes between tour steps */
+  .wp-page [data-on] { animation: wp-fade .4s cubic-bezier(.42,0,.58,1) both; }
+  .wp-page [data-on].wp-leave { animation: wp-fade-out .4s cubic-bezier(.42,0,.58,1) both; pointer-events: none; }
+  @keyframes wp-fade { from { opacity: 0; } }
+  @keyframes wp-fade-out { to { opacity: 0; } }
+  .wp-page .wp-cat { animation: wp-pop .8s cubic-bezier(.42,0,.58,1) .25s both; }
+  .wp-page .wp-cat.wp-leave { animation: wp-fade-out .4s cubic-bezier(.42,0,.58,1) both; }
+  @keyframes wp-pop { from { transform: translateX(105%); } }
+  .wp-page .wp-bubble { animation: wp-in .45s cubic-bezier(.42,0,.58,1) both; }
+  .wp-page .wp-b4 { animation-delay: .5s; }
+  .wp-x { transition: opacity .4s cubic-bezier(.42,0,.58,1); }
+  .wp-x.wait { opacity: 0; pointer-events: none; }
+  .wp-eye.tap svg { animation: wp-tap .45s cubic-bezier(.42,0,.58,1); }
+  @keyframes wp-tap { 40% { transform: scale(.8); } }
+  @media (prefers-reduced-motion: reduce) { .wp-page [data-on], .wp-page .wp-cat, .wp-page .wp-bubble { animation-duration: .01s !important; } }
 </style>
 </head>
 <body>
@@ -909,6 +974,49 @@
   <!-- TODO: next lesson frame -->
   <a class="next-btn lf-next chev" href="#ah-video"><span class="next-label">Skip</span><svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </main>
+<!-- DRAFT, hidden: Writing practice (WP_001 intro + WP_010 tour). Only reachable by its private link; nothing in the app links here yet -->
+<main class="wp-page" id="draft-writing-k7q2" data-name="WP draft" hidden>
+  <!-- WP_001_Intro -->
+  <h1 class="wp-title" data-on="intro">Welcome to writing practice! Would&nbsp;you like&nbsp;a&nbsp;tour?</h1>
+  <img class="wp-cat" data-on="intro" src="img/cat-lying.png" alt="">
+  <div class="wp-choice wp-tour-btn" data-on="intro"><button type="button" data-go="t1">I would like a tour<svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+  <div class="wp-choice wp-skip-btn" data-on="intro"><button type="button" data-go="ex">Skip the tour<svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+
+  <!-- the writing screen (shared by the tour and, later, the exercise) -->
+  <div class="wp-word" data-on="t1 t2 t3 t4 ex" aria-label="A word with 4 letters"><i></i><i></i><i></i><i></i></div>
+  <button type="button" class="wp-say" data-on="t1 t2 t3 t4 ex" aria-label="Listen to the word"><svg viewBox="0 0 40 32" aria-hidden="true"><path d="M2 11h7l10-8v26l-10-8H2z" fill="currentColor"/><path d="M25 10c2.5 3.2 2.5 8.8 0 12M29.5 6c4.6 5.5 4.6 14.5 0 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
+  <svg class="wp-stage" data-on="t1 t2 t3 t4 ex" viewBox="0 420 550 560" aria-hidden="true">
+    <path d="M0 518H550M0 848H550" stroke="var(--wp-guide)" stroke-width="8" stroke-dasharray="3 3"/>
+    <g class="wp-letter">
+      <!-- ש (Assistant bold), same shape as L01_007, sitting on the two guide lines -->
+      <g fill="var(--wp-teal)" transform="translate(120 518) scale(.5333) translate(-40 0) matrix(1 0 0 -1 0 571)">
+        <path d="M115 -10 40 571H177L232 109Q307 114 358.0 136.5Q409 159 439.5 196.0Q470 233 483.0 284.0Q496 335 496 396L494 571H639L640 404Q641 266 586.0 172.0Q531 78 415.0 32.0Q299 -14 115 -10Z"/>
+        <path d="M198 218 164 308Q210 320 233.5 342.5Q257 365 265.5 404.0Q274 443 273 504V570H410V507Q409 436 390.5 379.5Q372 323 326.5 283.0Q281 243 198 218Z"/>
+        <path d="M566 691Q582 691 590.5 680.0Q599 669 599 656Q599 642 590.5 631.0Q582 620 566 620Q551 620 541.5 631.0Q532 642 532 656Q532 669 541.5 680.0Q551 691 566 691Z"/>
+      </g>
+      <!-- kamatz -->
+      <path fill="var(--wp-kamatz)" d="M237 868H327V889H293L291 943H270L268 889H237Z"/>
+    </g>
+    <g class="wp-path" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" transform="translate(120 518) scale(.5333) translate(-40 0)">
+      <path d="M108 0L160 481C175 541 260 546 330 536C480 511 565 391 565 191L565 40" stroke-width="12" stroke-dasharray="22 24" stroke-linecap="butt"/>
+      <path d="M517 52L565 6L613 52" stroke-width="13"/>
+    </g>
+  </svg>
+  <div class="wp-eyes" data-on="t1 t2 t3 t4 ex">
+    <button type="button" class="wp-eye" data-hide="letter" aria-pressed="false" aria-label="Hide the letter"><svg viewBox="0 0 60 24" aria-hidden="true"><path class="e-lid" d="M2 12C16-1 44-1 58 12C44 25 16 25 2 12Z"/><circle class="e-dot" cx="30" cy="12" r="5"/></svg></button>
+    <button type="button" class="wp-eye dotted" data-hide="path" aria-pressed="false" aria-label="Hide the outline"><svg viewBox="0 0 60 24" aria-hidden="true"><path class="e-lid" d="M2 12C16-1 44-1 58 12C44 25 16 25 2 12Z"/><circle class="e-dot" cx="30" cy="12" r="5"/></svg></button>
+  </div>
+
+  <!-- WP_010 tour tips; X goes on to the next tip -->
+  <div class="wp-bubble wp-b1" data-on="t1"><p>In this exercise we trace each letter of the word we hear in the space below:</p><button type="button" class="wp-x" data-go="t2" aria-label="Next tip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21M21 3 3 21" stroke="#000" stroke-width="5"/></svg></button></div>
+  <div class="wp-bubble wp-b2 left" data-on="t2"><p>Press here to<br>hide the letter:</p><button type="button" class="wp-x" data-go="t3" aria-label="Next tip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21M21 3 3 21" stroke="#000" stroke-width="5"/></svg></button></div>
+  <div class="wp-bubble wp-b2 right" data-on="t3"><p>Press here to<br>hide the outline:</p><button type="button" class="wp-x" data-go="t4" aria-label="Next tip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21M21 3 3 21" stroke="#000" stroke-width="5"/></svg></button></div>
+  <img class="wp-cat t4" data-on="t4" src="img/cat-lying.png" alt="">
+  <div class="wp-bubble wp-b4" data-on="t4"><button type="button" class="wp-go" data-go="ex">Good luck!<svg class="chev-ic two" viewBox="0 0 20 16" aria-hidden="true"><path d="M2 2l6 6-6 6M11 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+
+  <!-- the exercise itself isn't designed yet -->
+  <p class="wp-note" data-on="ex">The exercise itself comes next.<br><a href="#draft-writing-k7q2" data-go="intro">Start the intro again</a></p>
+</main>
 </div>
 <script>
   // One view per page; the URL hash picks which one shows.
@@ -931,6 +1039,7 @@
     if (current.classList.contains("lesson-frame")) playShalom(current);
     if (current.id === "l01-007") resetTrace();
     if (current.id === "l01-008") resetSpell();
+    if (current.id === "draft-writing-k7q2") wpStep("intro", true);
     if (current.id === "ah-video") playVideoPage(); else if (typeof vpVideo !== "undefined") vpVideo.pause();
     // L01_000: restart the right-to-left animation every time the page opens
     if (current.id === "l01-intro") { current.classList.remove("play"); void current.offsetWidth; current.classList.add("play"); }
@@ -938,6 +1047,67 @@
     if (current.id === "welcome-user") timer = setTimeout(() => { location.hash = window.hebritAfterWelcome || "level"; }, 2000);
   }
   window.addEventListener("hashchange", show);
+  // DRAFT writing practice (hidden view): intro → tour tips → exercise (not built yet)
+  // Every change is a smooth ease-in-out fade: what leaves fades out, then what's new fades in.
+  const wp = document.getElementById("draft-writing-k7q2");
+  const WP_FADE = 400;
+  let wpTimers = [], wpDemo = null;
+  const wpLater = (fn, ms) => wpTimers.push(setTimeout(fn, ms));
+  function wpStep(step, instant) {
+    wpTimers.forEach(clearTimeout); wpTimers = []; wpDemo = null;
+    const want = el => el.dataset.on.split(" ").includes(step);
+    const all = [...wp.querySelectorAll("[data-on]")];
+    const leaving = all.filter(el => !el.hasAttribute("hidden") && !want(el));
+    const enter = () => {
+      wp.dataset.step = step;
+      leaving.forEach(el => { el.setAttribute("hidden", ""); el.classList.remove("wp-leave"); });
+      all.forEach(el => { if (want(el)) el.removeAttribute("hidden"); });
+      // each tip starts with the letter and its outline showing; "Good luck!" hides both
+      wpHide("letter", step === "t4" || step === "ex");
+      wpHide("path", step === "t4" || step === "ex");
+      // tips 2 and 3: show what the eye does (once) before the X appears
+      if (step === "t2") wpPlayDemo("letter");
+      if (step === "t3") wpPlayDemo("path");
+    };
+    if (instant || !leaving.length) return enter();
+    leaving.forEach(el => el.classList.add("wp-leave"));
+    wpLater(enter, WP_FADE);
+  }
+  function wpHide(what, off) {
+    wp.classList.toggle("no-" + what, off);
+    const eye = wp.querySelector(`[data-hide="${what}"]`);
+    eye.classList.toggle("off", off);
+    eye.setAttribute("aria-pressed", off);
+  }
+  function wpPlayDemo(what) {
+    const x = wp.querySelector(`.wp-bubble[data-on="${wp.dataset.step}"] .wp-x`);
+    const eye = wp.querySelector(`[data-hide="${what}"]`);
+    x.classList.add("wait");
+    wpDemo = what;
+    const tap = () => { eye.classList.remove("tap"); void eye.offsetWidth; eye.classList.add("tap"); };
+    let t = 1100;
+    for (let i = 0; i < 1; i++) {
+      wpLater(() => { tap(); wpHide(what, true); }, t);  // "press" the eye: it hides
+      wpLater(() => wpHide(what, false), t + 1500);     // and it comes back
+      t += 2700;
+    }
+    wpLater(() => { wpDemo = null; x.classList.remove("wait"); }, t - 600);
+  }
+  wp.addEventListener("click", e => {
+    const go = e.target.closest("[data-go]");
+    if (go) { e.preventDefault(); if (!go.closest(".wait")) wpStep(go.dataset.go); return; }
+    const eye = e.target.closest("[data-hide]");
+    if (!eye) return;
+    if (wpDemo) {
+      // they pressed the eye during the demo: stop it, show what it does, and let them close the tip
+      wpTimers.forEach(clearTimeout); wpTimers = []; wpDemo = null;
+      wp.querySelectorAll(".wp-x.wait").forEach(x => x.classList.remove("wait"));
+      wpHide(eye.dataset.hide, true);
+      return;
+    }
+    wpHide(eye.dataset.hide, !wp.classList.contains("no-" + eye.dataset.hide));
+  });
+  wp.querySelector(".wp-say").addEventListener("click", e => sayShalom(e.currentTarget));
 
   // L01_001: ש, ל, ו, ם appear one after another (with their sounds), then the speaker + "shalom"
   let steps = [];
