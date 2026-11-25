@@ -1131,7 +1131,8 @@
     eye.setAttribute("aria-pressed", off);
   }
   const WP_NEXT = { t1: "t2", t2: "t3", t3: "t4" };
-  function wpAutoNext() { const step = wp.dataset.step; if (WP_NEXT[step]) wpLater(() => { if (wp.dataset.step === step) wpStep(WP_NEXT[step]); }, 2000); }
+  // tip 1 has the most text, so it stays 4 seconds; the others 2
+  function wpAutoNext() { const step = wp.dataset.step; if (WP_NEXT[step]) wpLater(() => { if (wp.dataset.step === step) wpStep(WP_NEXT[step]); }, step === "t1" ? 4000 : 2000); }
   function wpPlayDemo(what) {
     const x = wp.querySelector(`.wp-bubble[data-on="${wp.dataset.step}"] .wp-x`);
     const eye = wp.querySelector(`[data-hide="${what}"]`);
