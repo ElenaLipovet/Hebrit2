@@ -619,7 +619,7 @@
   .wp-choice .chev-ic path, .wp-go .chev-ic path { stroke-width: 4.2; }
   .wp-tour-btn { top: 76.5%; padding-left: 14%; }
   .wp-skip-btn { top: 87.3%; padding-left: 8%; }
-  .wp-cat { position: absolute; right: 0; width: 40%; top: 43%; pointer-events: none; }
+  .wp-cat { position: absolute; right: -7.2%; width: 47.2%; top: 43%; pointer-events: none; }
   .wp-word { position: absolute; left: 27.8%; top: 22.6%; width: 44%; display: flex; gap: 2.2%; }
   .wp-word i { flex: 1; height: 9px; background: #fff; }
   .wp-say { position: absolute; left: 75%; top: 15.8%; width: 13%; aspect-ratio: 56 / 46; display: grid; place-items: center; }
@@ -654,7 +654,7 @@
   .wp-b4::before { content: ""; position: absolute; bottom: calc(100% - 1px); left: 66%; width: 70px; height: 66px; background: var(--coral); clip-path: path("M0 66 C40 50 64 28 69 0 C62 24 60 50 66 66 Z"); }
   .wp-page .wp-go { display: inline-flex; align-items: center; font-weight: 700; font-size: 30px; padding: 8px 12px; color: #000 !important; }
   .wp-go .chev-ic.two { width: 19px; height: 15px; margin-left: 6px; }
-  .wp-cat.t4 { top: 45%; width: 37%; }
+  .wp-cat.t4 { top: 45%; width: 43.7%; right: -6.7%; }
   .wp-note { position: absolute; left: 10%; right: 10%; top: 48%; margin: 0; text-align: center; color: var(--dim); font-size: 18px; line-height: 1.4; }
   .wp-note a { color: var(--coral); }
   /* smooth, ease-in-out changes between tour steps */
@@ -662,9 +662,16 @@
   .wp-page [data-on].wp-leave { animation: wp-fade-out .4s cubic-bezier(.42,0,.58,1) both; pointer-events: none; }
   @keyframes wp-fade { from { opacity: 0; } }
   @keyframes wp-fade-out { to { opacity: 0; } }
-  .wp-page .wp-cat { animation: wp-pop .5s cubic-bezier(.42,0,.58,1) .05s both; }
+  .wp-page .wp-cat { transform-origin: 85% 60%; animation: wp-pop .75s cubic-bezier(.42,0,.58,1) .05s both; }
   .wp-page .wp-cat.wp-leave { animation: wp-fade-out .4s cubic-bezier(.42,0,.58,1) both; }
-  @keyframes wp-pop { from { transform: translateX(105%); } }
+  /* kitty swings in from the side, pivoting on the screen edge, overshoots a little and settles (whiplash) */
+  @keyframes wp-pop {
+    0%   { transform: translateX(70%) rotate(55deg); }
+    55%  { transform: translateX(-3%) rotate(-9deg); }
+    75%  { transform: translateX(1%) rotate(4deg); }
+    90%  { transform: rotate(-1.5deg); }
+    100% { transform: none; }
+  }
   .wp-page .wp-bubble { animation: wp-in .45s cubic-bezier(.42,0,.58,1) both; }
   .wp-page .wp-b4 { animation-delay: .5s; }
   .wp-x { transition: opacity .4s cubic-bezier(.42,0,.58,1); }
