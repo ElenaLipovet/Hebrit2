@@ -1138,13 +1138,13 @@
     x.classList.add("wait");
     wpDemo = what;
     const tap = () => { eye.classList.remove("tap"); void eye.offsetWidth; eye.classList.add("tap"); };
-    let t = 1100;
+    let t = 880; // timings are 20% quicker than the first version
     for (let i = 0; i < 1; i++) {
       wpLater(() => { tap(); wpHide(what, true); }, t);  // "press" the eye: it hides
-      wpLater(() => wpHide(what, false), t + 1500);     // and it comes back
-      t += 2700;
+      wpLater(() => wpHide(what, false), t + 1200);     // and it comes back
+      t += 2160;
     }
-    wpLater(() => { wpDemo = null; x.classList.remove("wait"); wpAutoNext(); }, t - 600);
+    wpLater(() => { wpDemo = null; x.classList.remove("wait"); wpAutoNext(); }, t - 480);
   }
   wp.addEventListener("click", e => {
     const go = e.target.closest("[data-go]");
