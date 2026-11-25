@@ -672,7 +672,7 @@
   .wx-fill.vowel, .wx-word-fill.vowel { fill: var(--coral); }
   .wx-fill { opacity: 0; transition: opacity .3s cubic-bezier(.42,0,.58,1); }
   .wx-item.done .wx-fill { opacity: 1; }
-  .wx-ink { fill: none; stroke: var(--sky); stroke-width: 190; stroke-linecap: round; stroke-linejoin: round; }
+  .wx-ink { fill: none; stroke: var(--sky); stroke-width: 150; stroke-linecap: round; stroke-linejoin: round; }
   .wx-ink.vowel { stroke: var(--coral); }
   .wx-guides { opacity: 0; transition: opacity .35s cubic-bezier(.42,0,.58,1); pointer-events: none; }
   .wx-guides.now { opacity: 1; }
@@ -1026,18 +1026,17 @@
   <svg class="wp-stage" data-on="t1 t2 t3 t4 ex" viewBox="0 420 550 560" aria-hidden="true"><path d="M0 518H550M0 848H550" stroke="var(--wp-guide)" stroke-width="8" stroke-dasharray="3 3"/></svg>
   <svg class="wp-stage" data-on="t1 t2 t3 t4" viewBox="0 420 550 560" aria-hidden="true">
     <g class="wp-letter">
-      <!-- ש (Assistant bold), same shape as L01_007, sitting on the two guide lines -->
-      <g fill="var(--wp-teal)" transform="translate(120 518) scale(.5333) translate(-40 0) matrix(1 0 0 -1 0 571)">
-        <path d="M115 -10 40 571H177L232 109Q307 114 358.0 136.5Q409 159 439.5 196.0Q470 233 483.0 284.0Q496 335 496 396L494 571H639L640 404Q641 266 586.0 172.0Q531 78 415.0 32.0Q299 -14 115 -10Z"/>
-        <path d="M198 218 164 308Q210 320 233.5 342.5Q257 365 265.5 404.0Q274 443 273 504V570H410V507Q409 436 390.5 379.5Q372 323 326.5 283.0Q281 243 198 218Z"/>
-        <path d="M566 691Q582 691 590.5 680.0Q599 669 599 656Q599 642 590.5 631.0Q582 620 566 620Q551 620 541.5 631.0Q532 642 532 656Q532 669 541.5 680.0Q551 691 566 691Z"/>
+      <!-- ש (Assistant Medium), same shapes as the exercise, sitting on the two guide lines -->
+      <g fill="var(--wp-teal)" transform="translate(106.5 518) scale(.5448)">
+        <path transform="matrix(1 0 0 -1 0 559)" d="M118 -10 47 559H135L194 69Q271 74 328.5 97.0Q386 120 424.0 161.5Q462 203 480.5 264.0Q499 325 498 406L497 559H589L590 410Q591 269 539.5 176.0Q488 83 383.0 36.5Q278 -10 118 -10ZM178 214 170 283Q195 297 220.5 319.5Q250 346 263.0 388.0Q276 430 276 496L277 557H365L364 498Q363 423 343.5 369.0Q324 315 280.0 276.5Q240 241 178 214Z"/>
+        <circle cx="545" cy="-85" r="32"/>
       </g>
       <!-- kamatz -->
-      <path fill="var(--wp-kamatz)" d="M237 868H327V889H293L291 943H270L268 889H237Z"/>
+      <path fill="var(--wp-kamatz)" d="M237 868H327V883H291L290 943H273L272 883H237Z"/>
     </g>
-    <g class="wp-path" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" transform="translate(120 518) scale(.5333) translate(-40 0)">
-      <path d="M108 0L160 481C175 541 260 546 330 536C480 511 565 391 565 191L565 40" stroke-width="12" stroke-dasharray="22 24" stroke-linecap="butt"/>
-      <path d="M517 52L565 6L613 52" stroke-width="13"/>
+    <g class="wp-path" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" transform="translate(106.5 518) scale(.5448)">
+      <path d="M91 0L150 469C165 525 250 530 320 520C462 497 543 381 543 191L543 40" stroke-width="12" stroke-dasharray="22 24" stroke-linecap="butt"/>
+      <path d="M495 52L543 6L591 52" stroke-width="13"/>
     </g>
   </svg>
   <div class="wp-eyes" data-on="t1 t2 t3 t4 ex">
@@ -1160,31 +1159,33 @@
 
   // WP exercise: trace שָׁלוֹם one letter at a time (right to left). Shapes are the Assistant Bold outlines,
   // in font units with y pointing down (0 = top guide line, 571 = bottom guide line).
-  const WX_FLIP = "matrix(1 0 0 -1 0 571)"; // font outlines have y pointing up
-  const WX_DOT = (cx, cy) => `M${cx} ${cy - 36}a36 36 0 1 1 0 72a36 36 0 1 1 0-72Z`;
+  const WX_FLIP = "matrix(1 0 0 -1 0 559)"; // font outlines have y pointing up
+  const WX_S = .5448; // font units -> stage (the letters sit on the two guide lines)
+  const WX_DOT = (cx, cy) => `M${cx} ${cy - 32}a32 32 0 1 1 0 64a32 32 0 1 1 0-64Z`;
   const WX_LETTERS = [
-    { x: 98.67, minX: 40, maxX: 640, say: "שָׁה", items: [
-      { flip: true, shape: "M115 -10 40 571H177L232 109Q307 114 358.0 136.5Q409 159 439.5 196.0Q470 233 483.0 284.0Q496 335 496 396L494 571H639L640 403Q641 265 586.0 171.5Q531 78 415.0 32.0Q299 -14 115 -10Z",
-        strokes: [["M108 0L160 481C175 541 260 546 330 536C480 511 565 391 565 191L565 0"]] },
-      { flip: true, shape: "M220 223 207 314Q222 326 233.5 342.5Q257 365 265.0 404.0Q273 443 273 504V570H410V507Q409 436 390.5 379.5Q372 323 326.5 283.0Q285 245 220 223Z",
-        strokes: [["M341 0L341 70C341 180 312 268 222 298"]] },
-      { shape: WX_DOT(566, -85), dot: [566, -85], slot: true },
+    { x: 106.5, minX: 47, maxX: 590, say: "שָׁה", items: [
+      { flip: true, shape: "M118 -10 47 559H135L194 69Q271 74 328.5 97.0Q386 120 424.0 161.5Q462 203 480.5 264.0Q499 325 498 406L497 559H589L590 410Q591 269 539.5 176.0Q488 83 383.0 36.5Q278 -10 118 -10Z",
+        strokes: [["M91 0L150 469C165 525 250 530 320 520C462 497 543 381 543 191L543 0"]] },
+      // middle branch, trimmed so it stops at the left branch instead of overlapping it
+      { flip: true, shape: "M178 214 170 283Q195 297 220.5 319.5Q250 346 263.0 388.0Q276 430 276 496L277 557H365L364 498Q363 423 343.5 369.0Q324 315 280.0 276.5Q240 241 178 214Z",
+        strokes: [["M320 0L320 70C320 180 295 270 182 309"]] },
+      { shape: WX_DOT(545, -85), dot: [545, -85], slot: true },
       // kamatz: the bar left to right, then the little stem down
-      { vowel: true, shape: "M260 656H428V696H260Z", strokes: [["M262 676H426"]] },
-      { vowel: true, shape: "M317 695H364L361 797H321Z", strokes: [["M341 698V795"]], slot: true },
+      { vowel: true, shape: "M240 642H405V670H240Z", strokes: [["M242 656H403"]] },
+      { vowel: true, shape: "M304 669H339L337 780H306Z", strokes: [["M322 672V778"]], slot: true },
     ] },
-    { x: 142.5, minX: 31, maxX: 466, say: "אֶל", items: [
+    { x: 144.8, minX: 40, maxX: 438, say: "אֶל", items: [
       // ל in one go: down, right, then the long diagonal
-      { flip: true, shape: "M141 0 321 462H31V571H466V452L286 0ZM31 462V717H161V462Z",
-        strokes: [["M96 -146V55", "M96 55H400", "M400 55L213 571"]], slot: true },
+      { flip: true, shape: "M156 0 346 487H40V559H438V481L248 0ZM40 487V717H124V487Z",
+        strokes: [["M82 -158V36", "M82 36H385", "M392 40L202 559"]], slot: true },
     ] },
-    { x: 207, minX: 49, maxX: 205, say: "אוֹ", items: [
-      { vowel: true, flip: true, shape: "M60 0V454L49 571H193L205 454V0Z", strokes: [["M126 0V571"]] },
-      { vowel: true, shape: WX_DOT(112, -125), dot: [112, -125], slot: true },
+    { x: 213.2, minX: 61, maxX: 166, say: "אוֹ", items: [
+      { vowel: true, flip: true, shape: "M74 0V442L61 559H153L166 442V0Z", strokes: [["M113 0V559"]] },
+      { vowel: true, shape: WX_DOT(113, -120), dot: [113, -120], slot: true },
     ] },
-    { x: 116.6, minX: 52, maxX: 542, say: "אֶם", items: [
-      { flip: true, shape: "M397 0V390Q397 429 379.5 445.5Q362 462 330 462H144V571H369Q419 571 458.0 552.0Q497 533 519.5 492.0Q542 451 542 383V93V0ZM83 0V108H490L487 0ZM52 0V483V571H197V475V0Z",
-        strokes: [["M124 0V517", "M124 517H542"], ["M60 55H330Q470 55 470 190V471"]], slot: true },
+    { x: 114.8, minX: 70, maxX: 518, say: "אֶם", items: [
+      { flip: true, shape: "M426 0V376Q426 438 399.5 462.5Q373 487 327 487H126V559H349Q399 559 437.0 540.5Q475 522 496.5 481.0Q518 440 518 372V67V0ZM92 0V72H487L481 0ZM70 0V498V559H162V494V0Z",
+        strokes: [["M116 0V523", "M116 523H518"], ["M80 36H330Q472 36 472 170V480"]], slot: true },
     ] },
   ];
   const WX_NS = "http://www.w3.org/2000/svg";
@@ -1194,9 +1195,9 @@
   const wxShape = (it, attrs, parent) => wxEl("path", Object.assign({ d: it.shape }, it.flip ? { transform: WX_FLIP } : {}, attrs), parent);
   // a little picture of a letter (for the word at the top): only the parts done so far
   function wxMini(n, all) {
-    const L = WX_LETTERS[n], x0 = L.x + L.minX * .5333 - 3, x1 = L.x + L.maxX * .5333 + 3;
+    const L = WX_LETTERS[n], x0 = L.x + L.minX * WX_S - 3, x1 = L.x + L.maxX * WX_S + 3;
     const svg = wxEl("svg", { viewBox: `${x0} 425 ${x1 - x0} 525`, "aria-hidden": "true" });
-    const g = wxEl("g", { transform: `translate(${L.x} 518) scale(.5333)` }, svg);
+    const g = wxEl("g", { transform: `translate(${L.x} 518) scale(${WX_S})` }, svg);
     L.items.forEach((it, i) => { const p = wxShape(it, { class: "wx-word-fill" + (it.vowel ? " vowel" : "") }, g); p.dataset.i = i; if (!all) p.style.display = "none"; });
     return svg;
   }
@@ -1209,7 +1210,7 @@
     const L = WX_LETTERS[n];
     wxStage.querySelectorAll(".wx-letter, defs").forEach(e => e.remove());
     const defs = wxEl("defs", {}, wxStage);
-    const g = wxEl("g", { class: "wx-letter out", transform: `translate(${L.x} 518) scale(.5333)` }, wxStage);
+    const g = wxEl("g", { class: "wx-letter out", transform: `translate(${L.x} 518) scale(${WX_S})` }, wxStage);
     wxTasks = [];
     L.items.forEach((it, i) => {
       const kind = it.vowel ? " vowel" : "";
@@ -1219,7 +1220,7 @@
       const inks = wxEl("g", { "clip-path": `url(#wx-c${i})` }, ig);
       wxShape(it, { class: "wx-fill" + kind }, ig);
       if (it.dot) {
-        const gd = wxEl("g", { class: "wx-guides" }, g), [cx, cy] = it.dot, r = 72;
+        const gd = wxEl("g", { class: "wx-guides" }, g), [cx, cy] = it.dot, r = 66;
         // a dotted circle around the dot, going clockwise, arrowhead at its end
         const at = deg => [cx + r * Math.cos(deg * Math.PI / 180), cy + r * Math.sin(deg * Math.PI / 180)];
         const [sx, sy] = at(-40), [ex, ey] = at(-70);
